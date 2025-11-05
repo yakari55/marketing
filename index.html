@@ -41,13 +41,16 @@
 
     .modelo-frase {
     font-size: 4.5vw; /* Tamaño más grande y proporcional al móvil */
-    font-weight: bold; /* Pone toda la frase en negrita */
-    margin: 1vh 0; /* Margen para centrar verticalmente */
-    color: #007bff; /* Un color de marca llamativo (ej: Azul) */
-    padding: 5px 10px;
-    background-color: #fff; /* Pequeño fondo para el texto */
+    font-weight: 700; /* Usamos un peso de fuente más grueso que 'bold' */
+    margin: 1.5vh auto; /* Margen para centrar verticalmente */
+    color: #333333; /* Texto casi negro (más profesional que el negro puro) */
+    padding: 1vh 2vw;
+    background-color: #FFFFFF; /* Pequeño fondo para el texto */
     border-radius: 8px;
     display: inline-block; /* Permite aplicar fondo y padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil para darle profundidad */
+    text-transform: uppercase; /* Pone toda la frase en MAYÚSCULAS (más impacto visual) */
+    letter-spacing: 1px; /* Espaciado entre letras para un look premium */
     }
 
     /* 3. CONTENEDOR DE VIDEO Y ADAPTABILIDAD */
@@ -91,6 +94,18 @@
         display: block;
     }
 
+    #mensaje-final-wrapper {
+    max-width: 600px;
+    width: 95%;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff; /* Fondo blanco para contraste */
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Sombra marcada */
+    border-top: 3px solid #ff5722; /* Línea de color de marca impactante (Naranja/Rojo) */
+    text-align: center;
+    }
+
     /* 5. MEDIA QUERIES (Ajustes para pantallas grandes/laptops) */
     @media (min-width: 768px) {
         body {
@@ -102,7 +117,9 @@
         }
 
         .modelo-frase {
-        font-size: 26px; /* Aumenta el tamaño de la frase completa a un valor fijo de 26px */
+        font-size: 24px; /* Aumenta el tamaño de la frase completa a un valor fijo de 26px */
+        padding: 10px 20px;
+        letter-spacing: 2px;
         text-transform: capitalize;
         }
         
@@ -183,8 +200,8 @@ body {
             document.body.innerHTML = '<h1>Error: Código de producto o distribuidor no encontrado.</h1>';
         }
     </script>
-    <div class="mensaje">
-        <h1>¡Cada pieza es una obra de arte!</h1>
+    <div class="mensaje-final-wrapper">
+        <h1> 🔥¡Cada pieza es una obra de arte!</h1>
     </div> 
     
 </body>
