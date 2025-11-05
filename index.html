@@ -18,6 +18,7 @@
         justify-content: center; /* Centramos el contenido verticalmente */
         align-items: center; /* Centramos el contenido horizontalmente */
         padding: 10px; /* Pequeño padding general para evitar que los bordes se peguen */
+        background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%); /* Fondo degradado suave */
     }
     
     /* 2. ESTILOS DEL MENSAJE (Adaptados con unidades de Viewport) */
@@ -42,8 +43,12 @@
     font-size: 4.5vw; /* Tamaño más grande y proporcional al móvil */
     font-weight: bold; /* Pone toda la frase en negrita */
     margin: 1vh 0; /* Margen para centrar verticalmente */
+    color: #007bff; /* Un color de marca llamativo (ej: Azul) */
+    padding: 5px 10px;
+    background-color: #fff; /* Pequeño fondo para el texto */
+    border-radius: 8px;
+    display: inline-block; /* Permite aplicar fondo y padding */
     }
-
 
     /* 3. CONTENEDOR DE VIDEO Y ADAPTABILIDAD */
     #video-wrapper {
@@ -54,6 +59,9 @@
         margin: 1vh auto; /* Margen vertical pequeño */
         background-color: black;
         aspect-ratio: 16 / 9; /* Mantiene la proporción 16:9 */
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25); /* Sombra elegante */
+        border-radius: 12px; /* Esquinas redondeadas */
+        overflow: hidden; /* Asegura que el video respete las esquinas redondeadas */
     }
 
     #video-player {
@@ -72,6 +80,8 @@
         background-color: rgba(255, 255, 255, 0.7);
         padding: 70vw; 
         border-radius: 5px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); /* Sombra más sutil para el logo */
+        transition: transform 0.3s ease; /* Transición para el hover (ver punto 3) */
     }
 
     #logo {
@@ -108,6 +118,19 @@
             max-width: 400px; /* Tamaño fijo de logo para desktop */
         }
     }
+
+    /* Definición de la Animación */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Aplicación de la Animación al Cuerpo de la Página */
+body {
+    /* ... otros estilos del body ... */
+    animation: fadeIn 1.5s ease-out 0.5s forwards; /* 1.5s duración, 0.5s de retraso, forwards mantiene el estado final */
+    opacity: 0; /* Inicia invisible para que la animación funcione */
+}
 </style>
 </head>
 <body>
