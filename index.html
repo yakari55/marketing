@@ -38,17 +38,17 @@
             transition: opacity 0.3s ease;
         }
 
-        /* ESTADO FINAL: Oculta mensajes, mantiene solo el video wrapper */
+        /* ESTADO FINAL: Oculta mensajes, adapta la pantalla al video */
         body.modo-video-final {
             display: block; 
             padding: 0;
             margin: 0;
             min-height: 100vh;
             background-color: black;
-            overflow: hidden; /* Asegura que no haya scroll después del zoom */
+            overflow: hidden; 
         }
         
-        /* Regla de Ocultación: Ocultar MENSAJES de texto, pero NO el video wrapper */
+        /* Regla de Ocultación: Ocultar MENSAJES de texto */
         body.modo-video-final .mensaje,
         body.modo-video-final #mensaje-final-wrapper {
             display: none !important;
@@ -64,8 +64,6 @@
             padding: 0 1vw;
             max-width: 600px;
         }
-        
-        /* ... (mantener estilos de h1, .modelo-frase, etc.) ... */
         .mensaje h1 { font-size: 5vw; margin-top: 1vh; margin-bottom: 0.5vh; }
         .modelo-frase { color: #333333; font-size: 5vw; font-weight: 700; padding: 1.5vh 2vw; background-color: #FFFFFF; border-radius: 8px; display: inline-block; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin: 1.5vh auto; text-transform: uppercase; letter-spacing: 1px; line-height: 1.2; }
         .modelo-principal { display: block; font-size: 7.5vw; color: #444444; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); font-weight: 900; }
@@ -88,7 +86,7 @@
             z-index: 1;
         }
         
-        /* CLASE 1: EFECTO ZOOM INICIAL */
+        /* CLASE 1: EFECTO ZOOM INICIAL IMPACTANTE (Ocupa la pantalla al 100% fijo) */
         #video-wrapper.video-zoom {
             width: 100vw !important;
             height: 100vh !important;
@@ -103,13 +101,14 @@
             z-index: 9999;
         }
         
-        /* CLASE 2: ESTADO FINAL (Pantalla completa sin texto) */
+        /* ✅ CORRECCIÓN CLAVE: ESTADO FINAL (Pantalla completa pero deja espacio para el menú) */
         #video-wrapper.pantalla-completa-final {
             position: fixed; 
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            /* 🛑 CORRECCIÓN: Quitamos 15vh (o el espacio que necesite el menú) */
+            height: calc(100vh - 10vh); 
             max-width: none;
             max-height: none;
             margin: 0;
@@ -148,9 +147,9 @@
             display: block;
         }
         
+        /* ... (restantes estilos de logo/texto en zoom/final) ... */
         .nombre-producto-video { color: #333; font-size: 2.5vw; font-weight: bold; text-transform: capitalize; background-color: rgba(255, 255, 255, 0.7); padding: 0.3vh 0.8vw; border-radius: 4px; line-height: 1; }
         
-        /* Ajustes de logo/texto en modo zoom */
         #video-wrapper.video-zoom #logo-overlay, 
         #video-wrapper.pantalla-completa-final #logo-overlay {
             position: fixed !important;
@@ -164,43 +163,50 @@
 
 
         /* ---------------------------------------------------- */
-        /* 4. ESTILOS DEL MENÚ DE COLORES (Superpuesto en el video) */
+        /* 4. ESTILOS DEL MENÚ DE COLORES (Superpuesto/Fijo en la parte inferior) */
         /* ---------------------------------------------------- */
         #colores-disponibles-wrapper {
-            position: absolute; 
+            /* ✅ CORRECCIÓN CLAVE: Lo sacamos del video wrapper para posicionarlo independientemente */
+            position: fixed; 
             bottom: 0; 
             left: 0;
             width: 100%;
             z-index: 5; 
             padding: 15px 0 20px 0; 
-            background-color: rgba(0, 0, 0, 0.5); 
+            background-color: rgba(0, 0, 0, 0.8); /* Más oscuro */
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             align-items: center;
+            /* ✅ Nuevo: Transición para que aparezca suavemente */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* ✅ Nuevo: Mostrar el menú solo en el estado final */
+        body.modo-video-final #colores-disponibles-wrapper {
+            opacity: 1;
+            visibility: visible;
         }
 
         .selector-titulo { color: #FFFFFF; margin: 0 0 10px 0; }
         .botones-colores-container { margin: 0; max-width: 600px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
         
-        /* ... (mantener estilos de .boton-color y .boton-color.activo) ... */
+        /* ... (mantener estilos de botones) ... */
         .boton-color { padding: 8px 15px; border: 2px solid #ccc; background-color: #f8f8f8; color: #444; cursor: pointer; border-radius: 20px; font-size: 0.9em; transition: all 0.2s ease; text-transform: capitalize; }
         .boton-color:hover { border-color: #555; background-color: #e0e0e0; }
         .boton-color.activo { border-color: #C0392B; background-color: #C0392B; color: #FFFFFF; font-weight: bold; transform: scale(1.05); }
 
         /* ---------------------------------------------------- */
-        /* 5. MEDIA QUERIES (Ajustes para pantallas grandes/laptops) */
+        /* 5. MENSAJE FINAL (Oculto en modo video-final) */
         /* ---------------------------------------------------- */
-        @media (min-width: 768px) {
-            body { padding: 30px; }
-            .mensaje h1 { font-size: 32px; }
-            .modelo-frase { font-size: 26px; padding: 10px 20px; letter-spacing: 2px; }
-            .modelo-principal { font-size: 60px; margin-top: 5px; }
-            #video-wrapper { width: 80%; max-width: 900px; }
-            #logo { max-width: 150px; }
-            .nombre-producto-video { font-size: 20px; padding: 4px 8px; }
+        #mensaje-final-wrapper {
+            /* ... (mantener estilos) ... */
+            max-width: 600px; width: 95%; margin: 30px auto; padding: 20px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); border-top: 3px solid #C0392B; text-align: center;
         }
         
+        /* ... (restantes estilos de media queries) ... */
     </style>
 </head>
 
@@ -224,10 +230,10 @@
             <img id="logo" src="" alt="Logo del Distribuidor">
             <span id="producto-nombre-video" class="nombre-producto-video"></span> 
         </div>
-        
-        <div id="colores-disponibles-wrapper">
-            <p class="selector-titulo">Ver otros colores disponibles:</p>
-            </div>
+    </div>
+    
+    <div id="colores-disponibles-wrapper">
+        <p class="selector-titulo">Ver otros colores disponibles:</p>
     </div>
     
     <div id="mensaje-final-wrapper">
@@ -287,17 +293,23 @@ function generarBotones(modeloBase, distribuidorID, colorInicial) {
     const colores = CATALOGO_COLORES[modeloBase];
     const wrapper = document.getElementById('colores-disponibles-wrapper');
 
+    // Limpiar botones anteriores si existen
+    const existingContainer = wrapper.querySelector('.botones-colores-container');
+    if (existingContainer) existingContainer.remove();
+
     if (!colores || colores.length <= 1) {
         wrapper.style.display = 'none';
         return;
     }
+
+    wrapper.style.display = 'flex'; // Asegura que el contenedor de colores es visible
 
     const botonesContainer = document.createElement('div');
     botonesContainer.className = 'botones-colores-container';
 
     colores.forEach(color => {
         const boton = document.createElement('button');
-        boton.textContent = color;
+        boton.textContent = color.replace(/_/g, ' '); // Formatear texto del botón (ej: BLANCO NUBE)
         boton.className = 'boton-color';
         
         if (color === colorInicial) {
@@ -327,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const videoWrapper = document.getElementById('video-wrapper');
     const body = document.body;
-
+    
     if (distribuidorID && modeloIDBruto) {
         let modeloBase;
         let colorURL; 
@@ -368,6 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
             body.classList.remove('zoom-active');
             
             // 2. Aplicar las clases del estado final
+            // Esto pondrá el video en modo pantalla completa - 10vh (para dejar espacio al menú)
             videoWrapper.classList.add('pantalla-completa-final');
             body.classList.add('modo-video-final');
             
