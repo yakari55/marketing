@@ -3,77 +3,84 @@
 <head>
     <title>Marketing</title>
     <style>
-    /* 1. ESTILOS BASE Y CUERPO (BODY) - LA CLAVE ESTÁ AQUÍ */
+    /* DEFINICIÓN DE LA ANIMACIÓN FADE-IN */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 1. ESTILOS BASE Y CUERPO (BODY) */
     body {
         font-family: Arial, sans-serif;
         text-align: center;
         margin: 0;
         box-sizing: border-box;
-        background-color: #f0f0f0;
-
-        /* SOLUCIÓN CLAVE: EL BODY OCUPA EL 100% DE LA ALTURA DE LA VENTANA */
-        min-height: 100vh; /* La altura mínima es el 100% de la altura de la ventana (viewport height) */
-        display: flex; /* Usamos flexbox para centrar fácilmente */
-        flex-direction: column; /* Apilamos los elementos verticalmente */
-        justify-content: center; /* Centramos el contenido verticalmente */
-        align-items: center; /* Centramos el contenido horizontalmente */
-        padding: 10px; /* Pequeño padding general para evitar que los bordes se peguen */
         background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%); /* Fondo degradado suave */
+        
+        /* Control de altura para evitar scroll */
+        min-height: 100vh; 
+        display: flex; 
+        flex-direction: column; 
+        justify-content: center; 
+        align-items: center; 
+        padding: 10px; 
+
+        /* Aplicación de la animación "WOW" */
+        animation: fadeIn 1.5s ease-out 0.5s forwards; 
+        opacity: 0; /* Inicia invisible */
     }
     
-    /* 2. ESTILOS DEL MENSAJE (Adaptados con unidades de Viewport) */
+    /* 2. ESTILOS DEL MENSAJE Y TÍTULO */
     .mensaje {
         color: #333;
-        margin-bottom: 1.5vh; /* Margen basado en el alto de la ventana */
-        padding: 0 1vw; /* Padding basado en el ancho de la ventana */
+        margin-bottom: 1.5vh; 
+        padding: 0 1vw; 
     }
 
     .mensaje h1 {
-        font-size: 5vw; /* Tamaño de fuente basado en el ancho de la ventana para una mejor adaptación */
+        font-size: 5vw; 
         margin-top: 1vh;
         margin-bottom: 0.5vh;
     }
-    
-    .mensaje p {
-       font-size: 4vw; /* Se ajusta el tamaño del párrafo base (móviles) a 4% del ancho de la ventana */
-        margin: 1vh 0; /* Ajuste de margen para mejor espaciado */
-    }
 
+    /* ESTILO "WOW" EN DOS LÍNEAS PARA EL NOMBRE DEL MODELO */
     .modelo-frase {
-    font-size: 6vw; /* Tamaño más grande y proporcional al móvil */
-    font-weight: 700; /* Usamos un peso de fuente más grueso que 'bold' */
-    margin: 1.5vh auto; /* Margen para centrar verticalmente */
-    color: #333333; /* Texto casi negro (más profesional que el negro puro) */
-    padding: 1.5vh 2vw;
-    background-color: #FFFFFF; /* Pequeño fondo para el texto */
-    border-radius: 8px;
-    display: inline-block; /* Permite aplicar fondo y padding */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil para darle profundidad */
-    text-transform: uppercase; /* Pone toda la frase en MAYÚSCULAS (más impacto visual) */
-    letter-spacing: 1px; /* Espaciado entre letras para un look premium */
-    line-height: 1.2; /* Ajustamos la altura de línea */
+        color: #333333;
+        font-size: 5vw; /* Tamaño más grande para "Estás viendo el modelo:" */
+        font-weight: 700; 
+        padding: 1.5vh 2vw; 
+        background-color: #FFFFFF; 
+        border-radius: 8px;
+        display: inline-block;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        margin: 1.5vh auto; 
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        line-height: 1.2; 
     }
 
+    /* ESTILO GIGANTE SOLO PARA EL NOMBRE DEL MODELO */
     .modelo-principal {
-    display: block; /* Asegura que ocupe todo el ancho después del salto de línea */
-    font-size: 7.5vw; /* Tamaño muy grande para el nombre del modelo */
-    color: #444444; /* Puedes usar un color de marca para destacarlo (ej: Rojo/Naranja) */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Sombra suave para que se lea mejor */
-    font-weight: 900; /* Peso extra bold */
+        display: block; 
+        font-size: 7.5vw; 
+        color: #444444; /* Gris Oscuro: Look Lujoso */
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); 
+        font-weight: 900; 
     }
 
-    /* 3. CONTENEDOR DE VIDEO Y ADAPTABILIDAD */
+
+    /* 3. CONTENEDOR DE VIDEO Y EFECTOS */
     #video-wrapper {
         position: relative;
-        /* Limite del ancho, el 90% para dejar margenes */
         width: 90vw; 
-        max-width: 600px; /* Máximo 600px en pantallas grandes */
-        margin: 1vh auto; /* Margen vertical pequeño */
+        max-width: 600px; 
+        margin: 1vh auto; 
         background-color: black;
-        aspect-ratio: 16 / 9; /* Mantiene la proporción 16:9 */
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25); /* Sombra elegante */
-        border-radius: 12px; /* Esquinas redondeadas */
-        overflow: hidden; /* Asegura que el video respete las esquinas redondeadas */
+        aspect-ratio: 16 / 9; 
+        /* Efectos "WOW" */
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25); 
+        border-radius: 12px; 
+        overflow: hidden; 
     }
 
     #video-player {
@@ -82,141 +89,275 @@
         display: block;
         object-fit: cover; 
     }
-
-    /* 4. ESTILOS DEL LOGO SUPERPUESTO */
+    
+    /* ESTILOS DEL LOGO SUPERPUESTO */
     #logo-overlay {
         position: absolute;
-        top: 70vh;  
-        left: 70vh; 
+        top: 1vh;  
+        left: 1vh; 
         z-index: 10;
         background-color: rgba(255, 255, 255, 0.7);
-        padding: 70vw; 
+        padding: 1vw; 
         border-radius: 5px;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); /* Sombra más sutil para el logo */
-        transition: transform 0.3s ease; /* Transición para el hover (ver punto 3) */
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); 
     }
 
     #logo {
-        max-width: 80vw; /* El logo ocupa máximo el 10% del ancho de la ventana */
-        max-height: 80vh; /* Máximo 8% del alto de la ventana */
+        max-width: 10vw;
+        max-height: 8vh;
         height: auto;
         display: block;
     }
 
+    /* ESTILOS DEL MENÚ DE COLORES */
+    .selector-titulo {
+        font-size: 1.1em;
+        color: #555;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .botones-colores-container {
+        margin: 10px auto 25px auto;
+        max-width: 600px;
+        display: flex; 
+        justify-content: center; 
+        flex-wrap: wrap; 
+        gap: 10px; 
+    }
+
+    .boton-color {
+        padding: 8px 15px;
+        border: 2px solid #ccc;
+        background-color: #f8f8f8;
+        color: #444;
+        cursor: pointer;
+        border-radius: 20px; 
+        font-size: 0.9em;
+        transition: all 0.2s ease;
+        text-transform: capitalize;
+    }
+
+    .boton-color:hover {
+        border-color: #555;
+        background-color: #e0e0e0;
+    }
+
+    .boton-color.activo {
+        border-color: #C0392B; /* Color de marca activo */
+        background-color: #C0392B;
+        color: #FFFFFF;
+        font-weight: bold;
+        transform: scale(1.05);
+    }
+
+    /* ESTILOS PARA EL MENSAJE FINAL (WOW) */
     #mensaje-final-wrapper {
-    max-width: 600px;
-    width: 95%;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: #ffffff; /* Fondo blanco para contraste */
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Sombra marcada */
-    border-top: 3px solid #ff5722; /* Línea de color de marca impactante (Naranja/Rojo) */
-    text-align: center;
+        max-width: 600px;
+        width: 95%;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #ffffff; 
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); 
+        border-top: 3px solid #C0392B; /* Línea de color de marca */
+        text-align: center;
+    }
+
+    #mensaje-final-wrapper h2 {
+        font-size: 1.6em;
+        color: #C0392B; 
+        margin-top: 0;
+        margin-bottom: 15px;
+    }
+
+    #mensaje-final-wrapper p {
+        font-size: 1.1em;
+        line-height: 1.5;
+        color: #555;
+    }
+
+    .contacto-info {
+        font-size: 0.9em;
+        color: #888;
+        margin-top: 20px;
     }
 
     /* 5. MEDIA QUERIES (Ajustes para pantallas grandes/laptops) */
     @media (min-width: 768px) {
         body {
-            /* En pantallas grandes, permitimos un padding fijo para que no se vea vacío */
             padding: 30px;
         }
         .mensaje h1 {
-            font-size: 32px; /* Establecemos un tamaño de fuente fijo para que no crezca demasiado */
+            font-size: 32px;
         }
-
         .modelo-frase {
-        font-size: 36px; /* Aumenta el tamaño de la frase completa a un valor fijo de 26px */
-        padding: 10px 20px;
-        letter-spacing: 2px;
-        text-transform: capitalize;
+            font-size: 26px; 
+            padding: 10px 20px;
+            letter-spacing: 2px;
         }
-
         .modelo-principal {
-        font-size: 48px; /* Tamaño fijo, muy grande para escritorio */
-        margin-top: 5px; /* Espacio extra sobre el nombre del modelo */
-        }
-        
-        .mensaje p {
-            font-size: 24px; /* Aumenta el tamaño del párrafo a un valor fijo de 24px */
+            font-size: 60px; 
+            margin-top: 5px; 
         }
         #video-wrapper {
             width: 80%;
-            /* En laptops y desktop, el max-width es el que controla que el video no sea gigante */
             max-width: 900px; 
         }
         #logo {
-            max-width: 400px; /* Tamaño fijo de logo para desktop */
+            max-width: 100px;
         }
     }
-
-    /* Definición de la Animación */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Aplicación de la Animación al Cuerpo de la Página */
-body {
-    /* ... otros estilos del body ... */
-    animation: fadeIn 1.5s ease-out 0.5s forwards; /* 1.5s duración, 0.5s de retraso, forwards mantiene el estado final */
-    opacity: 0; /* Inicia invisible para que la animación funcione */
-}
 </style>
 </head>
+
 <body>
 
-    <div id="logo-container">
-        <img id="logo" src="" alt="Logo del Distribuidor">
-    </div>
-
     <div class="mensaje">
-        <h2 class="modelo-frase">
-        Estás viendo el modelo:
-        <br> <span class="modelo-principal" id="modelo-nombre"></span>
-    </h3>
+        <h1>¡Marketing!</h1>
+        
+        <h3 class="modelo-frase">
+            Estás viendo el modelo:
+            <br>
+            <span class="modelo-principal" id="modelo-nombre"></span>
+        </h3>
     </div>
 
-    <video id="video-player" controls autoplay muted playsinline loop>
-        Tu navegador no soporta el video.
-    </video>
+    <div id="colores-disponibles-wrapper">
+        <p class="selector-titulo">Ver otros colores disponibles:</p>
+        </div>
+    
+    <div id="video-wrapper">
+        <video id="video-player" controls autoplay muted playsinline loop>
+            Tu navegador no soporta el video.
+        </video>
+        <div id="logo-overlay">
+            <img id="logo" src="" alt="Logo del Distribuidor">
+        </div>
+    </div>
 
-    <script>
-        // 1. OBTENER LOS PARAMETROS DE LA URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const distribuidorID = urlParams.get('distribuidor'); // Leerá 'CL-001'
-        const modeloID = urlParams.get('modelo'); // Leerá 'Apolo'
+### 2. Bloque `<script>` (Funcionalidad)
 
-        if (distribuidorID && modeloID) {
-            // 2. ENSAMBLAJE INTELIGENTE
-            
-            // **IMPORTANTE: AJUSTAR ESTAS RUTAS DE ARCHIVOS**
-            const rutaLogos = './cliente/'; // Ejemplo: /logos/
-            const rutaVideos = './video/'; // Ejemplo: /videos/
+```javascript
+<script>
+const CATALOGO_COLORES = {
+    // ⚠️ RELLENA CON TUS DATOS REALES (El nombre del modelo BASE, en MAYÚSCULAS) ⚠️
+    // Ejemplo: El modelo CARRARA_25X40 tiene 3 variantes.
+    "CARRARA_25X40": ["BLANCO", "BLANCO_NUBE", "AZUL"], 
+    "BARCELONA_25X40": ["GRIS"], 
+    "CORAL_25X40": ["ROSA"],
+    "YURUBI_25X40": ["ROSA","AZUL"]
+};
 
-            const modeloEnMinuscula = modeloID.toLowerCase();
-            const modeloCapitalizado = modeloEnMinuscula.charAt(0).toUpperCase() + modeloEnMinuscula.slice(1);
+// **IMPORTANTE: AJUSTAR ESTAS RUTAS DE ARCHIVOS**
+const rutaLogos = './cliente/'; 
+const rutaVideos = './video/'; 
 
-            const nombreArchivoVideo = modeloID.toUpperCase();
+// Función principal para actualizar el video y el logo
+function actualizarContenido(modelo, color, distribuidorID) {
+    // ----------------------------------------------------
+    // 1. Lógica para la VISUALIZACIÓN (Texto que ve el cliente)
+    // ----------------------------------------------------
+    
+    // Genera el nombre del archivo completo: 'CARRARA_25X40_BLANCO'
+    const nombreCompletoArchivo = `${modelo}_${color}`;
+    
+    // Genera el nombre visual: 'Carrara 25x40 Blanco'
+    let nombreVisual = nombreCompletoArchivo.replace(/_/g, ' '); // Reemplaza '_' por espacios
+    nombreVisual = nombreVisual.toLowerCase(); 
+    // Capitaliza cada palabra: 'Carrara 25x40 Blanco'
+    nombreVisual = nombreVisual.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); 
 
-            // URL COMPLETA DEL LOGO (Ej: /logos/CL-001.png)
-            const urlLogo = rutaLogos + distribuidorID + '.png'; 
-            
-            // URL COMPLETA DEL VIDEO (Ej: /videos/Apolo.mp4)
-            const urlVideo = rutaVideos.toLowerCase()  + nombreArchivoVideo + '.mp4'; 
+    // ----------------------------------------------------
+    // 2. Lógica para las RUTAS (El servidor necesita MAYÚSCULAS)
+    // ----------------------------------------------------
+    const nombreArchivoVideo = nombreCompletoArchivo.toUpperCase(); // Ej: CARRARA_25X40_BLANCO
+    
+    // Rutas
+    const urlLogo = rutaLogos + distribuidorID.toUpperCase() + '.png'; 
+    const urlVideo = rutaVideos.toLowerCase() + nombreArchivoVideo + '.mp4'; 
+    
+    // ----------------------------------------------------
+    // 3. Asignación a la Página
+    // ----------------------------------------------------
+    document.getElementById('logo').src = urlLogo;
+    document.getElementById('video-player').src = urlVideo;
+    
+    // Actualiza los IDs de texto
+    const nombreModeloElement = document.getElementById('modelo-nombre');
+    if (nombreModeloElement) nombreModeloElement.textContent = nombreVisual; 
 
-            // 3. MOSTRAR EL CONTENIDO EN LA PÁGINA
-            document.getElementById('logo').src = urlLogo;
-            document.getElementById('video-player').src = urlVideo;
-            document.getElementById('modelo-nombre').textContent = modeloCapitalizado;
-            console.log("Valor de la URL del modelo (ruta):", nombreArchivoVideo);
-            console.log("Valor de la URL del video:", urlVideo);
+    const nombreModeloFinalElement = document.getElementById('modelo-nombre-final');
+    if (nombreModeloFinalElement) nombreModeloFinalElement.textContent = nombreVisual; 
+}
 
-        } else {
-            // Manejar errores si no se encuentran los parámetros
-            document.body.innerHTML = '<h1>Error: Código de producto o distribuidor no encontrado.</h1>';
+
+// Función para generar los botones del menú de colores
+function generarBotones(modeloBase, distribuidorID, colorInicial) {
+    const colores = CATALOGO_COLORES[modeloBase];
+    const wrapper = document.getElementById('colores-disponibles-wrapper');
+
+    if (!colores || colores.length <= 1) {
+        wrapper.style.display = 'none';
+        return;
+    }
+
+    const botonesContainer = document.createElement('div');
+    botonesContainer.className = 'botones-colores-container';
+
+    colores.forEach(color => {
+        const boton = document.createElement('button');
+        boton.textContent = color;
+        boton.className = 'boton-color';
+        
+        if (color === colorInicial) {
+            boton.classList.add('activo');
         }
-    </script>
+
+        boton.onclick = () => {
+            document.querySelectorAll('.boton-color').forEach(btn => btn.classList.remove('activo'));
+            boton.classList.add('activo');
+            actualizarContenido(modeloBase, color, distribuidorID);
+        };
+        botonesContainer.appendChild(boton);
+    });
+
+    wrapper.appendChild(botonesContainer);
+}
+
+
+// ------------------------------------------------------------------
+// INICIO DEL SCRIPT AL CARGAR LA PÁGINA
+// ------------------------------------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    const modeloIDCompleto = urlParams.get('modelo'); 
+    const distribuidorID = urlParams.get('distribuidor');
+
+    if (distribuidorID && modeloIDCompleto) {
+        // Asumimos que la URL envía solo el nombre del modelo BASE (ej: CARRARA_25X40)
+        const modeloBase = modeloIDCompleto.toUpperCase(); 
+        let colorID = 'BLANCO'; // Color predeterminado (ajusta si tienes otro color inicial)
+
+        // 1. Inicializar el contenido con el color predeterminado
+        if (CATALOGO_COLORES[modeloBase] && CATALOGO_COLORES[modeloBase].length > 0) {
+            colorID = CATALOGO_COLORES[modeloBase][0]; // Usa el primer color del catálogo
+        } else {
+             document.body.innerHTML = '<h1>Error: Modelo base no encontrado en el catálogo de colores.</h1>';
+             return;
+        }
+
+        actualizarContenido(modeloBase, colorID, distribuidorID);
+
+        // 2. Generar el menú de botones
+        generarBotones(modeloBase, distribuidorID, colorID);
+
+    } else {
+        document.body.innerHTML = '<h1>Error: Código de producto o distribuidor no encontrado.</h1>';
+    }
+});
+</script>
     <div class="mensaje-final-wrapper">
         <h1> 🔥¡Cada pieza es una obra de arte!</h1>
     </div> 
