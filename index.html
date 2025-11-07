@@ -31,14 +31,12 @@
             overflow-y: auto; 
         }
 
-        /* ESTADO INICIAL DE ZOOM: Oculta elementos no necesarios */
         body.zoom-active > *:not(#video-wrapper) { 
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
         }
 
-        /* ESTADO FINAL: Oculta mensajes, adapta la pantalla al video */
         body.modo-video-final {
             display: block; 
             padding: 0;
@@ -48,7 +46,6 @@
             overflow: hidden; 
         }
         
-        /* Regla de Ocultación: Ocultar MENSAJES de texto */
         body.modo-video-final .mensaje,
         body.modo-video-final #mensaje-final-wrapper {
             display: none !important;
@@ -56,13 +53,10 @@
 
 
         /* ---------------------------------------------------- */
-        /* 2. ESTILOS DE TÍTULOS Y TEXTO (Solo visibles al inicio) */
+        /* 2. ESTILOS DE TÍTULOS Y TEXTO */
         /* ---------------------------------------------------- */
         .mensaje {
-            color: #333;
-            margin-bottom: 1.5vh;
-            padding: 0 1vw;
-            max-width: 600px;
+            color: #333; margin-bottom: 1.5vh; padding: 0 1vw; max-width: 600px;
         }
         .mensaje h1 { font-size: 5vw; margin-top: 1vh; margin-bottom: 0.5vh; }
         .modelo-frase { color: #333333; font-size: 5vw; font-weight: 700; padding: 1.5vh 2vw; background-color: #FFFFFF; border-radius: 8px; display: inline-block; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin: 1.5vh auto; text-transform: uppercase; letter-spacing: 1px; line-height: 1.2; }
@@ -101,14 +95,14 @@
             z-index: 9999;
         }
         
-        /* ✅ CORRECCIÓN FINAL: ESTADO FINAL DEL VIDEO EN MÓVIL (deja espacio para el menú) */
+        /* ✅ CORRECCIÓN CLAVE: ESTADO FINAL DEL VIDEO EN MÓVIL (resta la altura exacta del menú) */
         #video-wrapper.pantalla-completa-final {
             position: fixed; 
             top: 0;
             left: 0;
             width: 100vw;
-            /* 🛑 CLAVE: Restar la altura del menú (aprox 12vh) para que el menú sea visible */
-            height: calc(100vh - 12vh); 
+            /* 🛑 CLAVE: Restamos 100px. Usaremos 100px fijos en lugar de vh para asegurar el espacio. */
+            height: calc(100vh - 100px); 
             max-width: none;
             max-height: none;
             margin: 0;
@@ -124,40 +118,13 @@
             object-fit: cover;
         }
         
-        /* ESTILOS DEL LOGO SUPERPUESTO */
-        #logo-overlay {
-            position: absolute;
-            top: 1.5vh;
-            left: 1.5vh;
-            z-index: 10;
-            background-color: rgba(255, 255, 255, 0.85);
-            padding: 1.5vw;
-            border-radius: 8px;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0.5vh;
-        }
-
-        #logo {
-            max-width: 15vw;
-            max-height: 12vh;
-            height: auto;
-            display: block;
-        }
-        
+        /* ... (Estilos de logo y producto en el video) ... */
+        #logo-overlay { position: absolute; top: 1.5vh; left: 1.5vh; z-index: 10; background-color: rgba(255, 255, 255, 0.85); padding: 1.5vw; border-radius: 8px; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); display: flex; flex-direction: column; align-items: flex-start; gap: 0.5vh; }
+        #logo { max-width: 15vw; max-height: 12vh; height: auto; display: block; }
         .nombre-producto-video { color: #333; font-size: 2.5vw; font-weight: bold; text-transform: capitalize; background-color: rgba(255, 255, 255, 0.7); padding: 0.3vh 0.8vw; border-radius: 4px; line-height: 1; }
         
-        /* Ajustes de logo/texto en zoom/final */
         #video-wrapper.video-zoom #logo-overlay, 
-        #video-wrapper.pantalla-completa-final #logo-overlay {
-            position: fixed !important;
-            top: 20px !important;
-            left: 20px !important;
-            z-index: 10000 !important;
-            background-color: rgba(255, 255, 255, 0.95);
-        }
+        #video-wrapper.pantalla-completa-final #logo-overlay { position: fixed !important; top: 20px !important; left: 20px !important; z-index: 10000 !important; background-color: rgba(255, 255, 255, 0.95); }
         .video-zoom .nombre-producto-video, .pantalla-completa-final .nombre-producto-video { font-size: 30px !important; }
         .video-zoom #logo, .pantalla-completa-final #logo { max-width: 180px !important; }
 
@@ -171,8 +138,8 @@
             left: 0;
             width: 100%;
             z-index: 50; 
-            /* ✅ Altura total del menú (12vh) que se resta en el video-wrapper */
-            height: 12vh; 
+            /* 🛑 CLAVE: Altura fija de 100px, que coincide con lo restado al video */
+            height: 100px; 
             padding: 1.5vh 0 1.5vh 0; 
             background-color: rgba(0, 0, 0, 0.8); 
             box-sizing: border-box;
@@ -201,9 +168,9 @@
         /* 5. MEDIA QUERIES (Ajustes para pantallas grandes/laptops) */
         /* ---------------------------------------------------- */
         @media (min-width: 768px) {
-            /* Adaptamos el cálculo para que el menú de 12vh se vea bien */
+            /* Aseguramos la altura calculada también para desktop */
             #video-wrapper.pantalla-completa-final {
-                height: calc(100vh - 12vh);
+                height: calc(100vh - 100px);
             }
         }
         
@@ -254,7 +221,7 @@ const CATALOGO_COLORES = {
 const rutaLogos = './cliente/'; 
 const rutaVideos = './video/'; 
 
-// 🛑 FUNCIÓN CLAVE: Maneja el efecto de zoom y el estado final del video
+// FUNCIÓN CLAVE: Maneja el efecto de zoom y el estado final del video
 function aplicarZoomInicial() {
     const videoWrapper = document.getElementById('video-wrapper');
     const body = document.body;
@@ -342,7 +309,7 @@ function generarBotones(modeloBase, distribuidorID, colorInicial) {
             document.querySelectorAll('.boton-color').forEach(btn => btn.classList.remove('activo'));
             boton.classList.add('activo');
             actualizarContenido(modeloBase, color, distribuidorID);
-            // 🛑 CLAVE: Repetir el zoom y el efecto de pantalla completa al cambiar de color
+            // CLAVE: Repetir el zoom y el efecto de pantalla completa al cambiar de color
             aplicarZoomInicial(); 
         };
         botonesContainer.appendChild(boton);
