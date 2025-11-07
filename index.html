@@ -237,7 +237,7 @@
     </div>
 <script>
 const CATALOGO_COLORES = {
-    // ⚠️ RELLENA CON TUS DATOS REALES (El nombre del modelo BASE, en MAYÚSCULAS) ⚠️
+    // RELLENA CON TUS DATOS REALES (El nombre del modelo BASE, en MAYÚSCULAS)
     // Ejemplo: El modelo CARRARA_25X40 tiene 3 variantes.
     "CARRARA_25X40": ["BLANCO", "BLANCO_NUBE", "AZUL"], 
     "BARCELONA_25X40": ["GRIS"], 
@@ -350,12 +350,13 @@ document.addEventListener('DOMContentLoaded', () => {
         generarBotones(modeloBase, distribuidorID, colorID);
 
     } else {
-        document.body.innerHTML = '<h1>Error: Código de producto o distribuidor no encontrado.</h1>';
+        document.body.innerHTML = <h1>Error: Código de producto o distribuidor no encontrado.</h1>;
     }
 });
+    </script>  
     <div class="mensaje-final-wrapper">
         <h1> 🔥¡Cada pieza es una obra de arte!</h1>
     </div> 
-</script>   
+ </script>  
 </body>
 </html>
