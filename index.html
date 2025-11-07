@@ -93,13 +93,13 @@
             z-index: 9999;
         }
         
-        /* ✅ CORRECCIÓN DE ALTURA FINAL: Restamos un valor menor (70px) para el menú dinámico */
+        /* ✅ CORRECCIÓN DE ALTURA FINAL: Restamos un valor fijo más pequeño para el menú (70px) */
         #video-wrapper.pantalla-completa-final {
             position: fixed; 
             top: 0;
             left: 0;
             width: 100vw;
-            /* 🛑 CLAVE: Nueva resta de 70px */
+            /* 🛑 CLAVE: Resta de 70px, asumiendo un menú más compacto */
             height: calc(100vh - 70px); 
             max-width: none;
             max-height: none;
@@ -122,8 +122,8 @@
             top: 1.5vh;
             left: 1.5vh;
             z-index: 10;
-            /* ✅ Nuevo: Fondo del logo más transparente (0.65) */
-            background-color: rgba(255, 255, 255, 0.65);
+            /* ✅ Nuevo: Fondo del logo más transparente (0.5) */
+            background-color: rgba(255, 255, 255, 0.5); 
             padding: 1.5vw;
             border-radius: 8px;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
@@ -134,11 +134,19 @@
         }
 
         #logo { max-width: 15vw; max-height: 12vh; height: auto; display: block; }
-        .nombre-producto-video { color: #333; font-size: 2.5vw; font-weight: bold; text-transform: capitalize; background-color: rgba(255, 255, 255, 0.7); padding: 0.3vh 0.8vw; border-radius: 4px; line-height: 1; }
+        /* ELIMINADO: .nombre-producto-video para evitar duplicidad, ahora solo el nombre del modelo */
         
         #video-wrapper.video-zoom #logo-overlay, 
-        #video-wrapper.pantalla-completa-final #logo-overlay { position: fixed !important; top: 20px !important; left: 20px !important; z-index: 10000 !important; background-color: rgba(255, 255, 255, 0.85); /* Un poco más de solidez en modo pantalla completa */ }
-        .video-zoom .nombre-producto-video, .pantalla-completa-final .nombre-producto-video { font-size: 30px !important; }
+        #video-wrapper.pantalla-completa-final #logo-overlay { 
+            position: fixed !important; 
+            top: 20px !important; 
+            left: 20px !important; 
+            z-index: 10000 !important; 
+            background-color: rgba(255, 255, 255, 0.7); /* Un poco más de solidez en modo pantalla completa */
+            /* ✅ Aseguramos que el padding se adapte a un solo elemento (el logo) si no hay más texto */
+            padding: 15px; 
+        }
+        /* Las reglas .video-zoom .nombre-producto-video, .pantalla-completa-final .nombre-producto-video ya no son necesarias */
         .video-zoom #logo, .pantalla-completa-final #logo { max-width: 180px !important; }
 
 
@@ -151,19 +159,17 @@
             left: 0;
             width: 100%;
             z-index: 50; 
-            /* ✅ CLAVE: Eliminamos height fijo para que se ajuste al contenido */
-            /* height: 90px; <- ELIMINADO */
-            height: auto;
+            height: auto; /* Se ajusta al contenido */
             
-            /* ✅ Nuevo relleno (padding) más compacto y centrado */
-            padding: 8px 0 12px 0; 
+            /* ✅ Nuevo: Relleno vertical mínimo para que los botones tengan espacio */
+            padding: 5px 0 10px 0; 
             
-            /* ✅ Fondo más claro (0.4) y transparente */
-            background-color: rgba(0, 0, 0, 0.4); 
+            /* ✅ Fondo del banner más transparente */
+            background-color: rgba(0, 0, 0, 0.3); /* Un fondo muy sutil */
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            justify-content: center; 
+            justify-content: center; /* Centrar verticalmente el contenido */
             align-items: center;
             opacity: 0;
             visibility: hidden;
@@ -180,23 +186,26 @@
             color: #FFFFFF; 
             margin: 0 0 5px 0; 
             font-size: 0.8em; 
+            text-shadow: 0 0 5px rgba(0,0,0,0.7); /* Sombra para mejor lectura en fondos claros */
         }
         .botones-colores-container { margin: 0; max-width: 600px; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
         
-        /* ✅ Fondo de los botones más claro (similar al del logo) */
+        /* ✅ Fondo de los botones transparente, solo borde y texto */
         .boton-color { 
             padding: 6px 12px; 
-            border: 2px solid rgba(255, 255, 255, 0.7); /* Borde blanco semi-transparente */
-            background-color: rgba(255, 255, 255, 0.85); /* Fondo blanco semi-transparente */
-            color: #444; 
+            border: 2px solid #fff; /* Borde blanco para visibilidad */
+            background-color: transparent; /* ✅ Fondo transparente */
+            color: #fff; /* ✅ Texto blanco para visibilidad */
             cursor: pointer; 
             border-radius: 20px; 
             font-size: 0.85em; 
             transition: all 0.2s ease; 
             text-transform: capitalize; 
-            line-height: 1; /* Aseguramos que el texto no genere altura extra */
+            line-height: 1; 
+            text-shadow: 0 0 5px rgba(0,0,0,0.7); /* Sombra para mejor lectura */
         }
-        .boton-color:hover { border-color: #555; background-color: #e0e0e0; }
+        /* Estilos para el botón activo y hover */
+        .boton-color:hover { border-color: #C0392B; background-color: rgba(192, 57, 43, 0.7); color: #FFFFFF; } /* Fondo sutil al pasar el ratón */
         .boton-color.activo { border-color: #C0392B; background-color: #C0392B; color: #FFFFFF; font-weight: bold; transform: scale(1.05); }
 
         /* ---------------------------------------------------- */
@@ -229,8 +238,7 @@
         </video>
         <div id="logo-overlay">
             <img id="logo" src="" alt="Logo del Distribuidor">
-            <span id="producto-nombre-video" class="nombre-producto-video"></span> 
-        </div>
+            </div>
     </div>
     
     <div id="colores-disponibles-wrapper">
@@ -295,11 +303,16 @@ function actualizarContenido(modelo, color, distribuidorID) {
     const urlVideo = rutaVideos.toLowerCase() + nombreArchivoVideo + '.mp4'; 
     
     document.getElementById('logo').src = urlLogo;
+    
+    // Solo actualizamos el src del video
     document.getElementById('video-player').src = urlVideo;
     
     document.getElementById('modelo-nombre').textContent = nombreVisual; 
     document.getElementById('modelo-nombre-final').textContent = nombreVisual; 
-    document.getElementById('producto-nombre-video').textContent = nombreVisual; 
+    
+    // ✅ ELIMINADO: La línea que actualizaba 'producto-nombre-video'
+    // const productoNombreVideoElement = document.getElementById('producto-nombre-video');
+    // if (productoNombreVideoElement) productoNombreVideoElement.textContent = nombreVisual; 
 }
 
 
@@ -307,8 +320,15 @@ function generarBotones(modeloBase, distribuidorID, colorInicial) {
     const colores = CATALOGO_COLORES[modeloBase];
     const wrapper = document.getElementById('colores-disponibles-wrapper');
 
-    const existingContainer = wrapper.querySelector('.botones-colores-container');
-    if (existingContainer) existingContainer.remove();
+    // Mover el contenedor de botones dentro del wrapper de colores
+    let botonesContainer = wrapper.querySelector('.botones-colores-container');
+    if (!botonesContainer) {
+        botonesContainer = document.createElement('div');
+        botonesContainer.className = 'botones-colores-container';
+        wrapper.appendChild(botonesContainer);
+    } else {
+        botonesContainer.innerHTML = ''; // Limpiar botones existentes
+    }
 
     if (!colores || colores.length <= 1) {
         wrapper.style.display = 'none';
@@ -316,9 +336,6 @@ function generarBotones(modeloBase, distribuidorID, colorInicial) {
     }
 
     wrapper.style.display = 'flex'; 
-
-    const botonesContainer = document.createElement('div');
-    botonesContainer.className = 'botones-colores-container';
 
     colores.forEach(color => {
         const boton = document.createElement('button');
@@ -337,8 +354,6 @@ function generarBotones(modeloBase, distribuidorID, colorInicial) {
         };
         botonesContainer.appendChild(boton);
     });
-
-    wrapper.appendChild(botonesContainer);
 }
 
 
