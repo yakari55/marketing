@@ -93,14 +93,14 @@
             z-index: 9999;
         }
         
-        /* ✅ CORRECCIÓN DE ALTURA FINAL: Restamos 90px (nueva altura del menú) */
+        /* ✅ CORRECCIÓN DE ALTURA FINAL: Restamos un valor menor (70px) para el menú dinámico */
         #video-wrapper.pantalla-completa-final {
             position: fixed; 
             top: 0;
             left: 0;
             width: 100vw;
-            /* 🛑 CLAVE: Resta de 90px */
-            height: calc(100vh - 90px); 
+            /* 🛑 CLAVE: Nueva resta de 70px */
+            height: calc(100vh - 70px); 
             max-width: none;
             max-height: none;
             margin: 0;
@@ -116,13 +116,28 @@
             object-fit: cover;
         }
         
-        /* ... (Estilos de logo y producto en el video) ... */
-        #logo-overlay { position: absolute; top: 1.5vh; left: 1.5vh; z-index: 10; background-color: rgba(255, 255, 255, 0.85); padding: 1.5vw; border-radius: 8px; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); display: flex; flex-direction: column; align-items: flex-start; gap: 0.5vh; }
+        /* ESTILOS DEL LOGO SUPERPUESTO */
+        #logo-overlay {
+            position: absolute;
+            top: 1.5vh;
+            left: 1.5vh;
+            z-index: 10;
+            /* ✅ Nuevo: Fondo del logo más transparente (0.65) */
+            background-color: rgba(255, 255, 255, 0.65);
+            padding: 1.5vw;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5vh;
+        }
+
         #logo { max-width: 15vw; max-height: 12vh; height: auto; display: block; }
         .nombre-producto-video { color: #333; font-size: 2.5vw; font-weight: bold; text-transform: capitalize; background-color: rgba(255, 255, 255, 0.7); padding: 0.3vh 0.8vw; border-radius: 4px; line-height: 1; }
         
         #video-wrapper.video-zoom #logo-overlay, 
-        #video-wrapper.pantalla-completa-final #logo-overlay { position: fixed !important; top: 20px !important; left: 20px !important; z-index: 10000 !important; background-color: rgba(255, 255, 255, 0.95); }
+        #video-wrapper.pantalla-completa-final #logo-overlay { position: fixed !important; top: 20px !important; left: 20px !important; z-index: 10000 !important; background-color: rgba(255, 255, 255, 0.85); /* Un poco más de solidez en modo pantalla completa */ }
         .video-zoom .nombre-producto-video, .pantalla-completa-final .nombre-producto-video { font-size: 30px !important; }
         .video-zoom #logo, .pantalla-completa-final #logo { max-width: 180px !important; }
 
@@ -136,15 +151,18 @@
             left: 0;
             width: 100%;
             z-index: 50; 
-            /* ✅ CLAVE: Reducimos la altura del menú a 90px */
-            height: 90px; 
-            /* Alineación centrada para que los botones se vean completos */
-            padding: 0; /* Quitamos el padding vertical para optimizar el espacio */
-            background-color: rgba(0, 0, 0, 0.5); /* ✅ Fondo más claro */
+            /* ✅ CLAVE: Eliminamos height fijo para que se ajuste al contenido */
+            /* height: 90px; <- ELIMINADO */
+            height: auto;
+            
+            /* ✅ Nuevo relleno (padding) más compacto y centrado */
+            padding: 8px 0 12px 0; 
+            
+            /* ✅ Fondo más claro (0.4) y transparente */
+            background-color: rgba(0, 0, 0, 0.4); 
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            /* ✅ Centrado del contenido */
             justify-content: center; 
             align-items: center;
             opacity: 0;
@@ -160,12 +178,24 @@
 
         .selector-titulo { 
             color: #FFFFFF; 
-            margin: 0 0 5px 0; /* ✅ Reducimos el margen inferior del título */
-            font-size: 0.8em; /* Hacemos el título más pequeño para ahorrar espacio */
+            margin: 0 0 5px 0; 
+            font-size: 0.8em; 
         }
-        .botones-colores-container { margin: 0; max-width: 600px; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; /* Reducimos el espacio entre botones */ }
+        .botones-colores-container { margin: 0; max-width: 600px; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
         
-        .boton-color { padding: 6px 12px; border: 2px solid #ccc; background-color: #f8f8f8; color: #444; cursor: pointer; border-radius: 20px; font-size: 0.85em; /* Reducimos el tamaño de la fuente del botón */ transition: all 0.2s ease; text-transform: capitalize; }
+        /* ✅ Fondo de los botones más claro (similar al del logo) */
+        .boton-color { 
+            padding: 6px 12px; 
+            border: 2px solid rgba(255, 255, 255, 0.7); /* Borde blanco semi-transparente */
+            background-color: rgba(255, 255, 255, 0.85); /* Fondo blanco semi-transparente */
+            color: #444; 
+            cursor: pointer; 
+            border-radius: 20px; 
+            font-size: 0.85em; 
+            transition: all 0.2s ease; 
+            text-transform: capitalize; 
+            line-height: 1; /* Aseguramos que el texto no genere altura extra */
+        }
         .boton-color:hover { border-color: #555; background-color: #e0e0e0; }
         .boton-color.activo { border-color: #C0392B; background-color: #C0392B; color: #FFFFFF; font-weight: bold; transform: scale(1.05); }
 
@@ -174,7 +204,7 @@
         /* ---------------------------------------------------- */
         @media (min-width: 768px) {
             #video-wrapper.pantalla-completa-final {
-                height: calc(100vh - 90px);
+                height: calc(100vh - 70px);
             }
         }
         
@@ -205,6 +235,7 @@
     
     <div id="colores-disponibles-wrapper">
         <p class="selector-titulo">Ver otros colores disponibles:</p>
+        <div class="botones-colores-container"></div>
     </div>
     
     <div id="mensaje-final-wrapper">
@@ -225,41 +256,31 @@ const CATALOGO_COLORES = {
 const rutaLogos = './cliente/'; 
 const rutaVideos = './video/'; 
 
-// FUNCIÓN CLAVE: Maneja el efecto de zoom y el estado final del video
 function aplicarZoomInicial() {
     const videoWrapper = document.getElementById('video-wrapper');
     const body = document.body;
     const videoPlayer = document.getElementById('video-player');
 
-    // 1. Resetear estados previos del zoom/final (para que el efecto se repita)
     videoWrapper.classList.remove('pantalla-completa-final');
     body.classList.remove('modo-video-final');
     
-    // 2. Aplicar el zoom inicial
     body.classList.add('zoom-active'); 
     videoWrapper.classList.add('video-zoom'); 
     
-    // Forzar la reproducción al inicio del zoom
     videoPlayer.play();
 
-    // 3. Establecer el estado final después de 4 segundos
     setTimeout(() => {
-        // Quitar las clases de transición de zoom
         videoWrapper.classList.remove('video-zoom');
         body.classList.remove('zoom-active');
         
-        // Aplicar las clases del estado final
         videoWrapper.classList.add('pantalla-completa-final');
         body.classList.add('modo-video-final');
         
-        // Asegurar la reproducción continua
         videoPlayer.play();
         
-    }, 4000); // Duración del zoom: 4 segundos
+    }, 4000); 
 }
 
-
-// Función principal para actualizar el video y el logo
 function actualizarContenido(modelo, color, distribuidorID) {
     const nombreCompletoArchivo = `${modelo}_${color}`;
     
@@ -282,7 +303,6 @@ function actualizarContenido(modelo, color, distribuidorID) {
 }
 
 
-// Función para generar los botones del menú de colores
 function generarBotones(modeloBase, distribuidorID, colorInicial) {
     const colores = CATALOGO_COLORES[modeloBase];
     const wrapper = document.getElementById('colores-disponibles-wrapper');
@@ -313,7 +333,6 @@ function generarBotones(modeloBase, distribuidorID, colorInicial) {
             document.querySelectorAll('.boton-color').forEach(btn => btn.classList.remove('activo'));
             boton.classList.add('activo');
             actualizarContenido(modeloBase, color, distribuidorID);
-            // Repetir el zoom y el efecto de pantalla completa al cambiar de color
             aplicarZoomInicial(); 
         };
         botonesContainer.appendChild(boton);
@@ -356,11 +375,9 @@ document.addEventListener('DOMContentLoaded', () => {
             colorID = coloresDisponibles[0]; 
         }
 
-        // 1. Inicializar el contenido y generar botones
         actualizarContenido(modeloBase, colorID, distribuidorID);
         generarBotones(modeloBase, distribuidorID, colorID);
 
-        // 2. Aplicar el zoom inmediatamente al cargar la página
         aplicarZoomInicial();
 
     } else {
