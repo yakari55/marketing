@@ -1,809 +1,389 @@
 <!DOCTYPE html>
-
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Marketing de Producto (Full Video Mode)</title>
-
     <style>
-
         /* ---------------------------------------------------- */
-
         /* 1. ESTILOS BASE Y CUERPO (BODY) */
-
         /* ---------------------------------------------------- */
-
         @keyframes fadeIn {
-
             from { opacity: 0; transform: translateY(20px); }
-
             to { opacity: 1; transform: translateY(0); }
-
         }
-
-
 
         body {
-
             font-family: Arial, sans-serif;
-
             text-align: center;
-
             margin: 0;
-
             box-sizing: border-box;
-
             background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
-
             min-height: 100vh;
-
             display: flex;
-
             flex-direction: column;
-
             justify-content: center;
-
             align-items: center;
-
             padding: 10px;
-
             animation: fadeIn 1.5s ease-out 0.5s forwards;
-
             opacity: 0;
-
             overflow-x: hidden;
-
             overflow-y: auto; 
-
         }
-
-
 
         body.zoom-active > *:not(#video-wrapper) { 
-
             opacity: 0;
-
             pointer-events: none;
-
             transition: opacity 0.3s ease;
-
         }
-
-
 
         body.modo-video-final {
-
             display: block; 
-
             padding: 0;
-
             margin: 0;
-
             min-height: 100vh;
-
             background-color: black;
-
             overflow: hidden; 
-
         }
-
-        
-
+ 
         body.modo-video-final .mensaje,
-
         body.modo-video-final #mensaje-final-wrapper {
-
             display: none !important;
-
         }
-
-
-
-
 
         /* ---------------------------------------------------- */
-
         /* 2. ESTILOS DE TÍTULOS Y TEXTO */
-
         /* ---------------------------------------------------- */
 
         .mensaje { color: #333; margin-bottom: 1.5vh; padding: 0 1vw; max-width: 600px; }
-
         .mensaje h1 { font-size: 5vw; margin-top: 1vh; margin-bottom: 0.5vh; }
-
         .modelo-frase { color: #333333; font-size: 5vw; font-weight: 700; padding: 1.5vh 2vw; background-color: #FFFFFF; border-radius: 8px; display: inline-block; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin: 1.5vh auto; text-transform: uppercase; letter-spacing: 1px; line-height: 1.2; }
-
         .modelo-principal { display: block; font-size: 7.5vw; color: #444444; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); font-weight: 900; }
-
-        
-
-
-
+    
         /* ---------------------------------------------------- */
-
         /* 3. CONTENEDOR DE VIDEO Y EFECTOS */
-
         /* ---------------------------------------------------- */
-
         #video-wrapper {
 
             position: relative;
-
             width: 90vw;
-
             max-width: 600px;
-
             margin: 1vh auto;
-
             background-color: black;
-
             aspect-ratio: 16 / 9;
-
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
-
             border-radius: 12px;
-
             overflow: hidden;
-
             transition: all 0.7s ease-out; 
-
             z-index: 1;
-
         }
-
-        
-
+     
         /* CLASE 1: EFECTO ZOOM INICIAL IMPACTANTE (100% fijo) */
-
         #video-wrapper.video-zoom {
-
             width: 100vw !important;
-
             height: 100vh !important;
-
             max-width: none !important;
-
             max-height: none !important;
-
             border-radius: 0 !important;
-
             box-shadow: none !important;
-
             margin: 0 !important;
-
             position: fixed;
-
             top: 0;
-
             left: 0;
-
             z-index: 9999;
-
         }
-
-        
-
+      
         /* 🛑 CAMBIO CRÍTICO: Restamos 120px para dejar más espacio al menú */
-
         #video-wrapper.pantalla-completa-final {
-
             position: fixed; 
-
             top: 0;
-
             left: 0;
-
             width: 100vw;
-
             /* ✅ CLAVE: Nueva resta de 120px */
-
             height: calc(100vh - 130px); 
-
             max-width: none;
-
             max-height: none;
-
             margin: 0;
-
             box-shadow: none;
-
             border-radius: 0;
-
             z-index: 1;
-
         }
-
-
 
         #video-player {
-
             width: 100%;
-
             height: 100%;
-
             display: block;
-
             object-fit: cover;
-
         }
-
-        
-
-        /* ESTILOS DEL LOGO Y NOMBRE DE PRODUCTO SUPERPUESTO */
-
+      
+       /* ESTILOS DEL LOGO Y NOMBRE DE PRODUCTO SUPERPUESTO */
         #logo-overlay {
-
             position: absolute;
-
             top: 1.5vh;
-
             left: 1.5vh;
-
             z-index: 10;
-
             background-color: rgba(255, 255, 255, 0.4); 
-
             padding: 1vw 1.5vw; 
-
             border-radius: 8px;
-
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-
             display: flex;
-
             flex-direction: column;
-
             align-items: flex-start;
-
             gap: 0.5vh;
-
         }
 
-
-
-        #logo { max-width: 15vw; max-height: 12vh; height: auto; display: block; }
-
-        
-
+        #logo { max-width: 15vw; max-height: 12vh; height: auto; display: block; } 
         .nombre-producto-video { 
-
             color: #333; 
-
             font-size: 1.5vw; 
-
             font-weight: bold; 
-
             text-transform: capitalize; 
-
             margin-top: 0.5vh; 
-
             line-height: 1.2; 
-
         }
-
-        
-
+      
         #video-wrapper.video-zoom #logo-overlay, 
-
         #video-wrapper.pantalla-completa-final #logo-overlay { 
-
             position: fixed !important; 
-
             top: 20px !important; 
-
             left: 20px !important; 
-
             z-index: 10000 !important; 
-
             background-color: rgba(255, 255, 255, 0.6); 
-
             padding: 15px 20px; 
-
         }
 
         .video-zoom .nombre-producto-video, .pantalla-completa-final .nombre-producto-video { font-size: 24px !important; } 
-
         .video-zoom #logo, .pantalla-completa-final #logo { max-width: 180px !important; }
 
-
-
-
-
         /* ---------------------------------------------------- */
-
         /* 4. ESTILOS DEL MENÚ DE COLORES (Fijo en la parte inferior) */
-
         /* ---------------------------------------------------- */
-
         #colores-disponibles-wrapper {
-
             position: fixed; 
-
             bottom: 0; 
-
             left: 0;
-
             width: 100%;
-
             z-index: 50; 
-
             /* Quitamos height para autoajuste */
-
-            height: auto; 
-
-            
-
-            /* 🛑 CLAVE: Aumentamos el padding inferior para empujar los botones hacia arriba */
-
-            padding: 5px 0 30px 0; 
-
-            
-
-            background-color: rgba(0, 0, 0, 0.2); 
-
+            height: auto;           
+           /* 🛑 CLAVE: Aumentamos el padding inferior para empujar los botones hacia arriba */
+            padding: 5px 0 30px 0;      
             box-sizing: border-box;
-
             display: flex;
-
             flex-direction: column;
-
             justify-content: center; 
-
             align-items: center;
-
             opacity: 0;
-
             visibility: hidden;
-
             transition: opacity 0.5s ease;
-
         }
-
-        
-
+    
         /* Mostrar el menú solo en el estado final */
-
         body.modo-video-final #colores-disponibles-wrapper {
-
             opacity: 1;
-
             background-color: rgba(255, 255, 255, 0.4);
-
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-
             visibility: visible;
-
         }
-
-
 
         .selector-titulo { 
-
             color: #FFFFFF; 
-
             margin: 0 0 5px 0; 
-
             font-size: 0.8em; 
-
             text-shadow: 0 0 5px rgba(0,0,0,0.7); 
-
         }
 
-        .botones-colores-container { margin: 0; max-width: 600px; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
-
-        
-
+        .botones-colores-container { margin: 0; max-width: 600px; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }     
         .boton-color { 
-
             padding: 6px 12px; 
-
             border: 2px solid rgba(255, 255, 255, 0.7); 
-
             background-color: rgba(255, 255, 255, 0.6); 
-
             color: #333; 
-
             cursor: pointer; 
-
             border-radius: 20px; 
-
             font-size: 0.85em; 
-
             transition: all 0.2s ease; 
-
             text-transform: capitalize; 
-
             line-height: 1; 
-
             text-shadow: none; 
-
         }
 
         .boton-color:hover { border-color: #C0392B; background-color: rgba(192, 57, 43, 0.7); color: #FFFFFF; } 
-
         .boton-color.activo { border-color: #C0392B; background-color: #C0392B; color: #FFFFFF; font-weight: bold; transform: scale(1.05); }
 
-
-
         /* ---------------------------------------------------- */
-
         /* 5. MEDIA QUERIES */
-
         /* ---------------------------------------------------- */
 
         @media (min-width: 768px) {
-
             #video-wrapper.pantalla-completa-final {
-
                 height: calc(100vh - 120px);
-
             }
-
-        }
-
-        
-
+        }     
     </style>
-
 </head>
-
-
-
 <body>
-
-
-
     <div class="mensaje">
-
-        <h1>¡Marketing!</h1>
-
-        
-
+        <h1>¡Marketing!</h1>    
         <h3 class="modelo-frase">
-
             Estás viendo el modelo:
-
             <br>
-
             <span class="modelo-principal" id="modelo-nombre"></span>
-
         </h3>
-
     </div>
-
-
 
     <div id="video-wrapper">
-
         <video id="video-player" controls autoplay muted playsinline loop>
-
             Tu navegador no soporta el video.
-
         </video>
-
         <div id="logo-overlay">
-
             <img id="logo" src="" alt="Logo del Distribuidor">
-
             <h4 id="producto-nombre-video" class="nombre-producto-video"></h4> 
-
         </div>
-
     </div>
-
-    
-
+  
     <div id="colores-disponibles-wrapper">
-
         <p class="selector-titulo">Ver otros colores disponibles:</p>
-
         <div class="botones-colores-container"></div>
-
     </div>
-
-    
-
-    <div id="mensaje-final-wrapper">
-
-        <h2>🔥 ¡El siguiente paso es la DEMO en tu tienda!</h2>
-
-        <p><strong>[Tu Marca]</strong> tiene stock limitado de la serie **<span id="modelo-nombre-final"></span>**. Contacta a tu gerente de cuenta hoy mismo para asegurar tu pedido y programar una exhibición exclusiva.</p>
-
-        <div class="linea-divisoria"></div>
-
-        <p class="contacto-info">Teléfono: (555) 123-4567 | Email: info@tumerca.com</p>
-
-    </div>
-
-
-
+   
 <script>
 
 const CATALOGO_COLORES = {
-
     "CARRARA_25X40": ["BLANCO", "BLANCO_NUBE", "AZUL"], 
-
     "BARCELONA_25X40": ["GRIS"], 
-
     "CORAL_25X40": ["GRIS"],
-
     "YURUBI_25X40": ["ROSA","AZUL"]
-
 };
 
-
-
 const rutaLogos = './cliente/'; 
-
 const rutaVideos = './video/'; 
 
-
-
 function aplicarZoomInicial() {
-
     const videoWrapper = document.getElementById('video-wrapper');
-
     const body = document.body;
-
     const videoPlayer = document.getElementById('video-player');
 
-
-
     videoWrapper.classList.remove('pantalla-completa-final');
-
     body.classList.remove('modo-video-final');
-
-    
-
+   
     body.classList.add('zoom-active'); 
-
     videoWrapper.classList.add('video-zoom'); 
-
-    
-
+   
     videoPlayer.play();
-
-
-
     setTimeout(() => {
-
         videoWrapper.classList.remove('video-zoom');
-
         body.classList.remove('zoom-active');
-
-        
-
+       
         videoWrapper.classList.add('pantalla-completa-final');
-
         body.classList.add('modo-video-final');
-
-        
-
-        videoPlayer.play();
-
-        
-
+       
+        videoPlayer.play();      
     }, 4000); 
-
 }
-
-
 
 function actualizarContenido(modelo, color, distribuidorID) {
-
     const nombreCompletoArchivo = `${modelo}_${color}`;
-
-    
-
+   
     let nombreVisual = nombreCompletoArchivo.replace(/_/g, ' '); 
-
     nombreVisual = nombreVisual.toLowerCase(); 
-
     nombreVisual = nombreVisual.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); 
 
-
-
     const nombreArchivoVideo = nombreCompletoArchivo.toUpperCase(); 
-
     const distribuidorLower = distribuidorID.toLowerCase(); 
 
-
-
     const urlLogo = rutaLogos + distribuidorLower + '.png'; 
-
     const urlVideo = rutaVideos.toLowerCase() + nombreArchivoVideo + '.mp4'; 
-
-    
-
+   
     document.getElementById('logo').src = urlLogo;
-
     document.getElementById('video-player').src = urlVideo;
-
-    
-
+   
     document.getElementById('modelo-nombre').textContent = nombreVisual; 
-
     document.getElementById('modelo-nombre-final').textContent = nombreVisual; 
-
     document.getElementById('producto-nombre-video').textContent = nombreVisual; 
-
 }
 
-
-
-
-
 function generarBotones(modeloBase, distribuidorID, colorInicial) {
-
     const colores = CATALOGO_COLORES[modeloBase];
-
     const wrapper = document.getElementById('colores-disponibles-wrapper');
 
-
-
     let botonesContainer = wrapper.querySelector('.botones-colores-container');
-
     if (!botonesContainer) {
-
         botonesContainer = document.createElement('div');
-
         botonesContainer.className = 'botones-colores-container';
-
         wrapper.appendChild(botonesContainer);
-
     } else {
-
         botonesContainer.innerHTML = ''; 
-
     }
-
-
 
     if (!colores || colores.length <= 1) {
-
         wrapper.style.display = 'none';
-
         return;
-
     }
-
-
 
     wrapper.style.display = 'flex'; 
 
-
-
     colores.forEach(color => {
-
         const boton = document.createElement('button');
-
         boton.textContent = color.replace(/_/g, ' '); 
-
         boton.className = 'boton-color';
-
-        
-
+       
         if (color === colorInicial) {
-
             boton.classList.add('activo');
-
         }
 
-
-
         boton.onclick = () => {
-
             document.querySelectorAll('.boton-color').forEach(btn => btn.classList.remove('activo'));
-
             boton.classList.add('activo');
-
             actualizarContenido(modeloBase, color, distribuidorID);
-
             aplicarZoomInicial(); 
-
         };
 
-        botonesContainer.appendChild(boton);
-
+       botonesContainer.appendChild(boton);
     });
-
 }
 
-
-
-
-
 // ------------------------------------------------------------------
-
 // INICIO DEL SCRIPT AL CARGAR LA PÁGINA
-
 // ------------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () => {
-
     const urlParams = new URLSearchParams(window.location.search);
-
-    
-
+   
     const modeloIDBruto = urlParams.get('modelo'); 
-
     const distribuidorID = urlParams.get('distribuidor');
 
-
-
     if (distribuidorID && modeloIDBruto) {
-
         let modeloBase;
-
         let colorURL; 
-
         const modeloBrutoUpper = modeloIDBruto.toUpperCase();
-
-        
-
+       
         const partes = modeloBrutoUpper.split('_');
-
-        
-
+       
         colorURL = partes[partes.length - 1]; 
-
         modeloBase = partes.slice(0, partes.length - 1).join('_'); 
 
-
-
         if (!CATALOGO_COLORES[modeloBase]) {
-
              document.body.innerHTML = '<h1>Error: Modelo base no encontrado en el catálogo.</h1>';
-
              return;
-
         }
-
-
 
         let colorID; 
-
         const coloresDisponibles = CATALOGO_COLORES[modeloBase];
-
         
-
         if (coloresDisponibles.includes(colorURL)) {
-
             colorID = colorURL;
-
         } else {
-
             colorID = coloresDisponibles[0]; 
-
         }
 
-
-
         actualizarContenido(modeloBase, colorID, distribuidorID);
-
         generarBotones(modeloBase, distribuidorID, colorID);
-
-
-
         aplicarZoomInicial();
-
-
-
     } else {
-
         document.body.innerHTML = '<h1>Error: Código de producto o distribuidor no encontrado.</h1>';
-
     }
-
 });
-
 </script> 
-
 </body>
-
 </html>
