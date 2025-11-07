@@ -323,34 +323,52 @@ function generarBotones(modeloBase, distribuidorID, colorInicial) {
 
 
 // ------------------------------------------------------------------
-// INICIO DEL SCRIPT AL CARGAR LA PÁGINA
+// INICIO DEL SCRIPT AL CARGAR LA PÁGINA (CON CORRECCIÓN DE URL)
 // ------------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     
-    const modeloIDCompleto = urlParams.get('modelo'); 
+    const modeloIDBruto = urlParams.get('modelo'); 
     const distribuidorID = urlParams.get('distribuidor');
 
-    if (distribuidorID && modeloIDCompleto) {
-        // Asumimos que la URL envía solo el nombre del modelo BASE (ej: CARRARA_25X40)
-        const modeloBase = modeloIDCompleto.toUpperCase(); 
-        let colorID = 'BLANCO'; // Color predeterminado (ajusta si tienes otro color inicial)
+    if (distribuidorID && modeloIDBruto) {
+        let modeloBase;
+        const modeloBrutoUpper = modeloIDBruto.toUpperCase();
+        
+        // 1. INTENTAR ENCONTRAR EL MODELO EN EL CATÁLOGO
+        if (CATALOGO_COLORES[modeloBrutoUpper]) {
+            // Caso A: El QR solo envió el modelo base (e.g., YURUBI_25X40)
+            modeloBase = modeloBrutoUpper;
+        } else {
+            // Caso B: El QR envió el modelo + color (e.g., YURUBI_25X40_AZUL).
+            // Quitamos la última parte después del último guion bajo.
+            const partes = modeloBrutoUpper.split('_');
+            // Quitamos la última parte (el color) para obtener el modelo base
+            modeloBase = partes.slice(0, partes.length - 1).join('_');
 
-        // 1. Inicializar el contenido con el color predeterminado
+            if (!CATALOGO_COLORES[modeloBase]) {
+                 document.body.innerHTML = '<h1>Error: Modelo no encontrado en el catálogo.</h1>';
+                 return;
+            }
+        }
+
+        let colorID; 
+
+        // 2. Inicializar el contenido con el primer color del catálogo como predeterminado
         if (CATALOGO_COLORES[modeloBase] && CATALOGO_COLORES[modeloBase].length > 0) {
             colorID = CATALOGO_COLORES[modeloBase][0]; // Usa el primer color del catálogo
         } else {
-             document.body.innerHTML = '<h1>Error: Modelo base no encontrado en el catálogo de colores.</h1>';
+             document.body.innerHTML = '<h1>Error: Modelo base encontrado, pero sin colores definidos.</h1>';
              return;
         }
 
         actualizarContenido(modeloBase, colorID, distribuidorID);
 
-        // 2. Generar el menú de botones
+        // 3. Generar el menú de botones
         generarBotones(modeloBase, distribuidorID, colorID);
 
     } else {
-        document.body.innerHTML = <h1>Error: Código de producto o distribuidor no encontrado.</h1>;
+        document.body.innerHTML = '<h1>Error: Código de producto o distribuidor no encontrado.</h1>';
     }
 });
     </script>  
