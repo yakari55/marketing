@@ -209,4 +209,178 @@
     <div class="mensaje">
         <h1>¡Marketing!</h1>
         
-        <h3 class="modelo
+        <h3 class="modelo-frase">
+            Estás viendo el modelo:
+            <br>
+            <span class="modelo-principal" id="modelo-nombre"></span>
+        </h3>
+    </div>
+
+    <div id="video-wrapper">
+        <video id="video-player" controls autoplay muted playsinline loop>
+            Tu navegador no soporta el video.
+        </video>
+        <div id="logo-overlay">
+            <img id="logo" src="" alt="Logo del Distribuidor">
+            <span id="producto-nombre-video" class="nombre-producto-video"></span> 
+        </div>
+        
+        <div id="colores-disponibles-wrapper">
+            <p class="selector-titulo">Ver otros colores disponibles:</p>
+            </div>
+    </div>
+    
+    <div id="mensaje-final-wrapper">
+        <h2>🔥 ¡El siguiente paso es la DEMO en tu tienda!</h2>
+        <p><strong>[Tu Marca]</strong> tiene stock limitado de la serie **<span id="modelo-nombre-final"></span>**. Contacta a tu gerente de cuenta hoy mismo para asegurar tu pedido y programar una exhibición exclusiva.</p>
+        <div class="linea-divisoria"></div>
+        <p class="contacto-info">Teléfono: (555) 123-4567 | Email: info@tumerca.com</p>
+    </div>
+
+<script>
+const CATALOGO_COLORES = {
+    // ⚠️ RELLENA CON TUS DATOS REALES (El nombre del modelo BASE, en MAYÚSCULAS)
+    "CARRARA_25X40": ["BLANCO", "BLANCO_NUBE", "AZUL"], 
+    "BARCELONA_25X40": ["GRIS"], 
+    "CORAL_25X40": ["GRIS"],
+    "YURUBI_25X40": ["ROSA","AZUL"]
+};
+
+// **IMPORTANTE: AJUSTAR ESTAS RUTAS DE ARCHIVOS**
+const rutaLogos = './cliente/'; 
+const rutaVideos = './video/'; 
+
+// Función principal para actualizar el video y el logo
+function actualizarContenido(modelo, color, distribuidorID) {
+    const nombreCompletoArchivo = `${modelo}_${color}`;
+    
+    let nombreVisual = nombreCompletoArchivo.replace(/_/g, ' '); 
+    nombreVisual = nombreVisual.toLowerCase(); 
+    nombreVisual = nombreVisual.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); 
+
+    // Lógica para las RUTAS
+    const nombreArchivoVideo = nombreCompletoArchivo.toUpperCase(); 
+    const distribuidorLower = distribuidorID.toLowerCase(); 
+
+    // Rutas
+    const urlLogo = rutaLogos + distribuidorLower + '.png'; 
+    const urlVideo = rutaVideos.toLowerCase() + nombreArchivoVideo + '.mp4'; 
+    
+    // Asignación a la Página
+    document.getElementById('logo').src = urlLogo;
+    document.getElementById('video-player').src = urlVideo;
+    
+    // Actualiza IDs de texto
+    const nombreModeloElement = document.getElementById('modelo-nombre');
+    if (nombreModeloElement) nombreModeloElement.textContent = nombreVisual; 
+
+    const nombreModeloFinalElement = document.getElementById('modelo-nombre-final');
+    if (nombreModeloFinalElement) nombreModeloFinalElement.textContent = nombreVisual; 
+    
+    const productoNombreVideoElement = document.getElementById('producto-nombre-video');
+    if (productoNombreVideoElement) productoNombreVideoElement.textContent = nombreVisual; 
+}
+
+
+// Función para generar los botones del menú de colores
+function generarBotones(modeloBase, distribuidorID, colorInicial) {
+    const colores = CATALOGO_COLORES[modeloBase];
+    const wrapper = document.getElementById('colores-disponibles-wrapper');
+
+    if (!colores || colores.length <= 1) {
+        wrapper.style.display = 'none';
+        return;
+    }
+
+    const botonesContainer = document.createElement('div');
+    botonesContainer.className = 'botones-colores-container';
+
+    colores.forEach(color => {
+        const boton = document.createElement('button');
+        boton.textContent = color;
+        boton.className = 'boton-color';
+        
+        if (color === colorInicial) {
+            boton.classList.add('activo');
+        }
+
+        boton.onclick = () => {
+            document.querySelectorAll('.boton-color').forEach(btn => btn.classList.remove('activo'));
+            boton.classList.add('activo');
+            actualizarContenido(modeloBase, color, distribuidorID);
+        };
+        botonesContainer.appendChild(boton);
+    });
+
+    wrapper.appendChild(botonesContainer);
+}
+
+
+// ------------------------------------------------------------------
+// INICIO DEL SCRIPT AL CARGAR LA PÁGINA
+// ------------------------------------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    const modeloIDBruto = urlParams.get('modelo'); 
+    const distribuidorID = urlParams.get('distribuidor');
+
+    const videoWrapper = document.getElementById('video-wrapper');
+    const body = document.body;
+
+    if (distribuidorID && modeloIDBruto) {
+        let modeloBase;
+        let colorURL; 
+        const modeloBrutoUpper = modeloIDBruto.toUpperCase();
+        
+        // Detección del Modelo Base y Color de la URL
+        const partes = modeloBrutoUpper.split('_');
+        
+        colorURL = partes[partes.length - 1]; 
+        modeloBase = partes.slice(0, partes.length - 1).join('_'); 
+
+        if (!CATALOGO_COLORES[modeloBase]) {
+             document.body.innerHTML = '<h1>Error: Modelo base no encontrado en el catálogo.</h1>';
+             return;
+        }
+
+        let colorID; 
+        const coloresDisponibles = CATALOGO_COLORES[modeloBase];
+        
+        // Determinar el color inicial: si el color de la URL existe, úsalo, si no, usa el primero
+        if (coloresDisponibles.includes(colorURL)) {
+            colorID = colorURL;
+        } else {
+            colorID = coloresDisponibles[0]; 
+        }
+
+        // Inicializar el contenido y generar botones
+        actualizarContenido(modeloBase, colorID, distribuidorID);
+        generarBotones(modeloBase, distribuidorID, colorID);
+
+        // LÓGICA DEL EFECTO ZOOM
+        body.classList.add('zoom-active'); 
+        videoWrapper.classList.add('video-zoom'); 
+
+        setTimeout(() => {
+            // 1. Quitar las clases de transición de zoom
+            videoWrapper.classList.remove('video-zoom');
+            body.classList.remove('zoom-active');
+            
+            // 2. Aplicar las clases del estado final
+            videoWrapper.classList.add('pantalla-completa-final');
+            body.classList.add('modo-video-final');
+            
+            // 3. Asegurar que el video se reproduzca
+            const videoPlayer = document.getElementById('video-player');
+            videoPlayer.play();
+            
+        }, 4000); // Duración del zoom: 4 segundos
+
+    } else {
+        document.body.innerHTML = '<h1>Error: Código de producto o distribuidor no encontrado.</h1>';
+    }
+});
+</script> 
+</body>
+</html>
