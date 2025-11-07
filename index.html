@@ -90,4 +90,270 @@
             max-width: none !important;
             max-height: none !important;
             border-radius: 0 !important;
-            box-shadow:
+            box-shadow: none !important;
+            margin: 0 !important;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+        
+        /* CLASE 2: ESTADO FINAL (Pantalla completa sin texto) */
+        #video-wrapper.pantalla-completa-final {
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            max-width: none;
+            max-height: none;
+            margin: 0;
+            box-shadow: none;
+            border-radius: 0;
+            z-index: 1;
+        }
+
+        #video-player {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+        
+        /* ESTILOS DEL LOGO SUPERPUESTO */
+        #logo-overlay {
+            position: absolute;
+            top: 1.5vh;
+            left: 1.5vh;
+            z-index: 10;
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 1.5vw;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5vh;
+        }
+
+        #logo {
+            max-width: 15vw;
+            max-height: 12vh;
+            height: auto;
+            display: block;
+        }
+        
+        /* ... (restantes estilos de .nombre-producto-video y media queries) ... */
+
+        
+        /* ---------------------------------------------------- */
+        /* 4. ESTILOS DEL MENÚ DE COLORES (Superpuesto en el video) */
+        /* ---------------------------------------------------- */
+        #colores-disponibles-wrapper {
+            position: absolute; /* ✅ Cambiado: Posición absoluta dentro del video wrapper */
+            bottom: 0; 
+            left: 0;
+            width: 100%;
+            z-index: 5; 
+            padding: 15px 0 20px 0; 
+            background-color: rgba(0, 0, 0, 0.5); 
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .selector-titulo {
+            color: #FFFFFF; 
+            margin: 0 0 10px 0;
+        }
+
+        .botones-colores-container {
+            margin: 0; 
+            /* ... (restantes estilos de .botones-colores-container) ... */
+        }
+        /* ... (restantes estilos de .boton-color y .boton-color.activo) ... */
+
+    </style>
+</head>
+
+<body>
+
+    <div class="mensaje">
+        <h1>¡Marketing!</h1>
+        
+        <h3 class="modelo-frase">
+            Estás viendo el modelo:
+            <br>
+            <span class="modelo-principal" id="modelo-nombre"></span>
+        </h3>
+    </div>
+
+    <div id="video-wrapper">
+        <video id="video-player" controls autoplay muted playsinline loop>
+            Tu navegador no soporta el video.
+        </video>
+        <div id="logo-overlay">
+            <img id="logo" src="" alt="Logo del Distribuidor">
+            <span id="producto-nombre-video" class="nombre-producto-video"></span> 
+        </div>
+        
+        <div id="colores-disponibles-wrapper">
+            <p class="selector-titulo">Ver otros colores disponibles:</p>
+            </div>
+    </div>
+    
+    <div id="mensaje-final-wrapper">
+        <h2>🔥 ¡El siguiente paso es la DEMO en tu tienda!</h2>
+        <p><strong>[Tu Marca]</strong> tiene stock limitado de la serie **<span id="modelo-nombre-final"></span>**. Contacta a tu gerente de cuenta hoy mismo para asegurar tu pedido y programar una exhibición exclusiva.</p>
+        <div class="linea-divisoria"></div>
+        <p class="contacto-info">Teléfono: (555) 123-4567 | Email: info@tumerca.com</p>
+    </div>
+
+<script>
+const CATALOGO_COLORES = {
+    // ⚠️ RELLENA CON TUS DATOS REALES (El nombre del modelo BASE, en MAYÚSCULAS)
+    "CARRARA_25X40": ["BLANCO", "BLANCO_NUBE", "AZUL"], 
+    "BARCELONA_25X40": ["GRIS"], 
+    "CORAL_25X40": ["GRIS"],
+    "YURUBI_25X40": ["ROSA","AZUL"]
+};
+
+// **IMPORTANTE: AJUSTAR ESTAS RUTAS DE ARCHIVOS**
+const rutaLogos = './cliente/'; 
+const rutaVideos = './video/'; 
+
+// Función principal para actualizar el video y el logo
+function actualizarContenido(modelo, color, distribuidorID) {
+    const nombreCompletoArchivo = `${modelo}_${color}`;
+    
+    let nombreVisual = nombreCompletoArchivo.replace(/_/g, ' '); 
+    nombreVisual = nombreVisual.toLowerCase(); 
+    nombreVisual = nombreVisual.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); 
+
+    // Lógica para las RUTAS
+    const nombreArchivoVideo = nombreCompletoArchivo.toUpperCase(); 
+    const distribuidorLower = distribuidorID.toLowerCase(); 
+
+    // Rutas
+    const urlLogo = rutaLogos + distribuidorLower + '.png'; 
+    const urlVideo = rutaVideos.toLowerCase() + nombreArchivoVideo + '.mp4'; 
+    
+    // Asignación a la Página
+    document.getElementById('logo').src = urlLogo;
+    document.getElementById('video-player').src = urlVideo;
+    
+    // Actualiza IDs de texto
+    const nombreModeloElement = document.getElementById('modelo-nombre');
+    if (nombreModeloElement) nombreModeloElement.textContent = nombreVisual; 
+
+    const nombreModeloFinalElement = document.getElementById('modelo-nombre-final');
+    if (nombreModeloFinalElement) nombreModeloFinalElement.textContent = nombreVisual; 
+    
+    const productoNombreVideoElement = document.getElementById('producto-nombre-video');
+    if (productoNombreVideoElement) productoNombreVideoElement.textContent = nombreVisual; 
+}
+
+
+// Función para generar los botones del menú de colores
+function generarBotones(modeloBase, distribuidorID, colorInicial) {
+    const colores = CATALOGO_COLORES[modeloBase];
+    const wrapper = document.getElementById('colores-disponibles-wrapper');
+
+    if (!colores || colores.length <= 1) {
+        wrapper.style.display = 'none';
+        return;
+    }
+
+    const botonesContainer = document.createElement('div');
+    botonesContainer.className = 'botones-colores-container';
+
+    colores.forEach(color => {
+        const boton = document.createElement('button');
+        boton.textContent = color;
+        boton.className = 'boton-color';
+        
+        if (color === colorInicial) {
+            boton.classList.add('activo');
+        }
+
+        boton.onclick = () => {
+            document.querySelectorAll('.boton-color').forEach(btn => btn.classList.remove('activo'));
+            boton.classList.add('activo');
+            actualizarContenido(modeloBase, color, distribuidorID);
+        };
+        botonesContainer.appendChild(boton);
+    });
+
+    wrapper.appendChild(botonesContainer);
+}
+
+
+// ------------------------------------------------------------------
+// INICIO DEL SCRIPT AL CARGAR LA PÁGINA
+// ------------------------------------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    const modeloIDBruto = urlParams.get('modelo'); 
+    const distribuidorID = urlParams.get('distribuidor');
+
+    const videoWrapper = document.getElementById('video-wrapper');
+    const body = document.body;
+
+    if (distribuidorID && modeloIDBruto) {
+        let modeloBase;
+        let colorURL; 
+        const modeloBrutoUpper = modeloIDBruto.toUpperCase();
+        
+        // Detección del Modelo Base y Color de la URL
+        const partes = modeloBrutoUpper.split('_');
+        
+        colorURL = partes[partes.length - 1]; 
+        modeloBase = partes.slice(0, partes.length - 1).join('_'); 
+
+        if (!CATALOGO_COLORES[modeloBase]) {
+             document.body.innerHTML = '<h1>Error: Modelo base no encontrado en el catálogo.</h1>';
+             return;
+        }
+
+        let colorID; 
+        const coloresDisponibles = CATALOGO_COLORES[modeloBase];
+        
+        // Determinar el color inicial: si el color de la URL existe, úsalo, si no, usa el primero
+        if (coloresDisponibles.includes(colorURL)) {
+            colorID = colorURL;
+        } else {
+            colorID = coloresDisponibles[0]; 
+        }
+
+        // Inicializar el contenido y generar botones
+        actualizarContenido(modeloBase, colorID, distribuidorID);
+        generarBotones(modeloBase, distribuidorID, colorID);
+
+        // LÓGICA DEL EFECTO ZOOM
+        body.classList.add('zoom-active'); 
+        videoWrapper.classList.add('video-zoom'); 
+
+        setTimeout(() => {
+            // 1. Quitar las clases de transición de zoom
+            videoWrapper.classList.remove('video-zoom');
+            body.classList.remove('zoom-active');
+            
+            // 2. Aplicar las clases del estado final
+            videoWrapper.classList.add('pantalla-completa-final');
+            body.classList.add('modo-video-final');
+            
+            // 3. Asegurar que el video se reproduzca
+            const videoPlayer = document.getElementById('video-player');
+            videoPlayer.play();
+            
+        }, 4000); // Duración del zoom: 4 segundos
+
+    } else {
+        document.body.innerHTML = '<h1>Error: Código de producto o distribuidor no encontrado.</h1>';
+    }
+});
+</script> 
+</body>
+</html>
