@@ -9,11 +9,8 @@
         /* 1. ESTILOS BASE Y CUERPO (BODY) */
         /* ---------------------------------------------------- */
         :root {
-            /* Define una variable CSS que incluye el área segura inferior del móvil */
             --safe-bottom: env(safe-area-inset-bottom, 20px); 
-            /* Se usa 20px como fallback si la propiedad no es compatible */
             --menu-height-fixed: 120px; 
-            /* Altura base de separación para el menú */
         }
 
         @keyframes fadeIn {
@@ -39,7 +36,8 @@
             overflow-y: auto; 
         }
 
-        body.zoom-active > *:not(#video-wrapper) { 
+        /* Oculta los elementos estáticos durante el zoom, PERO NO LOS OVERLAYS */
+        body.zoom-active > *:not(#video-wrapper):not(#logo-overlay):not(#producto-nombre-flotante) { 
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
@@ -126,61 +124,40 @@
         
         /* ESTILOS DEL LOGO SUPERPUESTO */
         #logo-overlay {
-            position: absolute; /* Usamos absolute inicialmente */
-            top: 1.5vh;
-            left: 1.5vh;
-            z-index: 10;
+            position: fixed; /* Debe ser fixed para mantenerse en su lugar */
+            top: 20px; /* Posición fija top para cuando aparece */
+            left: 20px; /* Posición fija left para cuando aparece */
+            z-index: 10000; /* Asegurarse de que esté por encima de todo */
             background-color: transparent; 
-            padding: 1vw 1.5vw; 
+            padding: 0; /* Sin padding si no hay fondo */
             box-shadow: none; 
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             gap: 0.5vh;
-            opacity: 0; /* Oculto por defecto */
+            /* ✅ Oculto por defecto y con transición para que aparezca suave */
+            opacity: 0; 
             visibility: hidden;
             transition: opacity 0.5s ease, visibility 0.5s ease;
         }
 
         #logo { 
-            max-width: 15vw; 
-            max-height: 12vh; 
+            max-width: 180px; /* Ajuste para un tamaño razonable en full screen */
             height: auto; 
             display: block; 
             opacity: 0.7; 
             transition: opacity 0.3s ease;
         }
         
+        /* El nombre del producto ya no estará aquí */
         .nombre-producto-video { 
             display: none !important;
         }
         
-        /* Estilos del logo en el modo final (con transparencia) */
-        #video-wrapper.video-zoom #logo-overlay, /* Aseguramos que el logo tampoco aparezca durante el zoom inicial */
-        #video-wrapper.pantalla-completa-final #logo-overlay { 
-            position: fixed !important; 
-            top: 20px !important; 
-            left: 20px !important; 
-            z-index: 10000 !important; 
-            background-color: transparent; 
-            padding: 0; 
-            box-shadow: none; 
-            display: flex; 
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        
-        #video-wrapper.video-zoom #logo, 
-        #video-wrapper.pantalla-completa-final #logo { 
-            max-width: 180px !important; 
-            opacity: 0.7 !important; 
-        }
-
-        /* CLASE PARA MOSTRAR LOGO Y NOMBRE FLOTANTE DESPUÉS DEL ZOOM */
-        .show-overlay-elements #logo-overlay,
-        .show-overlay-elements #producto-nombre-flotante {
-            opacity: 1;
-            visibility: visible;
+        /* El logo no debe aparecer durante el zoom inicial */
+        body:not(.modo-video-final) #logo-overlay {
+            opacity: 0 !important;
+            visibility: hidden !important;
         }
 
 
@@ -197,8 +174,8 @@
             
             /* TAMAÑO Y FUENTE SUTIL */
             font-size: 3vw; 
-            font-weight: 400; /* Más delgado */
-            font-family: 'Helvetica Neue', sans-serif; /* Fuente limpia */
+            font-weight: 400; 
+            font-family: 'Helvetica Neue', sans-serif; 
 
             /* ✅ EFECTO DE RÉPLICA SUTIL (Múltiples capas de sombra, arriba y abajo) */
             text-shadow: 
@@ -211,10 +188,25 @@
 
             text-transform: uppercase;
             letter-spacing: 2px;
-            opacity: 0; /* Oculto por defecto */
+            /* ✅ Oculto por defecto y con transición para que aparezca suave */
+            opacity: 0; 
             visibility: hidden;
             transition: opacity 0.5s ease, visibility 0.5s ease;
             white-space: nowrap; 
+        }
+
+        /* El nombre flotante no debe aparecer durante el zoom inicial */
+        body:not(.modo-video-final) #producto-nombre-flotante {
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+
+        /* ✅ CLASE PARA MOSTRAR LOGO Y NOMBRE FLOTANTE DESPUÉS DEL ZOOM */
+        /* Aplicamos esta clase al body después del zoom para que aparezcan */
+        body.show-overlay-elements #logo-overlay,
+        body.show-overlay-elements #producto-nombre-flotante {
+            opacity: 1;
+            visibility: visible;
         }
 
         /* ---------------------------------------------------- */
@@ -307,20 +299,27 @@
         <video id="video-player" controls autoplay muted playsinline loop>
             Tu navegador no soporta el video.
         </video>
-        <div id="logo-overlay">
-            <img id="logo" src="" alt="Logo del Distribuidor">
-            </div>
+        </div>
+    
+    <div id="logo-overlay">
+        <img id="logo" src="" alt="Logo del Distribuidor">
     </div>
     
-    
-<div id="producto-nombre-flotante"></div>
+    <div id="producto-nombre-flotante"></div>
 
     <div id="colores-disponibles-wrapper">
-        <p class="selector-titulo">Colores disponibles:</p>
+        <p class="selector-titulo">Ver otros colores disponibles:</p>
         <div class="botones-colores-container"></div>
     </div>
     
- <script>
+    <div id="mensaje-final-wrapper">
+        <h2>🔥 ¡El siguiente paso es la DEMO en tu tienda!</h2>
+        <p><strong>[Tu Marca]</strong> tiene stock limitado de la serie **<span id="modelo-nombre-final"></span>**. Contacta a tu gerente de cuenta hoy mismo para asegurar tu pedido y programar una exhibición exclusiva.</p>
+        <div class="linea-divisoria"></div>
+        <p class="contacto-info">Teléfono: (555) 123-4567 | Email: info@tumerca.com</p>
+    </div>
+
+<script>
 const CATALOGO_COLORES = {
     "CARRARA_25X40": ["BLANCO", "BLANCO_NUBE", "AZUL"], 
     "BARCELONA_25X40": ["GRIS"], 
@@ -336,10 +335,10 @@ function aplicarZoomInicial() {
     const body = document.body;
     const videoPlayer = document.getElementById('video-player');
 
-    // Resetear clases y ocultar elementos superpuestos al inicio
+    // ✅ Asegurarse de que los overlays están ocultos antes del zoom
+    body.classList.remove('show-overlay-elements'); 
     videoWrapper.classList.remove('pantalla-completa-final');
     body.classList.remove('modo-video-final');
-    body.classList.remove('show-overlay-elements'); // ✅ Nueva línea para ocultar elementos
     
     body.classList.add('zoom-active'); 
     videoWrapper.classList.add('video-zoom'); 
@@ -358,7 +357,7 @@ function aplicarZoomInicial() {
         // ✅ Retrasar la aparición del logo y nombre flotante
         setTimeout(() => {
             body.classList.add('show-overlay-elements'); 
-        }, 500); // 0.5 segundos después de que el zoom ha terminado
+        }, 500); // 0.5 segundos después de que el video entra en modo final
 
     }, 4000); 
 }
@@ -382,7 +381,6 @@ function actualizarContenido(modelo, color, distribuidorID) {
     document.getElementById('modelo-nombre').textContent = nombreVisual; 
     document.getElementById('modelo-nombre-final').textContent = nombreVisual; 
     
-    // Actualizamos el nuevo elemento flotante con el nombre del producto
     document.getElementById('producto-nombre-flotante').textContent = nombreVisual; 
 }
 
