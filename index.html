@@ -23,7 +23,9 @@
             text-align: center;
             margin: 0;
             box-sizing: border-box;
-            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+            /* ✅ Fondo general del body: Ahora es negro por defecto, 
+                  para que no aparezcan fondos claros por debajo en modo video final */
+            background-color: black; 
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -48,7 +50,7 @@
             padding: 0;
             margin: 0;
             min-height: 100vh;
-            background-color: black;
+            background-color: black; /* ✅ Aseguramos que sea negro en modo video final */
             overflow: hidden; 
         }
         
@@ -141,7 +143,6 @@
         }
 
         #logo { 
-            /* Logo más pequeño */
             max-width: 90px; 
             height: auto; 
             display: block; 
@@ -207,21 +208,18 @@
         /* ---------------------------------------------------- */
         #colores-disponibles-wrapper {
             position: fixed; 
-            /* Posicionamiento en la esquina inferior izquierda */
             bottom: 20px; 
             left: 20px;
             width: auto; 
             height: auto; 
             z-index: 50; 
             
-            padding: 0; /* ✅ Eliminado el padding del contenedor principal */
+            padding: 0; 
             
-            /* ✅ Contenedor principal sin fondo */
-            background-color: transparent; 
+            background-color: transparent; /* ✅ Aseguramos que el contenedor sea transparente */
             box-shadow: none; 
             box-sizing: border-box;
             
-            /* Flexbox para apilar elementos verticalmente */
             display: flex;
             flex-direction: column; 
             justify-content: flex-end; 
@@ -246,10 +244,9 @@
             text-align: left; 
             line-height: 1.2;
             
-            /* ✅ Fondo semitransparente solo para el título */
             background-color: rgba(0, 0, 0, 0.4);
-            padding: 4px 8px; /* Pequeño padding para el fondo */
-            border-radius: 5px; /* Bordes redondeados sutiles */
+            padding: 4px 8px; 
+            border-radius: 5px; 
         }
         .botones-colores-container { 
             margin: 0; 
@@ -263,11 +260,9 @@
         
         .boton-color { 
             padding: 5px 10px; 
-            /* ✅ Se mantiene el borde sutil */
             border: 1px solid rgba(255, 255, 255, 0.5); 
-            /* ✅ Fondo transparente */
             background-color: transparent; 
-            color: #FFFFFF; 
+            color: #333; /* ✅ Letras en gris oscuro */
             cursor: pointer; 
             border-radius: 15px; 
             font-size: 0.65em; 
@@ -279,17 +274,15 @@
             box-sizing: border-box; 
             text-align: center;
         }
-        /* Ajuste para el hover: sigue mostrando un fondo al pasar el ratón/tocar */
         .boton-color:hover { 
             border-color: #C0392B; 
             background-color: rgba(192, 57, 43, 0.7); 
-            color: #FFFFFF; 
+            color: #FFFFFF; /* ✅ En hover, el color del texto vuelve a blanco para contraste */
         } 
-        /* Ajuste para el estado activo: sigue mostrando un fondo para indicar la selección */
         .boton-color.activo { 
             border-color: #C0392B; 
             background-color: #C0392B; 
-            color: #FFFFFF; 
+            color: #FFFFFF; /* ✅ En activo, el color del texto vuelve a blanco para contraste */
             font-weight: bold; 
             transform: scale(1.05); 
         }
@@ -307,7 +300,7 @@
             #colores-disponibles-wrapper {
                 bottom: 10px;
                 left: 10px;
-                padding: 0; /* Padding del contenedor principal en móvil */
+                padding: 0; 
             }
             .boton-color {
                 font-size: 0.6em;
@@ -346,14 +339,7 @@
         <p class="selector-titulo">COLORES DISP.</p>
         <div class="botones-colores-container"></div>
     </div>
-    
-    <div id="mensaje-final-wrapper">
-        <h2>🔥 ¡El siguiente paso es la DEMO en tu tienda!</h2>
-        <p><strong>[Tu Marca]</strong> tiene stock limitado de la serie **<span id="modelo-nombre-final"></span>**. Contacta a tu gerente de cuenta hoy mismo para asegurar tu pedido y programar una exhibición exclusiva.</p>
-        <div class="linea-divisoria"></div>
-        <p class="contacto-info">Teléfono: (555) 123-4567 | Email: info@tumerca.com</p>
-    </div>
-
+ 
 <script>
 const CATALOGO_COLORES = {
     "CARRARA_25X40": ["BLANCO", "BLANCO_NUBE", "AZUL"], 
