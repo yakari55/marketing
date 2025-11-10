@@ -10,8 +10,8 @@
         /* ---------------------------------------------------- */
         :root {
             --safe-bottom: env(safe-area-inset-bottom, 20px); 
-            /* La altura del menú fijo ahora será su ancho en el lateral */
-            --menu-width-fixed: 100px; 
+            /* Se usa 20px como fallback si la propiedad no es compatible */
+            --menu-width-fixed: 100px; /* ✅ Nueva variable: Ancho fijo del menú lateral */
         }
 
         @keyframes fadeIn {
@@ -37,6 +37,7 @@
             overflow-y: auto; 
         }
 
+        /* Oculta los elementos estáticos durante el zoom, PERO NO LOS OVERLAYS */
         body.zoom-active > *:not(#video-wrapper):not(#logo-overlay):not(#producto-nombre-flotante) { 
             opacity: 0;
             pointer-events: none;
@@ -99,13 +100,14 @@
             z-index: 9999;
         }
         
-        /* 🛑 CLAVE: Ya no restamos la altura del menú inferior */
+        /* 🛑 CLAVE: El video ahora ocupa toda la altura, y su ancho se ajusta para el menú lateral */
         #video-wrapper.pantalla-completa-final {
             position: fixed; 
             top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh; /* Ocupa el 100% de la altura */
+            /* ✅ Ocupa todo el ancho menos el del menú lateral */
+            left: var(--menu-width-fixed); 
+            width: calc(100vw - var(--menu-width-fixed)); 
+            height: 100vh; /* ✅ Ocupa toda la altura */
             max-width: none;
             max-height: none;
             margin: 0;
@@ -140,7 +142,7 @@
         }
 
         #logo { 
-            /* ✅ Logo más pequeño */
+            /* ✅ Logo más pequeño en full screen */
             max-width: 120px; 
             height: auto; 
             display: block; 
@@ -164,7 +166,8 @@
         #producto-nombre-flotante {
             position: fixed;
             top: 50%;
-            left: 50%;
+            /* ✅ Ajuste de posición para compensar el menú lateral */
+            left: calc(50% + (var(--menu-width-fixed) / 2)); 
             transform: translate(-50%, -50%);
             z-index: 100; 
             color: white;
@@ -193,7 +196,7 @@
             opacity: 0 !important;
             visibility: hidden !important;
         }
-        
+
         body.show-overlay-elements #logo-overlay,
         body.show-overlay-elements #producto-nombre-flotante {
             opacity: 1;
@@ -201,81 +204,75 @@
         }
 
         /* ---------------------------------------------------- */
-        /* 4. ESTILOS DEL MENÚ DE COLORES (Lateral Izquierdo SIN FONDO) */
+        /* 4. ESTILOS DEL MENÚ DE COLORES (Lateral Izquierdo, sin fondo) */
         /* ---------------------------------------------------- */
         #colores-disponibles-wrapper {
             position: fixed; 
-            /* ✅ Nueva posición lateral */
-            top: 0; 
+            top: 0; /* ✅ Alineado con el top del viewport */
             left: 0;
-            width: var(--menu-width-fixed); /* Ancho fijo para el menú lateral */
-            height: 100vh; /* Ocupa toda la altura */
+            width: var(--menu-width-fixed); /* ✅ Ancho fijo como barra lateral */
+            height: 100vh; /* ✅ Ocupa toda la altura */
             z-index: 50; 
             
-            /* ✅ Sin fondo y sin sombra */
-            background-color: transparent; 
-            box-shadow: none; 
+            padding: 20px 0; /* Ajuste de padding vertical */
             
+            /* ✅ Fondo transparente */
+            background-color: transparent; 
+            box-shadow: none; /* ✅ Eliminada la sombra */
             box-sizing: border-box;
-            /* ✅ Alineación para botones verticales */
+            
+            /* ✅ Flexbox para apilar elementos verticalmente */
             display: flex;
-            flex-direction: column; /* Botones apilados verticalmente */
-            justify-content: center; /* Centrado vertical */
-            align-items: center; /* Centrado horizontal */
-            gap: 10px; /* Espacio entre el título y los botones */
-
-            padding: 80px 5px var(--safe-bottom) 5px; /* Padding para evitar logo y pie de app */
+            flex-direction: column; 
+            justify-content: flex-start; /* ✅ Alinea al inicio vertical */
+            align-items: center; /* ✅ Centra horizontalmente los elementos dentro del menú */
             
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.5s ease;
         }
         
-        /* Mostrar el menú solo en el estado final */
         body.modo-video-final #colores-disponibles-wrapper {
             opacity: 1;
             visibility: visible;
         }
 
         .selector-titulo { 
-            /* ✅ Color más oscuro para ser visible sin fondo */
-            color: #DDD; 
-            margin: 0; 
+            color: #FFFFFF; 
+            margin: 0 0 15px 0; /* Más espacio abajo del título */
             font-size: 0.8em; 
-            text-shadow: 0 0 5px rgba(0,0,0,0.9); 
-            text-align: center;
-            width: 100%; /* Asegura que ocupe el ancho disponible */
-            padding-bottom: 5px; /* Espacio bajo el título */
+            text-shadow: 0 0 5px rgba(0,0,0,0.7); 
+            text-align: center; /* Centrar el texto del título */
+            padding: 0 5px; /* Pequeño padding para el texto */
+            line-height: 1.2;
         }
         .botones-colores-container { 
             margin: 0; 
-            max-width: 100%; /* Ocupa el ancho del menú */
+            max-width: 100%; /* Ocupa el 100% del ancho del menú */
             display: flex; 
-            flex-direction: column; /* ✅ Botones verticales */
-            justify-content: center; 
-            align-items: center; /* Centra los botones dentro del contenedor */
-            gap: 8px; /* Espacio entre botones */
-            flex-grow: 1; /* Permite que ocupe el espacio restante */
-            overflow-y: auto; /* Para que los botones puedan hacer scroll si hay muchos */
-            padding: 5px 0; /* Pequeño padding vertical */
+            flex-direction: column; /* ✅ Botones apilados verticalmente */
+            justify-content: flex-start; /* ✅ Alinea los botones al inicio vertical */
+            flex-wrap: nowrap; /* Evita que los botones se envuelvan */
+            gap: 10px; /* Espacio entre botones */
+            overflow-y: auto; /* Si hay muchos botones, permite scroll */
+            padding: 0 5px; /* Pequeño padding lateral */
         }
         
         .boton-color { 
-            padding: 6px 10px; /* Ligeramente menos padding para botones verticales */
+            padding: 8px 10px; /* ✅ Ajuste de padding para botones más pequeños */
             border: 2px solid rgba(255, 255, 255, 0.7); 
             background-color: rgba(255, 255, 255, 0.6); 
             color: #333; 
             cursor: pointer; 
             border-radius: 20px; 
-            font-size: 0.8em; /* Ligeramente más pequeño para el lateral */
+            font-size: 0.75em; /* ✅ Fuente más pequeña */
             transition: all 0.2s ease; 
             text-transform: capitalize; 
             line-height: 1; 
             text-shadow: none; 
-            white-space: nowrap; /* Evita que el texto se rompa */
-            width: 80px; /* ✅ Ancho fijo para los botones laterales */
-            text-overflow: ellipsis; /* Añade puntos suspensivos si el texto es muy largo */
-            overflow: hidden; /* Oculta el texto que se desborda */
+            width: 100%; /* ✅ Botones ocupan todo el ancho de la barra lateral */
+            box-sizing: border-box; /* Asegura que el padding no desborde */
+            text-align: center;
         }
         .boton-color:hover { border-color: #C0392B; background-color: rgba(192, 57, 43, 0.7); color: #FFFFFF; } 
         .boton-color.activo { border-color: #C0392B; background-color: #C0392B; color: #FFFFFF; font-weight: bold; transform: scale(1.05); }
@@ -283,26 +280,28 @@
         /* ---------------------------------------------------- */
         /* 5. MEDIA QUERIES */
         /* ---------------------------------------------------- */
-        @media (min-width: 768px) {
-            #video-wrapper.pantalla-completa-final {
-                height: 100vh; /* No necesita restar el menú lateral */
+        @media (max-width: 767px) { /* Ajustes para pantallas más pequeñas (móviles) */
+            :root {
+                --menu-width-fixed: 80px; /* Menú lateral más estrecho en móviles */
             }
-            #colores-disponibles-wrapper {
-                width: 120px; /* Más ancho en desktop */
-                padding: 100px 10px 20px 10px; /* Ajuste de padding en desktop */
+            #logo-overlay {
+                top: 10px;
+                left: 10px;
             }
-            .selector-titulo {
-                font-size: 1em;
-            }
-            .boton-color {
-                width: 100px; /* Más ancho para desktop */
-                font-size: 0.9em;
+            #logo {
+                max-width: 90px;
             }
             #producto-nombre-flotante {
-                font-size: 2vw; 
+                font-size: 4vw;
+                left: calc(50% + (var(--menu-width-fixed) / 2)); 
             }
-            #logo { 
-                max-width: 150px; /* Un poco más grande en desktop */
+            .selector-titulo {
+                font-size: 0.7em;
+                margin-bottom: 10px;
+            }
+            .boton-color {
+                font-size: 0.65em;
+                padding: 6px 5px;
             }
         }
         
@@ -334,16 +333,23 @@
     <div id="producto-nombre-flotante"></div>
 
     <div id="colores-disponibles-wrapper">
-        <p class="selector-titulo">Colores disponibles:</p>
+        <p class="selector-titulo">COLORES</p>
         <div class="botones-colores-container"></div>
     </div>
     
+    <div id="mensaje-final-wrapper">
+        <h2>🔥 ¡El siguiente paso es la DEMO en tu tienda!</h2>
+        <p><strong>[Tu Marca]</strong> tiene stock limitado de la serie **<span id="modelo-nombre-final"></span>**. Contacta a tu gerente de cuenta hoy mismo para asegurar tu pedido y programar una exhibición exclusiva.</p>
+        <div class="linea-divisoria"></div>
+        <p class="contacto-info">Teléfono: (555) 123-4567 | Email: info@tumerca.com</p>
+    </div>
+
 <script>
 const CATALOGO_COLORES = {
-    "CARRARA_25X40": ["BLANCO", "BLANCO_NUBE", "AZUL", "ROJO_INTENSO", "VERDE_LIMA", "AMARILLO_SOL", "PURPURA_REAL", "NARANJA_VIBRANTE"], 
-    "BARCELONA_25X40": ["GRIS", "NEGRO_AZABACHE", "PLATA_METALICA"], 
-    "CORAL_25X40": ["GRIS", "ROJO_CORAL", "AZUL_PROFUNDO", "AMARILLO_CLARO"],
-    "YURUBI_25X40": ["ROSA","AZUL", "BLANCO_PURO", "VERDE_MENTA"]
+    "CARRARA_25X40": ["BLANCO", "BLANCO_NUBE", "AZUL"], 
+    "BARCELONA_25X40": ["GRIS"], 
+    "CORAL_25X40": ["GRIS"],
+    "YURUBI_25X40": ["ROSA","AZUL"]
 };
 
 const rutaLogos = './cliente/'; 
@@ -354,6 +360,7 @@ function aplicarZoomInicial() {
     const body = document.body;
     const videoPlayer = document.getElementById('video-player');
 
+    // Asegurarse de que los overlays están ocultos antes del zoom
     body.classList.remove('show-overlay-elements'); 
     videoWrapper.classList.remove('pantalla-completa-final');
     body.classList.remove('modo-video-final');
@@ -372,6 +379,7 @@ function aplicarZoomInicial() {
         
         videoPlayer.play();
 
+        // Retrasar la aparición del logo y nombre flotante
         setTimeout(() => {
             body.classList.add('show-overlay-elements'); 
         }, 500); // 0.5 segundos después de que el video entra en modo final
