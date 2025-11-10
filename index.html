@@ -23,7 +23,7 @@
             text-align: center;
             margin: 0;
             box-sizing: border-box;
-            /* ✅ RESTAURADO: Fondo degradado para el estado inicial */
+            /* ✅ RESTAURADO: Fondo degradado para el estado inicial (título visible) */
             background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%); 
             min-height: 100vh;
             display: flex;
@@ -101,13 +101,13 @@
             z-index: 9999;
         }
         
-        /* 🛑 CLAVE: El video ocupa su espacio restando la altura del menú inferior */
+        /* 🛑 CLAVE: CORRECCIÓN DEL FONDO CLARO 🛑 */
         #video-wrapper.pantalla-completa-final {
             position: fixed; 
             top: 0;
             left: 0;
             width: 100vw;
-            /* Altura: 100vh - Altura Fija del Menú - Espacio de Navegación */
+            /* ✅ CORREGIDO: Ocupa casi el 100% de la altura disponible para ELIMINAR LA BARRA CLARA */
             height: calc(100vh - var(--safe-bottom)); 
             max-width: none;
             max-height: none;
@@ -251,6 +251,7 @@
         .botones-colores-container { 
             margin: 0; 
             display: flex; 
+            /* ✅ RESTAURADO: Botones apilados verticalmente */
             flex-direction: column; 
             justify-content: flex-start; 
             flex-wrap: nowrap; 
@@ -262,7 +263,7 @@
             padding: 5px 10px; 
             border: 1px solid rgba(255, 255, 255, 0.5); 
             background-color: transparent; 
-            color: #333; 
+            color: #333; /* Gris oscuro */
             cursor: pointer; 
             border-radius: 15px; 
             font-size: 0.65em; 
@@ -273,6 +274,8 @@
             width: auto; 
             box-sizing: border-box; 
             text-align: center;
+            /* ✅ MANTENIDA: Sombra sutil para destacar el botón */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
         }
         .boton-color:hover { 
             border-color: #C0392B; 
@@ -339,8 +342,8 @@
         <p class="selector-titulo">COLORES DISP.</p>
         <div class="botones-colores-container"></div>
     </div>
-
-<script>
+    
+ <script>
 const CATALOGO_COLORES = {
     "CARRARA_25X40": ["BLANCO", "BLANCO_NUBE", "AZUL"], 
     "BARCELONA_25X40": ["GRIS"], 
