@@ -10,8 +10,9 @@
         /* ---------------------------------------------------- */
         :root {
             --safe-bottom: env(safe-area-inset-bottom, 20px); 
-            /* Se usa 20px como fallback si la propiedad no es compatible */
-            --menu-width-fixed: 100px; /* ✅ Nueva variable: Ancho fijo del menú lateral */
+            /* ✅ Variable eliminada, volvemos a la lógica de menú inferior */
+            --menu-height-fixed: 120px; 
+            /* Altura base de separación para el menú */
         }
 
         @keyframes fadeIn {
@@ -100,14 +101,14 @@
             z-index: 9999;
         }
         
-        /* 🛑 CLAVE: El video ahora ocupa toda la altura, y su ancho se ajusta para el menú lateral */
+        /* 🛑 CLAVE: El video vuelve a la lógica de menú inferior */
         #video-wrapper.pantalla-completa-final {
             position: fixed; 
             top: 0;
-            /* ✅ Ocupa todo el ancho menos el del menú lateral */
-            left: var(--menu-width-fixed); 
-            width: calc(100vw - var(--menu-width-fixed)); 
-            height: 100vh; /* ✅ Ocupa toda la altura */
+            left: 0;
+            width: 100vw;
+            /* Altura: 100vh - Altura Fija del Menú - Espacio de Navegación */
+            height: calc(100vh - var(--menu-height-fixed) - var(--safe-bottom)); 
             max-width: none;
             max-height: none;
             margin: 0;
@@ -142,8 +143,8 @@
         }
 
         #logo { 
-            /* ✅ Logo más pequeño en full screen */
-            max-width: 120px; 
+            /* ✅ Logo más pequeño */
+            max-width: 90px; 
             height: auto; 
             display: block; 
             opacity: 0.7; 
@@ -166,8 +167,7 @@
         #producto-nombre-flotante {
             position: fixed;
             top: 50%;
-            /* ✅ Ajuste de posición para compensar el menú lateral */
-            left: calc(50% + (var(--menu-width-fixed) / 2)); 
+            left: 50%; /* ✅ Vuelve al centro horizontal */
             transform: translate(-50%, -50%);
             z-index: 100; 
             color: white;
@@ -176,6 +176,7 @@
             font-weight: 400; 
             font-family: 'Helvetica Neue', sans-serif; 
 
+            /* Efecto de réplica */
             text-shadow: 
                 0 -1px 1px rgba(255, 255, 255, 0.3), 
                 0 -2px 2px rgba(255, 255, 255, 0.15), 
@@ -204,28 +205,28 @@
         }
 
         /* ---------------------------------------------------- */
-        /* 4. ESTILOS DEL MENÚ DE COLORES (Lateral Izquierdo, sin fondo) */
+        /* 4. ESTILOS DEL MENÚ DE COLORES (Sutil Inferior Izquierdo) */
         /* ---------------------------------------------------- */
         #colores-disponibles-wrapper {
             position: fixed; 
-            top: 0; /* ✅ Alineado con el top del viewport */
-            left: 0;
-            width: var(--menu-width-fixed); /* ✅ Ancho fijo como barra lateral */
-            height: 100vh; /* ✅ Ocupa toda la altura */
+            /* ✅ Posicionamiento en la esquina inferior izquierda */
+            bottom: 20px; 
+            left: 20px;
+            width: auto; /* ✅ Ancho automático según contenido */
+            height: auto; 
             z-index: 50; 
             
-            padding: 20px 0; /* Ajuste de padding vertical */
+            padding: 10px; /* ✅ Padding reducido */
             
-            /* ✅ Fondo transparente */
             background-color: transparent; 
-            box-shadow: none; /* ✅ Eliminada la sombra */
+            box-shadow: none; 
             box-sizing: border-box;
             
             /* ✅ Flexbox para apilar elementos verticalmente */
             display: flex;
             flex-direction: column; 
-            justify-content: flex-start; /* ✅ Alinea al inicio vertical */
-            align-items: center; /* ✅ Centra horizontalmente los elementos dentro del menú */
+            justify-content: flex-end; /* Alinea al final (abajo) */
+            align-items: flex-start; /* Alinea los elementos a la izquierda */
             
             opacity: 0;
             visibility: hidden;
@@ -234,44 +235,45 @@
         
         body.modo-video-final #colores-disponibles-wrapper {
             opacity: 1;
+            /* Eliminamos el fondo para hacerlo sutil */
+            /* background-color: rgba(0, 0, 0, 0.4); */ 
+            /* box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.2); */ 
             visibility: visible;
         }
 
         .selector-titulo { 
             color: #FFFFFF; 
-            margin: 0 0 15px 0; /* Más espacio abajo del título */
-            font-size: 0.8em; 
+            margin: 0 0 8px 0; /* ✅ Espacio reducido */
+            font-size: 0.7em; /* ✅ Fuente más pequeña */
+            font-weight: 500;
             text-shadow: 0 0 5px rgba(0,0,0,0.7); 
-            text-align: center; /* Centrar el texto del título */
-            padding: 0 5px; /* Pequeño padding para el texto */
+            text-align: left; /* ✅ Alinear a la izquierda */
             line-height: 1.2;
         }
         .botones-colores-container { 
             margin: 0; 
-            max-width: 100%; /* Ocupa el 100% del ancho del menú */
             display: flex; 
             flex-direction: column; /* ✅ Botones apilados verticalmente */
-            justify-content: flex-start; /* ✅ Alinea los botones al inicio vertical */
-            flex-wrap: nowrap; /* Evita que los botones se envuelvan */
-            gap: 10px; /* Espacio entre botones */
-            overflow-y: auto; /* Si hay muchos botones, permite scroll */
-            padding: 0 5px; /* Pequeño padding lateral */
+            justify-content: flex-start; 
+            flex-wrap: nowrap; 
+            gap: 5px; /* ✅ Espacio reducido entre botones */
+            padding: 0; 
         }
         
         .boton-color { 
-            padding: 8px 10px; /* ✅ Ajuste de padding para botones más pequeños */
-            border: 2px solid rgba(255, 255, 255, 0.7); 
-            background-color: rgba(255, 255, 255, 0.6); 
-            color: #333; 
+            padding: 5px 10px; /* ✅ Padding muy reducido */
+            border: 1px solid rgba(255, 255, 255, 0.5); /* ✅ Borde más delgado y sutil */
+            background-color: rgba(0, 0, 0, 0.3); /* ✅ Fondo sutil, semitransparente oscuro */
+            color: #FFFFFF; /* ✅ Texto blanco para contraste */
             cursor: pointer; 
-            border-radius: 20px; 
-            font-size: 0.75em; /* ✅ Fuente más pequeña */
+            border-radius: 15px; /* ✅ Bordes más suaves */
+            font-size: 0.65em; /* ✅ Fuente muy pequeña */
             transition: all 0.2s ease; 
-            text-transform: capitalize; 
+            text-transform: uppercase; 
             line-height: 1; 
             text-shadow: none; 
-            width: 100%; /* ✅ Botones ocupan todo el ancho de la barra lateral */
-            box-sizing: border-box; /* Asegura que el padding no desborde */
+            width: auto; /* ✅ Ancho que se ajusta al texto */
+            box-sizing: border-box; 
             text-align: center;
         }
         .boton-color:hover { border-color: #C0392B; background-color: rgba(192, 57, 43, 0.7); color: #FFFFFF; } 
@@ -280,28 +282,21 @@
         /* ---------------------------------------------------- */
         /* 5. MEDIA QUERIES */
         /* ---------------------------------------------------- */
-        @media (max-width: 767px) { /* Ajustes para pantallas más pequeñas (móviles) */
-            :root {
-                --menu-width-fixed: 80px; /* Menú lateral más estrecho en móviles */
-            }
-            #logo-overlay {
-                top: 10px;
-                left: 10px;
-            }
+        @media (max-width: 767px) { 
             #logo {
-                max-width: 90px;
+                max-width: 75px; /* Logo más pequeño en móvil */
             }
             #producto-nombre-flotante {
-                font-size: 4vw;
-                left: calc(50% + (var(--menu-width-fixed) / 2)); 
+                font-size: 5vw;
             }
-            .selector-titulo {
-                font-size: 0.7em;
-                margin-bottom: 10px;
+            #colores-disponibles-wrapper {
+                bottom: 10px;
+                left: 10px;
+                padding: 5px;
             }
             .boton-color {
-                font-size: 0.65em;
-                padding: 6px 5px;
+                font-size: 0.6em;
+                padding: 4px 8px;
             }
         }
         
@@ -333,7 +328,7 @@
     <div id="producto-nombre-flotante"></div>
 
     <div id="colores-disponibles-wrapper">
-        <p class="selector-titulo">COLORES</p>
+        <p class="selector-titulo">COLORES DISP.</p>
         <div class="botones-colores-container"></div>
     </div>
     
