@@ -124,17 +124,14 @@
             object-fit: cover;
         }
         
-        /* ESTILOS DEL LOGO Y NOMBRE DE PRODUCTO SUPERPUESTO */
+        /* ESTILOS DEL LOGO SUPERPUESTO */
         #logo-overlay {
             position: absolute;
             top: 1.5vh;
             left: 1.5vh;
             z-index: 10;
-            /* ✅ Eliminado el fondo */
             background-color: transparent; 
             padding: 1vw 1.5vw; 
-            border-radius: 8px;
-            /* Sombra tenue para separación, si se desea, o eliminar */
             box-shadow: none; 
             display: flex;
             flex-direction: column;
@@ -147,19 +144,14 @@
             max-height: 12vh; 
             height: auto; 
             display: block; 
-            /* ✅ Transparencia al logo */
+            /* Transparencia al logo */
             opacity: 0.7; 
             transition: opacity 0.3s ease;
         }
         
-        /* El nombre del producto ya NO estará dentro de logo-overlay en el modo final */
+        /* ✅ Eliminamos los estilos del nombre del producto, ya que ahora es flotante y no va aquí */
         .nombre-producto-video { 
-            color: #333; 
-            font-size: 2.5vw; /* Aseguramos buena visibilidad en modo normal */
-            font-weight: bold; 
-            text-transform: capitalize; 
-            margin-top: 0.5vh; 
-            line-height: 1.2; 
+            display: none !important;
         }
         
         /* Estilos del logo en el modo final (con transparencia) */
@@ -169,10 +161,10 @@
             top: 20px !important; 
             left: 20px !important; 
             z-index: 10000 !important; 
-            background-color: transparent; /* Aseguramos que no haya fondo aquí tampoco */
-            padding: 0; /* No necesitamos padding si no hay fondo */
-            box-shadow: none; /* No hay sombra sin fondo */
-            display: flex; /* Mantener flex para la columna del logo */
+            background-color: transparent; 
+            padding: 0; 
+            box-shadow: none; 
+            display: flex; 
             flex-direction: column;
             align-items: flex-start;
         }
@@ -180,28 +172,38 @@
         #video-wrapper.video-zoom #logo, 
         #video-wrapper.pantalla-completa-final #logo { 
             max-width: 180px !important; 
-            opacity: 0.7 !important; /* Aseguramos transparencia también en zoom */
+            opacity: 0.7 !important; 
         }
 
         /* ---------------------------------------------------- */
-        /* NUEVO: Contenedor para el nombre del producto flotante */
+        /* NOMBRE DEL PRODUCTO FLOTANTE (Centrado y Sutil) */
         /* ---------------------------------------------------- */
         #producto-nombre-flotante {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 100; /* Asegurarse de que esté por encima del video y el menú */
+            z-index: 100; 
             color: white;
-            font-size: 4vw; /* Tamaño responsivo para el título */
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 5px rgba(0, 0, 0, 0.5); /* Sombra para legibilidad */
+            
+            /* ✅ TAMAÑO Y FUENTE SUTIL */
+            font-size: 3vw; 
+            font-weight: 400; /* Más delgado */
+            font-family: 'Helvetica Neue', sans-serif; /* Fuente limpia */
+
+            /* ✅ EFECTO DE RÉPLICA SUTIL (Múltiples capas de sombra con transparencia) */
+            text-shadow: 
+                0 -1px 1px rgba(255, 255, 255, 0.4), /* Réplica 1 (arriba) */
+                0 -2px 2px rgba(255, 255, 255, 0.2), /* Réplica 2 */
+                0 -3px 3px rgba(255, 255, 255, 0.1), /* Réplica 3 */
+                0 0 5px rgba(0, 0, 0, 0.8); /* Sombra principal para legibilidad */
+
             text-transform: uppercase;
             letter-spacing: 2px;
-            opacity: 0; /* Inicialmente oculto */
+            opacity: 0; 
             visibility: hidden;
             transition: opacity 0.5s ease;
-            white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+            white-space: nowrap; 
         }
 
         /* Mostrar el nombre del producto flotante solo en el modo final */
@@ -209,18 +211,7 @@
             opacity: 1;
             visibility: visible;
         }
-
-        /* En el estado inicial, ocultamos el nombre del producto en #logo-overlay */
-        #logo-overlay .nombre-producto-video {
-            display: block; /* Volvemos a mostrarlo en el estado inicial si se desea */
-            /* Si quieres que NO aparezca en el estado inicial, cambia a display: none; */
-        }
-        /* Y cuando está en modo video final, lo ocultamos para que solo se vea el flotante */
-        body.modo-video-final #logo-overlay .nombre-producto-video {
-            display: none !important;
-        }
-
-
+        
         /* ---------------------------------------------------- */
         /* 4. ESTILOS DEL MENÚ DE COLORES (Fijo en la parte inferior) */
         /* ---------------------------------------------------- */
@@ -232,10 +223,9 @@
             z-index: 50; 
             height: auto; 
             
-            /* ✅ CLAVE: Usamos el área segura para el padding inferior */
             padding: 5px 0 calc(25px + var(--safe-bottom)) 0; 
             
-            /* ✅ Aseguramos que el fondo inicial sea transparente */
+            /* ✅ Fondo inicial transparente para evitar el "fondo doble" */
             background-color: transparent; 
             box-sizing: border-box;
             display: flex;
@@ -250,9 +240,8 @@
         /* Mostrar el menú solo en el estado final (¡Fondo del menú aquí!) */
         body.modo-video-final #colores-disponibles-wrapper {
             opacity: 1;
-            /* ✅ Fondo del menú unificado y más sutil, similar al logo */
             background-color: rgba(0, 0, 0, 0.4); 
-            box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.2); /* Sombra superior */
+            box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.2); 
             visibility: visible;
         }
 
@@ -291,7 +280,7 @@
                 padding: 5px 0 25px 0; 
             }
             #producto-nombre-flotante {
-                font-size: 3vw; /* Ajuste para escritorio */
+                font-size: 2vw; /* Ajuste para escritorio */
             }
         }
         
@@ -316,11 +305,11 @@
         </video>
         <div id="logo-overlay">
             <img id="logo" src="" alt="Logo del Distribuidor">
-            <h4 id="producto-nombre-video" class="nombre-producto-video"></h4> 
-        </div>
+            </div>
     </div>
     
-    <div id="producto-nombre-flotante"></div>
+    
+<div id="producto-nombre-flotante"></div>
 
     <div id="colores-disponibles-wrapper">
         <p class="selector-titulo">Ver otros colores disponibles:</p>
@@ -391,9 +380,6 @@ function actualizarContenido(modelo, color, distribuidorID) {
     
     // ✅ Actualizamos el nuevo elemento flotante con el nombre del producto
     document.getElementById('producto-nombre-flotante').textContent = nombreVisual; 
-    
-    // El elemento original en overlay ahora se gestiona con display: none en CSS para el modo final
-    document.getElementById('producto-nombre-video').textContent = nombreVisual; 
 }
 
 
