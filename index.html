@@ -195,9 +195,14 @@
         }
 
         @keyframes floatVertical {
-            0% { transform: translate(-50%, -50%) translateY(0); } /* Combinación 1 */
-            50% { transform: translate(-50%, -50%) translateY(-5px); } /* Combinación 2 */
-            100% { transform: translate(-50%, -50%) translateY(0); } /* Combinación 1 */
+            /* Mantiene el centrado (-50% en X, -50% en Y) y aplica 0px de movimiento vertical adicional */
+            0% { transform: translate(-50%, -50%); } 
+    
+            /* Mantiene el centrado (-50% en X) y mueve -5px adicionales hacia arriba (-50% - 5px) */
+            50% { transform: translate(-50%, calc(-50% - 5px)); } 
+    
+            /* Vuelve al estado inicial */
+            100% { transform: translate(-50%, -50%); }
         }
 
         body:not(.modo-video-final) #producto-nombre-flotante {
