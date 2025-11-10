@@ -137,7 +137,20 @@
             flex-direction: column;
             align-items: flex-start;
             gap: 0.5vh;
+            opacity: 0; /* ✅ Oculto inicialmente */
+            transition: opacity 0.5s ease 0.3s; /* Transición con pequeño retraso */
         }
+
+        /* ✅ Aseguramos que el logo y el nombre SÓLO aparezcan en el estado final */
+        #video-wrapper.pantalla-completa-final #logo-overlay {
+            opacity: 1; 
+        }
+
+        /* ✅ Ocultamos el logo en el zoom inicial */
+        #video-wrapper.video-zoom #logo-overlay {
+            opacity: 0;
+        }
+
 
         #logo { 
             max-width: 15vw; 
@@ -149,7 +162,6 @@
             transition: opacity 0.3s ease;
         }
         
-        /* ✅ Eliminamos los estilos del nombre del producto, ya que ahora es flotante y no va aquí */
         .nombre-producto-video { 
             display: none !important;
         }
@@ -187,22 +199,21 @@
             color: white;
             
             /* ✅ TAMAÑO Y FUENTE SUTIL */
-            font-size: 3vw; 
-            font-weight: 400; /* Más delgado */
-            font-family: 'Helvetica Neue', sans-serif; /* Fuente limpia */
+            font-size: 3.5vw; 
+            font-weight: 300; /* Más delgado */
+            font-family: 'Helvetica Neue', sans-serif; 
 
-            /* ✅ EFECTO DE RÉPLICA SUTIL (Múltiples capas de sombra con transparencia) */
+            /* ✅ EFECTO SUTIL DE AURA/RESPLANDOR (Sin réplicas definidas) */
             text-shadow: 
-                0 -1px 1px rgba(255, 255, 255, 0.4), /* Réplica 1 (arriba) */
-                0 -2px 2px rgba(255, 255, 255, 0.2), /* Réplica 2 */
-                0 -3px 3px rgba(255, 255, 255, 0.1), /* Réplica 3 */
-                0 0 5px rgba(0, 0, 0, 0.8); /* Sombra principal para legibilidad */
+                0 0 5px rgba(255, 255, 255, 0.4), /* Resplandor blanco sutil */
+                0 0 10px rgba(0, 0, 0, 0.8),    /* Sombra profunda para contraste */
+                0 0 15px rgba(0, 0, 0, 0.5);    /* Sombra más amplia */
 
             text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0; 
+            letter-spacing: 3px; /* Aumentamos el espaciado para sutileza */
+            opacity: 0; /* Inicialmente oculto */
             visibility: hidden;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.5s ease 0.5s; /* ✅ Transición con retraso para que aparezca después del zoom */
             white-space: nowrap; 
         }
 
@@ -212,6 +223,12 @@
             visibility: visible;
         }
         
+        /* ✅ Ocultamos el nombre flotante en el zoom inicial */
+        body.zoom-active #producto-nombre-flotante {
+            opacity: 0;
+        }
+
+
         /* ---------------------------------------------------- */
         /* 4. ESTILOS DEL MENÚ DE COLORES (Fijo en la parte inferior) */
         /* ---------------------------------------------------- */
@@ -223,9 +240,9 @@
             z-index: 50; 
             height: auto; 
             
+            /* ✅ CLAVE: Usamos el área segura para el padding inferior */
             padding: 5px 0 calc(25px + var(--safe-bottom)) 0; 
             
-            /* ✅ Fondo inicial transparente para evitar el "fondo doble" */
             background-color: transparent; 
             box-sizing: border-box;
             display: flex;
@@ -305,7 +322,7 @@
         </video>
         <div id="logo-overlay">
             <img id="logo" src="" alt="Logo del Distribuidor">
-            </div>
+        </div>
     </div>
     
     
@@ -378,7 +395,7 @@ function actualizarContenido(modelo, color, distribuidorID) {
     document.getElementById('modelo-nombre').textContent = nombreVisual; 
     document.getElementById('modelo-nombre-final').textContent = nombreVisual; 
     
-    // ✅ Actualizamos el nuevo elemento flotante con el nombre del producto
+    // Actualizamos el nuevo elemento flotante con el nombre del producto
     document.getElementById('producto-nombre-flotante').textContent = nombreVisual; 
 }
 
@@ -439,7 +456,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const partes = modeloBrutoUpper.split('_');
         
-        colorURL = partes[partes.length - 1]; 
+        colorURL = partes[parTES.length - 1]; 
         modeloBase = partes.slice(0, partes.length - 1).join('_'); 
 
         if (!CATALOGO_COLORES[modeloBase]) {
