@@ -165,8 +165,9 @@
         /* ---------------------------------------------------- */
         #producto-nombre-flotante {
             position: fixed;
-            /*top: 50%;
-            left: 50%; */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             z-index: 100; 
             color: white;
            padding: 10px 20px; /* Más padding para que el fondo sea más visible */
@@ -195,9 +196,9 @@
         }
 
         @keyframes floatVertical {
-            0% { transform: translate(-50%, -50%) translateY(0); }
-            50% { transform: translate(-50%, -50%) translateY(-5px); } /* Sube 5px */
-            100% { transform: translate(-50%, -50%) translateY(0); }
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); } /* Sube 5px */
+            100% { transform: translateY(0); }
         }
 
         body:not(.modo-video-final) #producto-nombre-flotante {
