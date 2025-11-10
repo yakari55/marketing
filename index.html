@@ -10,9 +10,7 @@
         /* ---------------------------------------------------- */
         :root {
             --safe-bottom: env(safe-area-inset-bottom, 20px); 
-            /* ✅ Variable eliminada, volvemos a la lógica de menú inferior */
             --menu-height-fixed: 120px; 
-            /* Altura base de separación para el menú */
         }
 
         @keyframes fadeIn {
@@ -143,7 +141,7 @@
         }
 
         #logo { 
-            /* ✅ Logo más pequeño */
+            /* Logo más pequeño */
             max-width: 90px; 
             height: auto; 
             display: block; 
@@ -167,7 +165,7 @@
         #producto-nombre-flotante {
             position: fixed;
             top: 50%;
-            left: 50%; /* ✅ Vuelve al centro horizontal */
+            left: 50%; 
             transform: translate(-50%, -50%);
             z-index: 100; 
             color: white;
@@ -209,24 +207,25 @@
         /* ---------------------------------------------------- */
         #colores-disponibles-wrapper {
             position: fixed; 
-            /* ✅ Posicionamiento en la esquina inferior izquierda */
+            /* Posicionamiento en la esquina inferior izquierda */
             bottom: 20px; 
             left: 20px;
-            width: auto; /* ✅ Ancho automático según contenido */
+            width: auto; 
             height: auto; 
             z-index: 50; 
             
-            padding: 10px; /* ✅ Padding reducido */
+            padding: 0; /* ✅ Eliminado el padding del contenedor principal */
             
+            /* ✅ Contenedor principal sin fondo */
             background-color: transparent; 
             box-shadow: none; 
             box-sizing: border-box;
             
-            /* ✅ Flexbox para apilar elementos verticalmente */
+            /* Flexbox para apilar elementos verticalmente */
             display: flex;
             flex-direction: column; 
-            justify-content: flex-end; /* Alinea al final (abajo) */
-            align-items: flex-start; /* Alinea los elementos a la izquierda */
+            justify-content: flex-end; 
+            align-items: flex-start; 
             
             opacity: 0;
             visibility: hidden;
@@ -235,56 +234,72 @@
         
         body.modo-video-final #colores-disponibles-wrapper {
             opacity: 1;
-            /* Eliminamos el fondo para hacerlo sutil */
-            /* background-color: rgba(0, 0, 0, 0.4); */ 
-            /* box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.2); */ 
             visibility: visible;
         }
 
         .selector-titulo { 
             color: #FFFFFF; 
-            margin: 0 0 8px 0; /* ✅ Espacio reducido */
-            font-size: 0.7em; /* ✅ Fuente más pequeña */
+            margin: 0 0 8px 0; 
+            font-size: 0.7em; 
             font-weight: 500;
             text-shadow: 0 0 5px rgba(0,0,0,0.7); 
-            text-align: left; /* ✅ Alinear a la izquierda */
+            text-align: left; 
             line-height: 1.2;
+            
+            /* ✅ Fondo semitransparente solo para el título */
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 4px 8px; /* Pequeño padding para el fondo */
+            border-radius: 5px; /* Bordes redondeados sutiles */
         }
         .botones-colores-container { 
             margin: 0; 
             display: flex; 
-            flex-direction: column; /* ✅ Botones apilados verticalmente */
+            flex-direction: column; 
             justify-content: flex-start; 
             flex-wrap: nowrap; 
-            gap: 5px; /* ✅ Espacio reducido entre botones */
+            gap: 5px; 
             padding: 0; 
         }
         
         .boton-color { 
-            padding: 5px 10px; /* ✅ Padding muy reducido */
-            border: 1px solid rgba(255, 255, 255, 0.5); /* ✅ Borde más delgado y sutil */
-            background-color: rgba(0, 0, 0, 0.3); /* ✅ Fondo sutil, semitransparente oscuro */
-            color: #FFFFFF; /* ✅ Texto blanco para contraste */
+            padding: 5px 10px; 
+            /* ✅ Se mantiene el borde sutil */
+            border: 1px solid rgba(255, 255, 255, 0.5); 
+            /* ✅ Fondo transparente */
+            background-color: transparent; 
+            color: #FFFFFF; 
             cursor: pointer; 
-            border-radius: 15px; /* ✅ Bordes más suaves */
-            font-size: 0.65em; /* ✅ Fuente muy pequeña */
+            border-radius: 15px; 
+            font-size: 0.65em; 
             transition: all 0.2s ease; 
             text-transform: uppercase; 
             line-height: 1; 
             text-shadow: none; 
-            width: auto; /* ✅ Ancho que se ajusta al texto */
+            width: auto; 
             box-sizing: border-box; 
             text-align: center;
         }
-        .boton-color:hover { border-color: #C0392B; background-color: rgba(192, 57, 43, 0.7); color: #FFFFFF; } 
-        .boton-color.activo { border-color: #C0392B; background-color: #C0392B; color: #FFFFFF; font-weight: bold; transform: scale(1.05); }
+        /* Ajuste para el hover: sigue mostrando un fondo al pasar el ratón/tocar */
+        .boton-color:hover { 
+            border-color: #C0392B; 
+            background-color: rgba(192, 57, 43, 0.7); 
+            color: #FFFFFF; 
+        } 
+        /* Ajuste para el estado activo: sigue mostrando un fondo para indicar la selección */
+        .boton-color.activo { 
+            border-color: #C0392B; 
+            background-color: #C0392B; 
+            color: #FFFFFF; 
+            font-weight: bold; 
+            transform: scale(1.05); 
+        }
 
         /* ---------------------------------------------------- */
         /* 5. MEDIA QUERIES */
         /* ---------------------------------------------------- */
         @media (max-width: 767px) { 
             #logo {
-                max-width: 75px; /* Logo más pequeño en móvil */
+                max-width: 75px; 
             }
             #producto-nombre-flotante {
                 font-size: 5vw;
@@ -292,7 +307,7 @@
             #colores-disponibles-wrapper {
                 bottom: 10px;
                 left: 10px;
-                padding: 5px;
+                padding: 0; /* Padding del contenedor principal en móvil */
             }
             .boton-color {
                 font-size: 0.6em;
