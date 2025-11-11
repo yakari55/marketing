@@ -351,7 +351,74 @@
         }
 
         /* ---------------------------------------------------- */
-        /* 5. MEDIA QUERIES */
+        /* 5. PANTALLA FINAL AL TERMINAR EL VIDEO */
+        /* ---------------------------------------------------- */
+        #final-screen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: black; /* O el color que prefieras para el fondo final */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000; /* Asegura que esté por encima de todo */
+            opacity: 0; /* Oculto por defecto */
+            visibility: hidden; /* Oculto por defecto */
+            transition: opacity 1s ease, visibility 1s ease; /* Transición suave */
+        }
+        
+        #final-screen-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        #final-logo {
+            max-width: 200px; /* Ajusta el tamaño del logo */
+            height: auto;
+            margin-bottom: 20px; /* Espacio entre el logo y el eslogan */
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInSlideUp 1s ease-out 0.5s forwards; /* Animación para el logo */
+        }
+        
+        #final-slogan {
+            color: white;
+            font-size: 4vw; /* Ajusta el tamaño del eslogan */
+            font-weight: bold;
+            text-align: center;
+            padding: 0 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInSlideUp 1s ease-out 1s forwards; /* Animación para el eslogan, con retraso */
+        }
+        
+        /* Animación para que aparezcan suavemente */
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* MEDIA QUERY PARA DISPOSITIVOS MÓVILES (ajusta el tamaño del logo y eslogan) */
+        @media (max-width: 767px) {
+            #final-logo {
+                max-width: 150px; /* Logo más pequeño en móviles */
+            }
+            #final-slogan {
+                font-size: 7vw; /* Eslogan más grande en móviles */
+            }
+        }
+
+        /* ---------------------------------------------------- */
+        /* 6. MEDIA QUERIES */
         /* ---------------------------------------------------- */
         @media (max-width: 767px) { 
             #logo {
@@ -556,7 +623,32 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         document.body.innerHTML = '<h1>Error: Código de producto o distribuidor no encontrado.</h1>';
     }
-});
+
+        // ------------------------------------------------------------------
+        // NUEVO: Manejar el final del video para mostrar la pantalla final
+        // ------------------------------------------------------------------
+        const videoPlayer = document.getElementById('video-player');
+        const finalScreenOverlay = document.getElementById('final-screen-overlay');
+        
+        videoPlayer.addEventListener('ended', () => {
+            // Cuando el video termina:
+            // 1. Ocultar todos los overlays del video (logo flotante, nombre, selectores)
+            document.body.classList.remove('show-overlay-elements');
+            document.getElementById('colores-disponibles-wrapper').style.opacity = '0';
+            document.getElementById('colores-disponibles-wrapper').style.visibility = 'hidden';
+        
+            // 2. Ocultar el video-wrapper si aún está visible (aunque con z-index alto, esto es redundante)
+            document.getElementById('video-wrapper').style.display = 'none'; 
+            document.body.classList.remove('modo-video-final');
+        
+            // 3. Mostrar la pantalla final
+            finalScreenOverlay.classList.add('show');
+        });
+    
 </script> 
+    <div id="final-screen-overlay">
+        <img id="final-logo" src="./empresa/vizcaya.png" alt="Logo de la Empresa Final">
+        <p id="final-slogan">"Espacios que Enamoran"</p>
+    </div>
 </body>
 </html>
