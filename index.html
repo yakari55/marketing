@@ -167,7 +167,7 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            animation: waveEffect 4s ease-in-out infinite;
+            animation: waveEffect 2.5s ease-in-out infinite;
             z-index: 100; 
             color: white;
            padding: 10px 20px; /* Más padding para que el fondo sea más visible */
@@ -195,23 +195,23 @@
         }
 
         @keyframes waveEffect {
-           0% { 
-                transform: translate(-50%, -50%) translateY(0px) translateX(0px); 
+             0% { 
+                transform: translate(-50%, -50%) translateY(0px) translateX(0px) scale(1.0); 
             }
             25% { 
-                transform: translate(-50%, -50%) translateY(-7px) translateX(2px) scale(1.01); /* Sube un poco, se mueve a la derecha, se agranda */
+                transform: translate(-50%, -50%) translateY(-12px) translateX(5px) scale(1.03); /* Más arriba, más a la derecha, más grande */
             }
             50% { 
                 transform: translate(-50%, -50%) translateY(0px) translateX(0px) scale(1.0); /* Vuelve al centro */
             }
             75% { 
-                transform: translate(-50%, -50%) translateY(7px) translateX(-2px) scale(0.99); /* Baja un poco, se mueve a la izquierda, se encoge */
+                transform: translate(-50%, -50%) translateY(12px) translateX(-5px) scale(0.97); /* Más abajo, más a la izquierda, más pequeño */
             }
             100% { 
                 transform: translate(-50%, -50%) translateY(0px) translateX(0px) scale(1.0); /* Vuelve al centro */
-                }
             }
-
+            }
+        
         body:not(.modo-video-final) #producto-nombre-flotante {
             opacity: 0 !important;
             visibility: hidden !important;
