@@ -82,7 +82,7 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
             border-radius: 12px;
             overflow: hidden;
-            transition: all 1s ease-out; 
+            transition: all 3s ease-out; 
             z-index: 1;
         }
         
@@ -502,10 +502,15 @@ function aplicarZoomInicial() {
     videoWrapper.classList.add('video-zoom'); 
     
     videoPlayer.currentTime = 0; 
-    videoPlayer.play();
+    videoPlayer.load(); 
+    videoPlayer.play().catch(error => {
+    // Esto captura errores si el navegador bloquea el autoplay.
+    console.log("Autoplay bloqueado, el usuario debe interactuar para reproducir el video completo.");
+    });
 
     // 4. Temporizador 1: Salir del Zoom y activar Overlays
-    const duracionZoom = 2000; // 2 segundos para la transición CSS de zoom
+    const duracionZoom = 3000; // 3 segundos para la transición CSS de zoom
+    const duracionVisualizacionOverlays = 10000; // 10 segundos
 
     setTimeout(() => {
         // Fin de la transición de zoom
@@ -602,6 +607,7 @@ function generarBotones(modeloBase, distribuidorID, colorInicial) {
             document.querySelectorAll('.boton-color').forEach(btn => btn.classList.remove('activo'));
             boton.classList.add('activo');
             actualizarContenido(modeloBase, color, distribuidorID);
+            const videoPlayer = document.getElementById('video-player');
             aplicarZoomInicial(); 
         };
         botonesContainer.appendChild(boton);
