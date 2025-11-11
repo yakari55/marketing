@@ -180,13 +180,13 @@
             /* Efecto de réplica */
             text-shadow: 
                 /* Borde/Contorno Negro para Contraste */
-                1px 1px 0px rgba(0, 0, 0, 1),
-                -1px -1px 0px rgba(0, 0, 0, 1),
-                1px -1px 0px rgba(0, 0, 0, 1),
-                -1px 1px 0px rgba(0, 0, 0, 1),
+                1px 1px 0px rgba(0, 0, 0, 0.8),
+                -1px -1px 0px rgba(0, 0, 0, 0.8),
+                1px -1px 0px rgba(0, 0, 0, 0.8),
+                -1px 1px 0px rgba(0, 0, 0, 0.8),
                 0 0 8px rgba(255, 255, 255, 0.7),  /* Brillo blanco sutil base (punto de partida de la animación) */        
                /* 0 0 15px rgba(0, 0, 0, 0.4);   */ 
-                0 0 15px rgba(0, 0, 0, 0.4); /* Sombra negra de fondo (difusa) para profundidad */
+                0 0 15px rgba(0, 0, 0, 0.6); /* Sombra negra de fondo (difusa) para profundidad */
 
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -200,53 +200,53 @@
           0% { 
                 transform: translate(-50%, -50%) translateY(0px) translateX(0px) scale(1.0); 
                 text-shadow: 
-                /* ✅ Contorno (añadido en todos los pasos) */
-                1px 1px 0px rgba(0, 0, 0, 1), -1px -1px 0px rgba(0, 0, 0, 1), 1px -1px 0px rgba(0, 0, 0, 1), -1px 1px 0px rgba(0, 0, 0, 1),
-                /* Sombra base */
-                0 0 5px rgba(255, 255, 255, 0.7), 
-                0 0 15px rgba(0, 0, 0, 0.4);      
+                    /* ✅ Contorno sutil */
+                    1px 1px 0px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(0, 0, 0, 0.8), 1px -1px 0px rgba(0, 0, 0, 0.8), -1px 1px 0px rgba(0, 0, 0, 0.8),
+                    /* Sombra base ajustada */
+                    0 0 5px rgba(255, 255, 255, 0.7), 
+                    0 0 15px rgba(0, 0, 0, 0.7);      
             }
             25% { 
                 transform: translate(-50%, -50%) translateY(-12px) translateX(5px) scale(1.03); 
                 text-shadow: 
-                    /* ✅ Contorno (añadido en todos los pasos) */
-                    1px 1px 0px rgba(0, 0, 0, 1), -1px -1px 0px rgba(0, 0, 0, 1), 1px -1px 0px rgba(0, 0, 0, 1), -1px 1px 0px rgba(0, 0, 0, 1),
-                    /* Rastro luminoso que se extiende hacia abajo (opuesto al movimiento principal hacia arriba) */
-                    0 20px 15px rgba(255, 255, 255, 0.5), 
-                    0 10px 10px rgba(255, 255, 255, 0.7), 
-                    /* Brillo principal alrededor del texto cuando está arriba */
+                    /* ✅ Contorno sutil */
+                    1px 1px 0px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(0, 0, 0, 0.8), 1px -1px 0px rgba(0, 0, 0, 0.8), -1px 1px 0px rgba(0, 0, 0, 0.8),
+                    /* ✅ Destello más prolongado/extenso (offset 30px, blur 20px) */
+                    0 30px 20px rgba(255, 255, 255, 0.4), /* Rastro más largo */
+                    0 15px 12px rgba(255, 255, 255, 0.6), /* Rastro medio */
+                    /* Brillo principal */
                     0 0 10px rgba(255, 255, 255, 0.9), 
                     0 0 25px rgba(255, 255, 255, 0.6);
             }
             50% { 
                 transform: translate(-50%, -50%) translateY(0px) translateX(0px) scale(1.0); 
                 text-shadow: 
-                    /* ✅ Contorno (añadido en todos los pasos) */
-                    1px 1px 0px rgba(0, 0, 0, 1), -1px -1px 0px rgba(0, 0, 0, 1), 1px -1px 0px rgba(0, 0, 0, 1), -1px 1px 0px rgba(0, 0, 0, 1),
-                    /* Vuelve a la sombra base en el centro */
+                    /* ✅ Contorno sutil */
+                    1px 1px 0px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(0, 0, 0, 0.8), 1px -1px 0px rgba(0, 0, 0, 0.8), -1px 1px 0px rgba(0, 0, 0, 0.8),
+                    /* Sombra base ajustada */
                     0 0 5px rgba(255, 255, 255, 0.7), 
-                    0 0 15px rgba(0, 0, 0, 0.4);
+                    0 0 15px rgba(0, 0, 0, 0.7);
             }
             75% { 
                 transform: translate(-50%, -50%) translateY(12px) translateX(-5px) scale(0.97); 
                 text-shadow: 
-                    /* ✅ Contorno (añadido en todos los pasos) */
-                    1px 1px 0px rgba(0, 0, 0, 1), -1px -1px 0px rgba(0, 0, 0, 1), 1px -1px 0px rgba(0, 0, 0, 1), -1px 1px 0px rgba(0, 0, 0, 1),
-                    /* Rastro luminoso que se extiende hacia arriba (opuesto al movimiento principal hacia abajo) */
-                    0 -20px 15px rgba(255, 255, 255, 0.5), 
-                    0 -10px 10px rgba(255, 255, 255, 0.7), 
-                    /* Brillo principal alrededor del texto cuando está abajo */
+                    /* ✅ Contorno sutil */
+                    1px 1px 0px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(0, 0, 0, 0.8), 1px -1px 0px rgba(0, 0, 0, 0.8), -1px 1px 0px rgba(0, 0, 0, 0.8),
+                    /* ✅ Destello más prolongado/extenso (offset -30px, blur 20px) */
+                    0 -30px 20px rgba(255, 255, 255, 0.4), /* Rastro más largo */
+                    0 -15px 12px rgba(255, 255, 255, 0.6), /* Rastro medio */
+                    /* Brillo principal */
                     0 0 10px rgba(255, 255, 255, 0.9), 
                     0 0 25px rgba(255, 255, 255, 0.6);
             }
             100% { 
                 transform: translate(-50%, -50%) translateY(0px) translateX(0px) scale(1.0); 
                 text-shadow: 
-                    /* ✅ Contorno (añadido en todos los pasos) */
-                    1px 1px 0px rgba(0, 0, 0, 1), -1px -1px 0px rgba(0, 0, 0, 1), 1px -1px 0px rgba(0, 0, 0, 1), -1px 1px 0px rgba(0, 0, 0, 1),
-                    /* Vuelve a la sombra base */
+                    /* ✅ Contorno sutil */
+                    1px 1px 0px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(0, 0, 0, 0.8), 1px -1px 0px rgba(0, 0, 0, 0.8), -1px 1px 0px rgba(0, 0, 0, 0.8),
+                    /* Sombra base ajustada */
                     0 0 5px rgba(255, 255, 255, 0.7), 
-                    0 0 15px rgba(0, 0, 0, 0.4); 
+                    0 0 15px rgba(0, 0, 0, 0.7); 
             }
         }
         
