@@ -179,13 +179,14 @@
 
             /* Efecto de réplica */
             text-shadow: 
-                /*0 -1px 1px rgba(255, 255, 255, 0.4), 
-                0 -2px 2px rgba(255, 255, 255, 0.2), 
-                0 1px 1px rgba(255, 255, 255, 0.4),  
-                0 2px 2px rgba(255, 255, 255, 0.2), */
-                0 0 8px rgba(255, 255, 255, 0.7),          
+                /* Borde/Contorno Negro para Contraste */
+                1px 1px 0px rgba(0, 0, 0, 1),
+                -1px -1px 0px rgba(0, 0, 0, 1),
+                1px -1px 0px rgba(0, 0, 0, 1),
+                -1px 1px 0px rgba(0, 0, 0, 1),
+                0 0 8px rgba(255, 255, 255, 0.7),  /* Brillo blanco sutil base (punto de partida de la animación) */        
                /* 0 0 15px rgba(0, 0, 0, 0.4);   */ 
-                0 0 15px rgba(0, 0, 0, 0.4);
+                0 0 15px rgba(0, 0, 0, 0.4); /* Sombra negra de fondo (difusa) para profundidad */
 
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -196,50 +197,58 @@
         }
 
         @keyframes slideUpWave {
-             0% { 
+          0% { 
                 transform: translate(-50%, -50%) translateY(0px) translateX(0px) scale(1.0); 
-                /* Sombra base (puede ser blanca o un poco más sutil) */
                 text-shadow: 
-                    0 0 5px rgba(255, 255, 255, 0.7), /* Un brillo sutil alrededor del texto */
-                    0 0 15px rgba(0, 0, 0, 0.4);      /* La sombra negra de fondo para contraste */
+                /* ✅ Contorno (añadido en todos los pasos) */
+                1px 1px 0px rgba(0, 0, 0, 1), -1px -1px 0px rgba(0, 0, 0, 1), 1px -1px 0px rgba(0, 0, 0, 1), -1px 1px 0px rgba(0, 0, 0, 1),
+                /* Sombra base */
+                0 0 5px rgba(255, 255, 255, 0.7), 
+                0 0 15px rgba(0, 0, 0, 0.4);      
             }
             25% { 
                 transform: translate(-50%, -50%) translateY(-12px) translateX(5px) scale(1.03); 
-                /* ✅ EFECTO DESTELOO/RÉPLICA LUMINOSA: */
                 text-shadow: 
+                    /* ✅ Contorno (añadido en todos los pasos) */
+                    1px 1px 0px rgba(0, 0, 0, 1), -1px -1px 0px rgba(0, 0, 0, 1), 1px -1px 0px rgba(0, 0, 0, 1), -1px 1px 0px rgba(0, 0, 0, 1),
                     /* Rastro luminoso que se extiende hacia abajo (opuesto al movimiento principal hacia arriba) */
-                    0 20px 15px rgba(255, 255, 255, 0.5), /* Más bajo, más extendido, más brillante */
-                    0 10px 10px rgba(255, 255, 255, 0.7), /* Otra capa de rastro más cercana */
+                    0 20px 15px rgba(255, 255, 255, 0.5), 
+                    0 10px 10px rgba(255, 255, 255, 0.7), 
                     /* Brillo principal alrededor del texto cuando está arriba */
                     0 0 10px rgba(255, 255, 255, 0.9), 
                     0 0 25px rgba(255, 255, 255, 0.6);
             }
             50% { 
                 transform: translate(-50%, -50%) translateY(0px) translateX(0px) scale(1.0); 
-                /* Vuelve a la sombra base en el centro */
                 text-shadow: 
+                    /* ✅ Contorno (añadido en todos los pasos) */
+                    1px 1px 0px rgba(0, 0, 0, 1), -1px -1px 0px rgba(0, 0, 0, 1), 1px -1px 0px rgba(0, 0, 0, 1), -1px 1px 0px rgba(0, 0, 0, 1),
+                    /* Vuelve a la sombra base en el centro */
                     0 0 5px rgba(255, 255, 255, 0.7), 
                     0 0 15px rgba(0, 0, 0, 0.4);
             }
             75% { 
                 transform: translate(-50%, -50%) translateY(12px) translateX(-5px) scale(0.97); 
-                /* ✅ EFECTO DESTELOO/RÉPLICA LUMINOSA: */
                 text-shadow: 
+                    /* ✅ Contorno (añadido en todos los pasos) */
+                    1px 1px 0px rgba(0, 0, 0, 1), -1px -1px 0px rgba(0, 0, 0, 1), 1px -1px 0px rgba(0, 0, 0, 1), -1px 1px 0px rgba(0, 0, 0, 1),
                     /* Rastro luminoso que se extiende hacia arriba (opuesto al movimiento principal hacia abajo) */
-                    0 -20px 15px rgba(255, 255, 255, 0.5), /* Más alto, más extendido, más brillante */
-                    0 -10px 10px rgba(255, 255, 255, 0.7), /* Otra capa de rastro más cercana */
+                    0 -20px 15px rgba(255, 255, 255, 0.5), 
+                    0 -10px 10px rgba(255, 255, 255, 0.7), 
                     /* Brillo principal alrededor del texto cuando está abajo */
                     0 0 10px rgba(255, 255, 255, 0.9), 
                     0 0 25px rgba(255, 255, 255, 0.6);
             }
             100% { 
                 transform: translate(-50%, -50%) translateY(0px) translateX(0px) scale(1.0); 
-                /* Vuelve a la sombra base */
                 text-shadow: 
+                    /* ✅ Contorno (añadido en todos los pasos) */
+                    1px 1px 0px rgba(0, 0, 0, 1), -1px -1px 0px rgba(0, 0, 0, 1), 1px -1px 0px rgba(0, 0, 0, 1), -1px 1px 0px rgba(0, 0, 0, 1),
+                    /* Vuelve a la sombra base */
                     0 0 5px rgba(255, 255, 255, 0.7), 
                     0 0 15px rgba(0, 0, 0, 0.4); 
             }
-            }
+        }
         
         body:not(.modo-video-final) #producto-nombre-flotante {
             opacity: 0 !important;
