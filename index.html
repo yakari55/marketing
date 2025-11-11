@@ -167,7 +167,7 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            animation: floatVertical 3s ease-in-out infinite;
+            animation: waveEffect 4s ease-in-out infinite;
             z-index: 100; 
             color: white;
            padding: 10px 20px; /* Más padding para que el fondo sea más visible */
@@ -195,15 +195,22 @@
         }
 
         @keyframes floatVertical {
-            /* Mantiene el centrado (-50% en X, -50% en Y) y aplica 0px de movimiento vertical adicional */
-            0% { transform: translate(-50%, -50%); } 
-    
-            /* Mantiene el centrado (-50% en X) y mueve -5px adicionales hacia arriba (-50% - 5px) */
-            50% { transform: translate(-50%, calc(-50% - 5px)); } 
-    
-            /* Vuelve al estado inicial */
-            100% { transform: translate(-50%, -50%); }
-        }
+           0% { 
+                transform: translate(-50%, -50%) translateY(0px) translateX(0px); 
+            }
+            25% { 
+                transform: translate(-50%, -50%) translateY(-7px) translateX(2px) scale(1.01); /* Sube un poco, se mueve a la derecha, se agranda */
+            }
+            50% { 
+                transform: translate(-50%, -50%) translateY(0px) translateX(0px) scale(1.0); /* Vuelve al centro */
+            }
+            75% { 
+                transform: translate(-50%, -50%) translateY(7px) translateX(-2px) scale(0.99); /* Baja un poco, se mueve a la izquierda, se encoge */
+            }
+            100% { 
+                transform: translate(-50%, -50%) translateY(0px) translateX(0px) scale(1.0); /* Vuelve al centro */
+                }
+            }
 
         body:not(.modo-video-final) #producto-nombre-flotante {
             opacity: 0 !important;
