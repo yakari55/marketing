@@ -11,6 +11,7 @@
         :root {
             --safe-bottom: env(safe-area-inset-bottom, 20px); 
             --menu-height-fixed: 120px; 
+            --color-slogan: #333333; /* Color oscuro para eslogan */
         }
 
         @keyframes fadeIn {
@@ -23,7 +24,6 @@
             text-align: center;
             margin: 0;
             box-sizing: border-box;
-            /* ✅ RESTAURADO: Fondo degradado para el estado inicial (título visible) */
             background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%); 
             min-height: 100vh;
             display: flex;
@@ -37,7 +37,7 @@
             overflow-y: auto; 
         }
 
-        /* Oculta los elementos estáticos durante el zoom, PERO NO LOS OVERLAYS */
+        /* Oculta los elementos estáticos durante el zoom */
         body.zoom-active > *:not(#video-wrapper):not(#logo-overlay):not(#producto-nombre-flotante) { 
             opacity: 0;
             pointer-events: none;
@@ -49,7 +49,7 @@
             padding: 0;
             margin: 0;
             min-height: 100vh;
-            /* ✅ ASEGURADO: Fondo negro para el modo video final */
+            /* ✅ CORREGIDO: El video ocupa toda la pantalla */
             background-color: black; 
             overflow: hidden; 
         }
@@ -101,14 +101,13 @@
             z-index: 9999;
         }
         
-        /* 🛑 CLAVE: CORRECCIÓN DEL FONDO CLARO 🛑 */
+        /* CLASE 2: Pantalla completa post-zoom */
         #video-wrapper.pantalla-completa-final {
             position: fixed; 
             top: 0;
             left: 0;
             width: 100vw;
-            /* ✅ CORREGIDO: Ocupa casi el 100% de la altura disponible para ELIMINAR LA BARRA CLARA */
-            height: calc(100vh - var(--safe-bottom)); 
+            height: 100vh; /* Se asegura de cubrir todo */
             max-width: none;
             max-height: none;
             margin: 0;
@@ -169,21 +168,21 @@
             animation: slideUpWave 2.5s ease-out infinite;
             z-index: 100; 
             color: white;
-           padding: 10px 20px; /* Más padding para que el fondo sea más visible */
-           border-radius: 10px; /* Bordes redondeados sutiles */
+            padding: 10px 20px;
+            border-radius: 10px;
             font-size: 3vw; 
             font-weight: 400; 
             font-family: 'Helvetica Neue', sans-serif; 
             /* Efecto de réplica */
             text-shadow: 
-                /* Borde/Contorno Negro para Contraste */
+                /* Contorno Negro Sutil */
                 1px 1px 0px rgba(0, 0, 0, 0.6),
                 -1px -1px 0px rgba(0, 0, 0, 0.6),
                 1px -1px 0px rgba(0, 0, 0, 0.6),
                 -1px 1px 0px rgba(0, 0, 0, 0.6),
-                0 0 8px rgba(255, 255, 255, 0.7),  /* Brillo blanco sutil base (punto de partida de la animación) */        
-               /* 0 0 15px rgba(0, 0, 0, 0.4);   */ 
-                0 0 15px rgba(0, 0, 0, 0.6); /* Sombra negra de fondo (difusa) para profundidad */
+                /* Brillo y Sombra Base */
+                0 0 8px rgba(255, 255, 255, 0.7),
+                0 0 15px rgba(0, 0, 0, 0.6); 
 
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -197,7 +196,7 @@
           0% { 
                 transform: translate(-50%, -50%) translateY(0px) translateX(0px) scale(1.0); 
                 text-shadow: 
-                    /* ✅ Contorno sutil */
+                    /* Contorno sutil */
                     1px 1px 0px rgba(0, 0, 0, 0.6), -1px -1px 0px rgba(0, 0, 0, 0.6), 1px -1px 0px rgba(0, 0, 0, 0.6), -1px 1px 0px rgba(0, 0, 0, 0.6),
                     /* Sombra base ajustada */
                     0 0 5px rgba(255, 255, 255, 0.7), 
@@ -206,11 +205,11 @@
             25% { 
                 transform: translate(-50%, -50%) translateY(-12px) translateX(5px) scale(1.03); 
                 text-shadow: 
-                    /* ✅ Contorno sutil */
+                    /* Contorno sutil */
                     1px 1px 0px rgba(0, 0, 0, 0.6), -1px -1px 0px rgba(0, 0, 0, 0.6), 1px -1px 0px rgba(0, 0, 0, 0.6), -1px 1px 0px rgba(0, 0, 0, 0.6),
-                    /* ✅ Destello más prolongado/extenso (offset 30px, blur 20px) */
-                    0 30px 20px rgba(255, 255, 255, 0.4), /* Rastro más largo */
-                    0 15px 12px rgba(255, 255, 255, 0.6), /* Rastro medio */
+                    /* Destello más prolongado/extenso */
+                    0 30px 20px rgba(255, 255, 255, 0.4), 
+                    0 15px 12px rgba(255, 255, 255, 0.6), 
                     /* Brillo principal */
                     0 0 10px rgba(255, 255, 255, 0.9), 
                     0 0 25px rgba(255, 255, 255, 0.6);
@@ -218,7 +217,7 @@
             50% { 
                 transform: translate(-50%, -50%) translateY(0px) translateX(0px) scale(1.0); 
                 text-shadow: 
-                    /* ✅ Contorno sutil */
+                    /* Contorno sutil */
                     1px 1px 0px rgba(0, 0, 0, 0.6), -1px -1px 0px rgba(0, 0, 0, 0.6), 1px -1px 0px rgba(0, 0, 0, 0.6), -1px 1px 0px rgba(0, 0, 0, 0.6),
                     /* Sombra base ajustada */
                     0 0 5px rgba(255, 255, 255, 0.7), 
@@ -227,11 +226,11 @@
             75% { 
                 transform: translate(-50%, -50%) translateY(12px) translateX(-5px) scale(0.97); 
                 text-shadow: 
-                    /* ✅ Contorno sutil */
+                    /* Contorno sutil */
                     1px 1px 0px rgba(0, 0, 0, 0.6), -1px -1px 0px rgba(0, 0, 0, 0.6), 1px -1px 0px rgba(0, 0, 0, 0.6), -1px 1px 0px rgba(0, 0, 0, 0.6),
-                    /* ✅ Destello más prolongado/extenso (offset -30px, blur 20px) */
-                    0 -30px 20px rgba(255, 255, 255, 0.4), /* Rastro más largo */
-                    0 -15px 12px rgba(255, 255, 255, 0.6), /* Rastro medio */
+                    /* Destello más prolongado/extenso */
+                    0 -30px 20px rgba(255, 255, 255, 0.4), 
+                    0 -15px 12px rgba(255, 255, 255, 0.6), 
                     /* Brillo principal */
                     0 0 10px rgba(255, 255, 255, 0.9), 
                     0 0 25px rgba(255, 255, 255, 0.6);
@@ -239,7 +238,7 @@
             100% { 
                 transform: translate(-50%, -50%) translateY(0px) translateX(0px) scale(1.0); 
                 text-shadow: 
-                    /* ✅ Contorno sutil */
+                    /* Contorno sutil */
                     1px 1px 0px rgba(0, 0, 0, 0.6), -1px -1px 0px rgba(0, 0, 0, 0.6), 1px -1px 0px rgba(0, 0, 0, 0.6), -1px 1px 0px rgba(0, 0, 0, 0.6),
                     /* Sombra base ajustada */
                     0 0 5px rgba(255, 255, 255, 0.7), 
@@ -268,13 +267,10 @@
             width: auto; 
             height: auto; 
             z-index: 50; 
-            
             padding: 0; 
-            
             background-color: transparent; 
             box-shadow: none; 
             box-sizing: border-box;
-            
             display: flex;
             flex-direction: column; 
             justify-content: flex-end; 
@@ -285,9 +281,16 @@
             transition: opacity 0.5s ease;
         }
         
-        body.modo-video-final #colores-disponibles-wrapper {
+        /* ✅ CORREGIDO: Visible al entrar al modo video, y MANTENIDO en la pantalla final */
+        body.modo-video-final #colores-disponibles-wrapper,
+        #final-screen-overlay.show #colores-disponibles-wrapper { 
             opacity: 1;
             visibility: visible;
+            position: absolute; /* Para que quede anclado a la pantalla final */
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            align-items: center;
         }
 
         .selector-titulo { 
@@ -303,10 +306,15 @@
             padding: 4px 8px; 
             border-radius: 5px; 
         }
+        #final-screen-overlay.show .selector-titulo {
+             color: var(--color-slogan); /* Color oscuro */
+             background-color: rgba(255, 255, 255, 0.8);
+             text-shadow: none;
+             border: 1px solid #ccc;
+        }
         .botones-colores-container { 
             margin: 0; 
             display: flex; 
-            /* ✅ RESTAURADO: Botones apilados verticalmente */
             flex-direction: row; 
             justify-content: flex-start; 
             flex-wrap: nowrap; 
@@ -318,7 +326,7 @@
             padding: 5px 10px; 
             border: 1px solid rgba(255, 255, 255, 0.5); 
             background-color: rgba(255, 255, 255, 0.1); 
-            color: #777; /* Gris oscuro */
+            color: #777;
             font-weight: bold;
             cursor: pointer; 
             border-radius: 15px; 
@@ -330,7 +338,6 @@
             width: auto; 
             box-sizing: border-box; 
             text-align: center;
-            /* ✅ MANTENIDA: Sombra sutil para destacar el botón */
             box-shadow: 0 0 5px rgba(0, 0, 0, 1); 
         }
         .boton-color:hover { 
@@ -351,45 +358,39 @@
         /* 5. PANTALLA FINAL AL TERMINAR EL VIDEO */
         /* ---------------------------------------------------- */
         #final-screen-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: black; /* O el color que prefieras para el fondo final */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000; /* Asegura que esté por encima de todo */
-            opacity: 0; /* Oculto por defecto */
-            visibility: hidden; /* Oculto por defecto */
-            transition: opacity 1s ease, visibility 1s ease; /* Transición suave */
+            /* ... estilos de posición fijos ... */
+            background-color: #f0f0f0; /* ✅ FONDO CLARO */
+            z-index: 10000;
         }
         
-        #final-screen-overlay.show {
-            opacity: 1;
-            visibility: visible;
+        /* Animación para el Logo */
+        @keyframes subtlePulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.2)); }
+            50% { transform: scale(1.01); filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.2)); }
         }
         
         #final-logo {
-            max-width: 200px; /* Ajusta el tamaño del logo */
-            height: auto;
-            margin-bottom: 20px; /* Espacio entre el logo y el eslogan */
+            max-width: 200px;
+            margin-bottom: 5px; /* ✅ PEGADO: Espacio reducido */
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeInSlideUp 1s ease-out 0.5s forwards; /* Animación para el logo */
+            animation: fadeInSlideUp 1s ease-out 0.5s forwards, 
+                       subtlePulse 4s ease-in-out infinite 2s; /* ✅ EFECTO SUTIL */
         }
         
         #final-slogan {
-            color: white;
-            font-size: 4vw; /* Ajusta el tamaño del eslogan */
-            font-weight: bold;
+            color: var(--color-slogan); /* ✅ COLOR OSCURO */
+            font-size: 3.5vw; /* ✅ TAMAÑO ELEGANTE */
+            font-family: 'Georgia', serif; /* Fuente más elegante */
+            font-weight: 300; /* Peso más ligero */
+            font-style: italic; /* Cursiva para elegancia */
             text-align: center;
             padding: 0 20px;
             opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInSlideUp 1s ease-out 1s forwards; /* Animación para el eslogan, con retraso */
+            transform: translateY(10px); /* Menos desplazamiento para que entre más pegado */
+            animation: fadeInSlideUp 1s ease-out 1s forwards; /* ✅ EFECTO DE ENTRADA */
+            letter-spacing: 1.5px;
         }
         
         /* Animación para que aparezcan suavemente */
@@ -407,35 +408,21 @@
         /* MEDIA QUERY PARA DISPOSITIVOS MÓVILES (ajusta el tamaño del logo y eslogan) */
         @media (max-width: 767px) {
             #final-logo {
-                max-width: 150px; /* Logo más pequeño en móviles */
+                max-width: 150px;
             }
             #final-slogan {
-                font-size: 7vw; /* Eslogan más grande en móviles */
+                font-size: 6vw; /* Eslogan más grande en móviles */
+            }
+            #final-screen-overlay.show #colores-disponibles-wrapper {
+                 bottom: 20px;
             }
         }
 
         /* ---------------------------------------------------- */
         /* 6. MEDIA QUERIES */
         /* ---------------------------------------------------- */
-        @media (max-width: 767px) { 
-            #logo {
-                max-width: 75px; 
-            }
-            #producto-nombre-flotante {
-                font-size: 5vw;
-                padding: 8px 15px; /* Ajustar padding para pantallas pequeñas */
-            }
-            #colores-disponibles-wrapper {
-                bottom: 40px;
-                left: 10px;
-                padding: 0; 
-            }
-            .boton-color {
-                font-size: 0.6em;
-                padding: 4px 8px;
-            }
-        }
-        
+        /* ... (tus media queries existentes) ... */
+            
     </style>
 </head>
 
@@ -468,14 +455,20 @@
         <div class="botones-colores-container"></div>
     </div>
     
-   <div id="mensaje-final-wrapper">
+    <div id="mensaje-final-wrapper">
         <h2>🔥 ¡El siguiente paso es la DEMO en tu tienda!</h2>
         <p><strong>[Tu Marca]</strong> tiene stock limitado de la serie **<span id="modelo-nombre-final"></span>**. Contacta a tu gerente de cuenta hoy mismo para asegurar tu pedido y programar una exhibición exclusiva.</p>
         <div class="linea-divisoria"></div>
         <p class="contacto-info">Teléfono: (555) 123-4567 | Email: info@tumerca.com</p>
     </div>    
- <script>
-     
+    
+    <div id="final-screen-overlay">
+        <img id="final-logo" src="./empresa/vizcaya.png" alt="Logo de la Empresa Final">
+        <p id="final-slogan">"Espacios que Enamoran"</p>
+    </div>
+    
+<script>
+    
 const CATALOGO_COLORES = {
     "CARRARA_25X40": ["BLANCO", "BLANCO_NUBE", "AZUL"], 
     "BARCELONA_25X40": ["GRIS"], 
@@ -490,32 +483,41 @@ function aplicarZoomInicial() {
     const videoWrapper = document.getElementById('video-wrapper');
     const body = document.body;
     const videoPlayer = document.getElementById('video-player');
+    const finalScreen = document.getElementById('final-screen-overlay');
 
-    // Asegurarse de que los overlays están ocultos antes del zoom
+    // 1. Resetear y Ocultar la pantalla final
+    finalScreen.classList.remove('show');
+    
+    // 2. Estado Inicial: Títulos visibles, Overlays ocultos
     body.classList.remove('show-overlay-elements'); 
     videoWrapper.classList.remove('pantalla-completa-final');
     body.classList.remove('modo-video-final');
+    videoWrapper.style.display = 'block'; // Asegura que el video se muestre
     
+    // 3. Aplicar Zoom
     body.classList.add('zoom-active'); 
     videoWrapper.classList.add('video-zoom'); 
     
+    // Si el video está cargado, lo reinicia
+    videoPlayer.currentTime = 0; 
     videoPlayer.play();
 
+    // 4. Temporizador para salir del Zoom (dando más tiempo al video)
     setTimeout(() => {
         videoWrapper.classList.remove('video-zoom');
         body.classList.remove('zoom-active');
         
+        // 5. Transición al Modo Video Final / Pantalla Completa
+        // Se aplica la clase de pantalla completa y modo video para fijar el video
         videoWrapper.classList.add('pantalla-completa-final');
         body.classList.add('modo-video-final');
         
-        videoPlayer.play();
-
-        // Retrasar la aparición del logo y nombre flotante
+        // 6. Retrasar la aparición del logo y nombre flotante
         setTimeout(() => {
             body.classList.add('show-overlay-elements'); 
         }, 500); // 0.5 segundos después de que el video entra en modo final
 
-    }, 4000); 
+    }, 6500); // ✅ AUMENTADO: 6.5 segundos para dar más tiempo de visualización
 }
 
 function actualizarContenido(modelo, color, distribuidorID) {
@@ -529,7 +531,7 @@ function actualizarContenido(modelo, color, distribuidorID) {
     const distribuidorLower = distribuidorID.toLowerCase(); 
 
     const urlLogo = rutaLogos + distribuidorLower + '.png'; 
-    const urlVideo = rutaVideos.toLowerCase() + nombreArchivoVideo + '.mp4'; 
+    const urlVideo = rutaVideos.toLowerCase() + nombreArchivoVideo + '.mp4'; 
     
     document.getElementById('logo').src = urlLogo;
     document.getElementById('video-player').src = urlVideo;
@@ -574,6 +576,7 @@ function generarBotones(modeloBase, distribuidorID, colorInicial) {
             document.querySelectorAll('.boton-color').forEach(btn => btn.classList.remove('activo'));
             boton.classList.add('activo');
             actualizarContenido(modeloBase, color, distribuidorID);
+            // ✅ CORREGIDO: Llama a zoom inicial para reproducir el nuevo video
             aplicarZoomInicial(); 
         };
         botonesContainer.appendChild(boton);
@@ -631,24 +634,20 @@ document.addEventListener('DOMContentLoaded', () => {
         
         videoPlayer.addEventListener('ended', () => {
             // Cuando el video termina:
-            // 1. Ocultar todos los overlays del video (logo flotante, nombre, selectores)
+            // 1. Ocultar overlays que NO deben ir en la pantalla final
             document.body.classList.remove('show-overlay-elements');
-            document.getElementById('colores-disponibles-wrapper').style.opacity = '0';
-            document.getElementById('colores-disponibles-wrapper').style.visibility = 'hidden';
-        
-            // 2. Ocultar el video-wrapper si aún está visible (aunque con z-index alto, esto es redundante)
+            
+            // 2. Ocultar el video-wrapper y el modo video
             document.getElementById('video-wrapper').style.display = 'none'; 
             document.body.classList.remove('modo-video-final');
-        
+            
             // 3. Mostrar la pantalla final
             finalScreenOverlay.classList.add('show');
+            
+            // ✅ CLAVE: El menú de colores ya no se oculta, solo se reubica por CSS
         });
     });
     
-</script> 
-    <div id="final-screen-overlay">
-        <img id="final-logo" src="./empresa/vizcaya.png" alt="Logo de la Empresa Final">
-        <p id="final-slogan">"Espacios que Enamoran"</p>
-    </div>
+</script>
 </body>
 </html>
