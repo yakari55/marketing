@@ -503,7 +503,7 @@ function aplicarZoomInicial() {
     videoPlayer.currentTime = 0; 
     videoPlayer.play();
 
-    // 4. Temporizador para salir del Zoom (ajustado a 8 segundos)
+    // 4. Temporizador para salir del Zoom (ajustado a 10 segundos para mayor visibilidad)
     setTimeout(() => {
         videoWrapper.classList.remove('video-zoom');
         body.classList.remove('zoom-active');
@@ -512,12 +512,37 @@ function aplicarZoomInicial() {
         videoWrapper.classList.add('pantalla-completa-final');
         body.classList.add('modo-video-final');
         
-        // 6. Retrasar la aparición del logo, nombre flotante y menú de colores (Activación casi inmediata: 50ms)
+        // 6. Aparecen los Overlays (Logo, Nombre Flotante, Menú de Colores)
         setTimeout(() => {
             body.classList.add('show-overlay-elements'); 
-        }, 50); // ✅ REDUCIDO: 50ms (0.05 segundos)
+        }, 50); 
         
-    }, 8000); // ✅ AUMENTADO: 8000ms (8 segundos)
+        // 7. Establecer un temporizador ADICIONAL para forzar el final después de la visualización.
+        // Asumiendo que el video necesita 10 segundos post-zoom para que el usuario interactúe
+        // La duración total de esta etapa (post-zoom + overlays) será de 10 segundos.
+        const duracionVisualizacionOverlays = 10000; // 10 segundos
+
+        setTimeout(() => {
+            // Mostrar la pantalla final (El menú de colores se reposiciona automáticamente por CSS)
+            
+            // 1. Ocultar overlays que NO deben ir en la pantalla final
+            document.body.classList.remove('show-overlay-elements');
+            
+            // 2. Ocultar el video-wrapper y el modo video
+            document.getElementById('video-wrapper').style.display = 'none'; 
+            document.body.classList.remove('modo-video-final');
+            
+            // 3. Mostrar la pantalla final
+            finalScreen.classList.add('show');
+            
+            // Detener el video si no ha terminado (si es que dura más de los 10 segundos)
+            videoPlayer.pause();
+            
+        }, duracionVisualizacionOverlays);
+
+    }, 1000); // 1 segundo (Asumo que el zoom debe ser rápido, si el zoom es un video, este tiempo debería ser la duración del video de zoom). 
+              // **NOTA:** Si el zoom también es parte del video principal, el tiempo total es la duración del video. 
+              // Dejo 1 segundo como duración del efecto de zoom CSS, y el video se reproduce a continuación.
 
 }
 
@@ -626,25 +651,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.innerHTML = '<h1>Error: Código de producto o distribuidor no encontrado.</h1>';
     }
 
-        // ------------------------------------------------------------------
-        // Manejar el final del video para mostrar la pantalla final
-        // ------------------------------------------------------------------
-        const videoPlayer = document.getElementById('video-player');
-        const finalScreenOverlay = document.getElementById('final-screen-overlay');
-        
-        videoPlayer.addEventListener('ended', () => {
-            // Cuando el video termina:
-            // 1. Ocultar overlays que NO deben ir en la pantalla final
-            document.body.classList.remove('show-overlay-elements');
-            
-            // 2. Ocultar el video-wrapper y el modo video
-            document.getElementById('video-wrapper').style.display = 'none'; 
-            document.body.classList.remove('modo-video-final');
-            
-            // 3. Mostrar la pantalla final (El menú de colores se reposiciona automáticamente por CSS)
-            finalScreenOverlay.classList.add('show');
-            
-        });
+    // 🔥 IMPORTANTE: SE ELIMINÓ el addEventListener('ended') previo para evitar que el video
+    // active la pantalla final prematuramente si dura menos del tiempo de visualización deseado.
+    // La pantalla final ahora es controlada por un temporizador dentro de aplicarZoomInicial.
+    
     });
     
 </script>
