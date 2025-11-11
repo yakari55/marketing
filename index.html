@@ -503,7 +503,7 @@ function aplicarZoomInicial() {
     videoPlayer.currentTime = 0; 
     videoPlayer.play();
 
-    // 4. Temporizador para salir del Zoom (6.5 segundos)
+    // 4. Temporizador para salir del Zoom (ajustado a 8 segundos)
     setTimeout(() => {
         videoWrapper.classList.remove('video-zoom');
         body.classList.remove('zoom-active');
@@ -512,14 +512,13 @@ function aplicarZoomInicial() {
         videoWrapper.classList.add('pantalla-completa-final');
         body.classList.add('modo-video-final');
         
-        // 6. Retrasar la aparición del logo, nombre flotante y menú de colores (0.5 segundos)
+        // 6. Retrasar la aparición del logo, nombre flotante y menú de colores (Activación casi inmediata: 50ms)
         setTimeout(() => {
             body.classList.add('show-overlay-elements'); 
-            // El menú de colores también se muestra aquí, aunque su posición final
-            // dentro del overlay de video es "fixed: bottom-left".
-        }, 500); 
+        }, 50); // ✅ REDUCIDO: 50ms (0.05 segundos)
+        
+    }, 8000); // ✅ AUMENTADO: 8000ms (8 segundos)
 
-    }, 6500); // Duración total del zoom
 }
 
 function actualizarContenido(modelo, color, distribuidorID) {
