@@ -526,20 +526,20 @@ function aplicarZoomInicial() {
             // Se ejecuta 10 segundos después del fin del zoom
             setTimeout(() => {
                 // Ocultar overlays
-                document.body.classList.remove('show-overlay-elements');
-                
+                document.body.classList.remove('show-overlay-elements');   
                 // Ocultar el video-wrapper y el modo video
                 document.getElementById('video-wrapper').style.display = 'none'; 
                 document.body.classList.remove('modo-video-final');
                 
                 // Mostrar la pantalla final
-                finalScreen.classList.add('show');
+                document.getElementById('final-screen-overlay').classList.add('show');
+               // finalScreen.classList.add('show');
                 
                 // Detener el video
-                videoPlayer.pause();
+              videoPlayer.pause();
                 
                 // Limpiar el manejador de eventos
-                videoPlayer.onloadeddata = null; 
+             videoPlayer.onloadeddata = null; 
                 
             }, duracionVisualizacionOverlays);
             } else {
