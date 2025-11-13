@@ -487,12 +487,12 @@ function aplicarZoomInicial(esCambioDeColor = false) { // <--- CORRECCIÓN 1
 
         // 2. Preparar la carga del nuevo video y forzar el inicio
         videoPlayer.currentTime = 0;
-        videoPlayer.load(); 
+        //videoPlayer.load(); 
         
         // =================================================================
         // PUNTO CLAVE: ESPERAR A QUE EL VIDEO ESTÉ LISTO
         // =================================================================
-        videoPlayer.onloadeddata = () => { // <-- INICIAMOS EL FLUJO AL CARGARSE EL VIDEO
+        //videoPlayer.onloadeddata = () => { // <-- INICIAMOS EL FLUJO AL CARGARSE EL VIDEO
 
             // Aseguramos la reproducción (Manejo de Promesa)
             videoPlayer.play().catch(error => {
@@ -539,23 +539,23 @@ function aplicarZoomInicial(esCambioDeColor = false) { // <--- CORRECCIÓN 1
                    videoPlayer.pause();
                     
                     // Limpiar el manejador de eventos
-                   videoPlayer.onloadeddata = null; 
+                   //videoPlayer.onloadeddata = null; 
                     
                 }, duracionVisualizacionOverlays);
-                } else {
+               } /*else {
                      // Si es cambio de color, aseguramos que el loop funcione
                      videoPlayer.loop = true;
-                }
+                }*/
 
             }, duracionZoom); 
-        };
+        }
         
         // Si el video ya está cargado (sucede en el clic de botón después del primer zoom),
         // disparamos manualmente el flujo para no esperar al evento 'onloadeddata'.
-        if (videoPlayer.readyState >= 2) {
+        /*if (videoPlayer.readyState >= 2) {
             videoPlayer.onloadeddata();
         }
-    }
+    }*/
 
 
 function actualizarContenido(modelo, color, distribuidorID) {
