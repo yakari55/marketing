@@ -482,8 +482,9 @@ function aplicarZoomInicial(esCambioDeColor = false) { // <--- CORRECCIÓN 1
         videoWrapper.classList.remove('video-zoom'); 
 
         // **NUEVO:** Restaurar la propiedad loop y limpiar el onended.
-        videoPlayer.loop = !esCambioDeColor; // Loop solo si es un cambio de color
+        videoPlayer.loop = esCambioDeColor; // Loop solo si es un cambio de color
         videoPlayer.onended = null;
+        videoPlayer.onloadeddata = null;
 
         // 2. Preparar la carga del nuevo video y forzar el inicio
         videoPlayer.currentTime = 0;
@@ -560,6 +561,7 @@ function aplicarZoomInicial(esCambioDeColor = false) { // <--- CORRECCIÓN 1
 
 function actualizarContenido(modelo, color, distribuidorID) {
         // ... (Tu código de actualización de contenido) ...
+        const videoPlayer = document.getElementById('video-player');
         const nombreCompletoArchivo = `${modelo}_${color}`;
         
         let nombreVisual = nombreCompletoArchivo.replace(/_/g, ' '); 
@@ -572,7 +574,10 @@ function actualizarContenido(modelo, color, distribuidorID) {
         const urlLogo = rutaLogos + distribuidorLower + '.png'; 
         const urlVideo = rutaVideos.toLowerCase() + nombreArchivoVideo + '.mp4'; 
         
+        videoPlayer.pause(); // <--- CRUCIAL: Detener el video actual
+        videoPlayer.currentTime = 0; // <--- CRUCIAL: Reiniciar el tiempo
         document.getElementById('logo').src = urlLogo;
+        videoPlayer.src = urlVideo;
         document.getElementById('video-player').src = urlVideo;
         
         document.getElementById('producto-nombre-flotante').textContent = nombreVisual; 
