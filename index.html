@@ -425,17 +425,6 @@
 </head>
 
 <body>
-
-    <div class="mensaje">
-        <h1>¡Marketing!</h1>
-        
-        <h3 class="modelo-frase">
-            Estás viendo el modelo:
-            <br>
-            <span class="modelo-principal" id="modelo-nombre"></span>
-        </h3>
-    </div>
-
     <div id="video-wrapper">
         <video id="video-player" autoplay muted playsinline loop>
             Tu navegador no soporta el video.
@@ -451,14 +440,7 @@
     <div id="colores-disponibles-wrapper">
         <p class="selector-titulo">COLORES DISP.</p>
         <div class="botones-colores-container"></div>
-    </div>
-    
-    <div id="mensaje-final-wrapper">
-        <h2>🔥 ¡El siguiente paso es la DEMO en tu tienda!</h2>
-        <p><strong>[Tu Marca]</strong> tiene stock limitado de la serie **<span id="modelo-nombre-final"></span>**. Contacta a tu gerente de cuenta hoy mismo para asegurar tu pedido y programar una exhibición exclusiva.</p>
-        <div class="linea-divisoria"></div>
-        <p class="contacto-info">Teléfono: (555) 123-4567 | Email: info@tumerca.com</p>
-    </div>    
+    </div>   
     
     <div id="final-screen-overlay">
         <img id="final-logo" src="./empresa/vizcaya.png" alt="Logo de la Empresa Final">
@@ -499,6 +481,10 @@ function aplicarZoomInicial() {
     body.classList.remove('zoom-active'); 
     videoWrapper.classList.remove('video-zoom'); 
 
+    // **NUEVO:** Restaurar la propiedad loop y limpiar el onended.
+    videoPlayer.loop = true; 
+    videoPlayer.onended = null;
+
     // 2. Preparar la carga del nuevo video y forzar el inicio
     videoPlayer.currentTime = 0;
     videoPlayer.load(); 
@@ -534,6 +520,8 @@ function aplicarZoomInicial() {
                 body.classList.add('show-overlay-elements'); 
             }, 50); 
 
+            // **PUNTO CLAVE DE CORRECCIÓN:** Solo ejecutar el temporizador final si NO es un cambio de color
+            if (!esCambioDeColor) {
             // 5. Temporizador 2: FIN de la reproducción y paso a la pantalla final
             // Se ejecuta 10 segundos después del fin del zoom
             setTimeout(() => {
@@ -554,6 +542,10 @@ function aplicarZoomInicial() {
                 videoPlayer.onloadeddata = null; 
                 
             }, duracionVisualizacionOverlays);
+            } else {
+                 // Si es cambio de color, aseguramos que el loop funcione
+                 videoPlayer.loop = true;
+            }
 
         }, duracionZoom); 
     };
@@ -582,8 +574,8 @@ function actualizarContenido(modelo, color, distribuidorID) {
     document.getElementById('logo').src = urlLogo;
     document.getElementById('video-player').src = urlVideo;
     
-    document.getElementById('modelo-nombre').textContent = nombreVisual; 
-    document.getElementById('modelo-nombre-final').textContent = nombreVisual; 
+  //  document.getElementById('modelo-nombre').textContent = nombreVisual; 
+  //  document.getElementById('modelo-nombre-final').textContent = nombreVisual; 
     
     document.getElementById('producto-nombre-flotante').textContent = nombreVisual; 
 }
@@ -670,7 +662,7 @@ document.addEventListener('DOMContentLoaded', () => {
         actualizarContenido(modeloBase, colorID, distribuidorID);
         generarBotones(modeloBase, distribuidorID, colorID);
 
-        aplicarZoomInicial();
+        aplicarZoomInicial(false);
 
     } else {
         document.body.innerHTML = '<h1>Error: Código de producto o distribuidor no encontrado.</h1>';
