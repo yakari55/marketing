@@ -469,7 +469,7 @@ function aplicarZoomInicial(esCambioDeColor = false) {
     const finalScreen = document.getElementById('final-screen-overlay');
 
     const duracionDelay = esCambioDeColor ? 50 : 3000; 
-    const duracionVisualizacionOverlays = 10000; 
+    const duracionVisualizacionOverlays = esCambioDeColor ? 15000 : 10000; 
 
     // 1. Resetear el estado visual y de pantalla final
     finalScreen.classList.remove('show');
