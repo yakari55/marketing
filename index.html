@@ -161,7 +161,6 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            /* NO SE APLICA EL EFECTO DE MÁQUINA DE ESCRIBIR AQUÍ */
             animation: slideUpWave 2.5s ease-out infinite; 
             z-index: 100; 
             color: white;
@@ -391,18 +390,38 @@
             font-style: italic; 
             text-align: center;
             padding: 0 20px;
-            margin-top: 5px; /* Subido: Más cerca del logo */
+            margin-top: 5px; 
             opacity: 0;
-            /* Se ha eliminado la animación fadeInSlideUp y se aplica el efecto de máquina de escribir a través de JS */
             
             /* Preparación para el efecto máquina de escribir */
             display: inline-block;
-            white-space: nowrap; /* Impide el salto de línea al escribir */
-            overflow: hidden; /* Oculta el texto hasta que se escribe */
-            border-right: .15em solid orange; /* El "cursor" */
+            white-space: nowrap; 
+            overflow: hidden; 
+            border-right: .15em solid orange; 
         }
         
-        /* Animación para que aparezcan suavemente (solo para el logo ahora) */
+        /* Estilo para el nuevo botón de reinicio */
+        #reiniciar-visualizacion {
+            margin-top: 40px;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #FFFFFF;
+            background-color: #C0392B; 
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            z-index: 10001;
+        }
+
+        #reiniciar-visualizacion:hover {
+            background-color: #a53226;
+            transform: translateY(-1px);
+        }
+
+        /* Animación para que aparezcan suavemente (solo para el logo) */
         @keyframes fadeInSlideUp {
             from {
                 opacity: 0;
@@ -432,20 +451,19 @@
 
         /* Clase para aplicar el efecto */
         #final-slogan.typewriter {
-            /* Calcula el número de pasos (caracteres) y la duración total */
             /* El eslogan tiene 50 caracteres */
             --chars: 50; 
             --total-duration: 4s; /* Tiempo total para escribir */
             --step-duration: calc(var(--total-duration) / var(--chars));
 
             animation: 
-                typing var(--total-duration) steps(var(--chars), end) 2.5s forwards, /* 2.5s de delay */
-                blink-caret 0.75s step-end infinite 6.5s; /* Empieza después del typing (4s + 2.5s) */
+                typing var(--total-duration) steps(var(--chars), end) 2.5s forwards, 
+                blink-caret 0.75s step-end infinite 6.5s; 
             
-            opacity: 1; /* Asegura que sea visible al iniciar la animación */
-            transform: translateY(0); /* Fija la posición, ya que no usaremos fadeInSlideUp */
-            width: 0; /* Empieza con ancho cero para la animación typing */
-            max-width: 100%; /* Permite que la animación de ancho funcione */
+            opacity: 1; 
+            transform: translateY(0); 
+            width: 0; 
+            max-width: 100%; 
         }
         
         /* MEDIA QUERY PARA DISPOSITIVOS MÓVILES (ajusta el tamaño del logo y eslogan) */
@@ -458,6 +476,10 @@
             }
             #final-screen-overlay.show #colores-disponibles-wrapper {
                 bottom: 20px;
+            }
+            #reiniciar-visualizacion {
+                margin-top: 30px;
+                font-size: 1em;
             }
         }
     </style>
@@ -474,7 +496,7 @@
         <img id="logo" src="" alt="Logo del Distribuidor">
     </div>
     
-    <div id="producto-nombre-flotante"></div> 
+    <div id="producto-nombre-flotante"></div>
 
     <div id="colores-disponibles-wrapper">
         <p class="selector-titulo">COLORES DISP.</p>
@@ -484,6 +506,7 @@
     <div id="final-screen-overlay">
         <img id="final-logo" src="./empresa/vizcaya.png" alt="Logo de la Empresa Final">
         <p id="final-slogan">"Cerámicas de calidad superior, hechas en Venezuela"</p>
+        <button id="reiniciar-visualizacion">Ver Colores y Videos</button> 
     </div>
     
 <script>
@@ -500,17 +523,17 @@ const rutaVideos = './video/';
 
 // =================================================================
 // FUNCIÓN CORREGIDA FINAL: aplicarZoomInicial()
+// CORRECCIÓN CLAVE: Se eliminó el setTimeout de duración fija para el modo loop.
 // =================================================================
 function aplicarZoomInicial(esCambioDeColor = false) { 
     const videoWrapper = document.getElementById('video-wrapper');
     const body = document.body;
     const videoPlayer = document.getElementById('video-player');
     const finalScreen = document.getElementById('final-screen-overlay');
-    const finalSlogan = document.getElementById('final-slogan'); /* Referencia al eslogan */
+    const finalSlogan = document.getElementById('final-slogan'); 
 
     // Duraciones
     const duracionDelay = esCambioDeColor ? 50 : 3000; 
-    const duracionVisualizacionOverlays = esCambioDeColor ? 15000 : 10000; 
 
     // 1. Resetear el estado visual y de pantalla final
     finalScreen.classList.remove('show');
@@ -521,13 +544,13 @@ function aplicarZoomInicial(esCambioDeColor = false) {
     body.classList.remove('zoom-active'); 
     videoWrapper.classList.remove('video-zoom'); 
     
-    // **NUEVO: Quitar la clase de máquina de escribir al reiniciar**
+    // Quitar la clase de máquina de escribir al reiniciar
     finalSlogan.classList.remove('typewriter');
-    finalSlogan.style.width = 'auto'; // Resetear el ancho inmediatamente
-    finalSlogan.style.opacity = '0'; // Ocultar el eslogan hasta la animación
+    finalSlogan.style.width = 'auto'; 
+    finalSlogan.style.opacity = '0'; 
 
     // Poner el loop según sea necesario antes de reproducir
-    videoPlayer.loop = esCambioDeColor; 
+    videoPlayer.loop = true; // El video siempre debe estar en loop para la selección de colores
     videoPlayer.onended = null;
     videoPlayer.onloadeddata = null;
 
@@ -556,32 +579,14 @@ function aplicarZoomInicial(esCambioDeColor = false) {
         videoWrapper.classList.add('pantalla-completa-final');
         body.classList.add('modo-video-final');
         
-        // Si es carga inicial, poner el video en loop después del zoom.
-        if (!esCambioDeColor) {
-             videoPlayer.loop = true; 
-        }
-        
         // Activar los Overlays (Nombre, Colores, etc.)
         setTimeout(() => {
             body.classList.add('show-overlay-elements'); 
         }, 50); 
 
-        // 5. Temporizador 2: FIN de la reproducción y paso a la pantalla final
-        setTimeout(() => {
-            document.body.classList.remove('show-overlay-elements'); 
-            document.getElementById('video-wrapper').style.display = 'none'; 
-            document.body.classList.remove('modo-video-final');
-            document.getElementById('final-screen-overlay').classList.add('show');
-            videoPlayer.pause();
-            
-            // **NUEVO: Aplicar efecto máquina de escribir al eslogan**
-            // Se usa setTimeout para asegurar que la pantalla final esté visible antes de empezar la animación
-            setTimeout(() => {
-                finalSlogan.classList.add('typewriter');
-            }, 50);
-
-        }, duracionVisualizacionOverlays);
-
+        // 5. El flujo de aquí en adelante es infinito (loop)
+        // El paso a la pantalla final ahora solo ocurre al hacer clic en un botón.
+        
     }, duracionDelay); 
 }
     
@@ -612,7 +617,6 @@ function actualizarContenido(modelo, color, distribuidorID) {
     // FIX CLAVE 3: Forzar la recarga del video después de cambiar la fuente.
     videoPlayer.load(); 
     
-    // ESTE ELEMENTO SE QUEDA SIN EL EFECTO MÁQUINA DE ESCRIBIR
     document.getElementById('producto-nombre-flotante').textContent = nombreVisual; 
 }
 
@@ -622,6 +626,7 @@ function actualizarContenido(modelo, color, distribuidorID) {
 function generarBotones(modeloBase, distribuidorID, colorInicial) {
     const colores = CATALOGO_COLORES[modeloBase];
     const wrapper = document.getElementById('colores-disponibles-wrapper');
+    const finalScreen = document.getElementById('final-screen-overlay');
 
     let botonesContainer = wrapper.querySelector('.botones-colores-container');
     if (!botonesContainer) {
@@ -649,6 +654,13 @@ function generarBotones(modeloBase, distribuidorID, colorInicial) {
         }
 
         boton.onclick = () => {
+            // Si el usuario cambia de color desde la pantalla final, 
+            // primero ocultamos la pantalla final
+            if (finalScreen.classList.contains('show')) {
+                finalScreen.classList.remove('show');
+                document.getElementById('final-slogan').classList.remove('typewriter');
+            }
+            
             document.querySelectorAll('.boton-color').forEach(btn => btn.classList.remove('activo'));
             boton.classList.add('activo');
             actualizarContenido(modeloBase, color, distribuidorID);
@@ -666,6 +678,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const modeloIDBruto = urlParams.get('modelo'); 
     const distribuidorID = urlParams.get('distribuidor');
+    const finalSlogan = document.getElementById('final-slogan');
+    const finalScreen = document.getElementById('final-screen-overlay');
 
     if (distribuidorID && modeloIDBruto) {
         let modeloBase;
@@ -698,6 +712,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
     } else {
         document.body.innerHTML = '<h1>Error: Código de producto o distribuidor no encontrado.</h1>';
+    }
+    
+    // ------------------------------------------------------------------
+    // AÑADIDO: LÓGICA DEL BOTÓN DE REINICIO EN PANTALLA FINAL
+    // ------------------------------------------------------------------
+    const reiniciarBtn = document.getElementById('reiniciar-visualizacion');
+
+    // Muestra la pantalla final (y por ende el menú de colores y el botón)
+    // Se usa este botón solo como ejemplo de acción para ir a la pantalla final.
+    // Si necesitas ir al final al terminar el loop del video, debes implementar una lógica
+    // más compleja de "tiempo de inactividad" o de botón flotante en modo video.
+    // Por ahora, añadimos una acción simple para llegar a la pantalla final con un botón.
+    // **NOTA: Esta es una adición temporal para probar el estado final.**
+    
+    /* REMOVIDO: Este botón no es necesario, el flujo de cambio de color es el que
+    lleva de vuelta al video. Para ir al final, usaremos un botón en los overlays.
+    document.getElementById('producto-nombre-flotante').addEventListener('click', () => {
+        document.body.classList.remove('show-overlay-elements'); 
+        document.getElementById('video-wrapper').style.display = 'none'; 
+        document.body.classList.remove('modo-video-final');
+        finalScreen.classList.add('show');
+        document.getElementById('video-player').pause();
+        setTimeout(() => {
+            finalSlogan.classList.add('typewriter');
+        }, 50);
+    });
+    */
+    
+    // **LÓGICA DEL BOTÓN DE REINICIO DE VUELTA AL VIDEO (AÑADIDO)**
+    if (reiniciarBtn) {
+        reiniciarBtn.addEventListener('click', () => {
+            
+            // Ocultar la pantalla final
+            finalScreen.classList.remove('show');
+            document.getElementById('final-slogan').classList.remove('typewriter');
+            
+            // Volver al modo video/colores
+            document.body.classList.add('modo-video-final'); 
+            document.body.classList.add('show-overlay-elements'); 
+            document.getElementById('video-wrapper').style.display = 'block'; 
+            
+            // Reanudar el video en loop y en color actual
+            const videoPlayer = document.getElementById('video-player');
+            videoPlayer.loop = true;
+            videoPlayer.play();
+        });
     }
     
 });
