@@ -161,7 +161,8 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            animation: slideUpWave 2.5s ease-out infinite;
+            /* NO SE APLICA EL EFECTO DE MÁQUINA DE ESCRIBIR AQUÍ */
+            animation: slideUpWave 2.5s ease-out infinite; 
             z-index: 100; 
             color: white;
             padding: 10px 20px;
@@ -392,12 +393,16 @@
             padding: 0 20px;
             margin-top: 5px; /* Subido: Más cerca del logo */
             opacity: 0;
-            transform: translateY(10px); 
-            animation: fadeInSlideUp 2s ease-out 2s forwards; 
-            letter-spacing: 1.5px;
+            /* Se ha eliminado la animación fadeInSlideUp y se aplica el efecto de máquina de escribir a través de JS */
+            
+            /* Preparación para el efecto máquina de escribir */
+            display: inline-block;
+            white-space: nowrap; /* Impide el salto de línea al escribir */
+            overflow: hidden; /* Oculta el texto hasta que se escribe */
+            border-right: .15em solid orange; /* El "cursor" */
         }
         
-        /* Animación para que aparezcan suavemente */
+        /* Animación para que aparezcan suavemente (solo para el logo ahora) */
         @keyframes fadeInSlideUp {
             from {
                 opacity: 0;
@@ -407,6 +412,40 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        /* ---------------------------------------------------- */
+        /* 6. ESTILOS EFECTO MÁQUINA DE ESCRIBIR (SLOGAN) */
+        /* ---------------------------------------------------- */
+        
+        /* Animación de tecleo */
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        /* Animación del cursor parpadeante */
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--color-slogan); }
+        }
+
+        /* Clase para aplicar el efecto */
+        #final-slogan.typewriter {
+            /* Calcula el número de pasos (caracteres) y la duración total */
+            /* El eslogan tiene 50 caracteres */
+            --chars: 50; 
+            --total-duration: 4s; /* Tiempo total para escribir */
+            --step-duration: calc(var(--total-duration) / var(--chars));
+
+            animation: 
+                typing var(--total-duration) steps(var(--chars), end) 2.5s forwards, /* 2.5s de delay */
+                blink-caret 0.75s step-end infinite 6.5s; /* Empieza después del typing (4s + 2.5s) */
+            
+            opacity: 1; /* Asegura que sea visible al iniciar la animación */
+            transform: translateY(0); /* Fija la posición, ya que no usaremos fadeInSlideUp */
+            width: 0; /* Empieza con ancho cero para la animación typing */
+            max-width: 100%; /* Permite que la animación de ancho funcione */
         }
         
         /* MEDIA QUERY PARA DISPOSITIVOS MÓVILES (ajusta el tamaño del logo y eslogan) */
@@ -435,12 +474,12 @@
         <img id="logo" src="" alt="Logo del Distribuidor">
     </div>
     
-    <div id="producto-nombre-flotante"></div>
+    <div id="producto-nombre-flotante"></div> 
 
     <div id="colores-disponibles-wrapper">
         <p class="selector-titulo">COLORES DISP.</p>
         <div class="botones-colores-container"></div>
-    </div>   
+    </div> 
     
     <div id="final-screen-overlay">
         <img id="final-logo" src="./empresa/vizcaya.png" alt="Logo de la Empresa Final">
@@ -448,16 +487,16 @@
     </div>
     
 <script>
-    
+    
 const CATALOGO_COLORES = {
-    "CARRARA_25X40": ["BLANCO", "BLANCO_NUBE", "AZUL"], 
-    "BARCELONA_25X40": ["GRIS"], 
-    "CORAL_25X40": ["GRIS"],
-    "YURUBI_25X40": ["ROSA","AZUL"]
+    "CARRARA_25X40": ["BLANCO", "BLANCO_NUBE", "AZUL"], 
+    "BARCELONA_25X40": ["GRIS"], 
+    "CORAL_25X40": ["GRIS"],
+    "YURUBI_25X40": ["ROSA","AZUL"]
 };
 
-const rutaLogos = './cliente/'; 
-const rutaVideos = './video/'; 
+const rutaLogos = './cliente/'; 
+const rutaVideos = './video/'; 
 
 // =================================================================
 // FUNCIÓN CORREGIDA FINAL: aplicarZoomInicial()
@@ -467,10 +506,10 @@ function aplicarZoomInicial(esCambioDeColor = false) {
     const body = document.body;
     const videoPlayer = document.getElementById('video-player');
     const finalScreen = document.getElementById('final-screen-overlay');
+    const finalSlogan = document.getElementById('final-slogan'); /* Referencia al eslogan */
 
     // Duraciones
     const duracionDelay = esCambioDeColor ? 50 : 3000; 
-    // Ahora, 15 segundos (15000ms) para el cambio de color, 10 segundos para la carga inicial.
     const duracionVisualizacionOverlays = esCambioDeColor ? 15000 : 10000; 
 
     // 1. Resetear el estado visual y de pantalla final
@@ -481,9 +520,13 @@ function aplicarZoomInicial(esCambioDeColor = false) {
     videoWrapper.style.display = 'block'; 
     body.classList.remove('zoom-active'); 
     videoWrapper.classList.remove('video-zoom'); 
+    
+    // **NUEVO: Quitar la clase de máquina de escribir al reiniciar**
+    finalSlogan.classList.remove('typewriter');
+    finalSlogan.style.width = 'auto'; // Resetear el ancho inmediatamente
+    finalSlogan.style.opacity = '0'; // Ocultar el eslogan hasta la animación
 
     // Poner el loop según sea necesario antes de reproducir
-    // Si es cambio de color, ya empieza en loop
     videoPlayer.loop = esCambioDeColor; 
     videoPlayer.onended = null;
     videoPlayer.onloadeddata = null;
@@ -520,21 +563,26 @@ function aplicarZoomInicial(esCambioDeColor = false) {
         
         // Activar los Overlays (Nombre, Colores, etc.)
         setTimeout(() => {
-            body.classList.add('show-overlay-elements'); 
-        }, 50); 
+            body.classList.add('show-overlay-elements'); 
+        }, 50); 
 
         // 5. Temporizador 2: FIN de la reproducción y paso a la pantalla final
-        // ESTE BLOQUE AHORA SE EJECUTA SIEMPRE (Carga Inicial O Cambio de Color)
         setTimeout(() => {
-            document.body.classList.remove('show-overlay-elements'); 
-            document.getElementById('video-wrapper').style.display = 'none'; 
+            document.body.classList.remove('show-overlay-elements'); 
+            document.getElementById('video-wrapper').style.display = 'none'; 
             document.body.classList.remove('modo-video-final');
             document.getElementById('final-screen-overlay').classList.add('show');
             videoPlayer.pause();
-            // Ya no es necesario videoPlayer.loop = false;
+            
+            // **NUEVO: Aplicar efecto máquina de escribir al eslogan**
+            // Se usa setTimeout para asegurar que la pantalla final esté visible antes de empezar la animación
+            setTimeout(() => {
+                finalSlogan.classList.add('typewriter');
+            }, 50);
+
         }, duracionVisualizacionOverlays);
 
-    }, duracionDelay); 
+    }, duracionDelay); 
 }
     
 // =================================================================
@@ -564,6 +612,7 @@ function actualizarContenido(modelo, color, distribuidorID) {
     // FIX CLAVE 3: Forzar la recarga del video después de cambiar la fuente.
     videoPlayer.load(); 
     
+    // ESTE ELEMENTO SE QUEDA SIN EL EFECTO MÁQUINA DE ESCRIBIR
     document.getElementById('producto-nombre-flotante').textContent = nombreVisual; 
 }
 
