@@ -381,11 +381,7 @@
                         subtlePulse 5s ease-in-out infinite 3s; 
         }
         
-        /* ---------------------------------------------------- */
-        /* INICIO DE LA MODIFICACIÓN: EFECTO MÁQUINA DE ESCRIBIR */
-        /* ---------------------------------------------------- */
-
-        /* Eslogan (Se eliminaron las animaciones fadeInSlideUp de aquí) */
+        /* Eslogan con entrada suave y más cerca del logo */
         #final-slogan {
             color: var(--color-slogan); 
             font-size: 2vw; 
@@ -395,49 +391,13 @@
             text-align: center;
             padding: 0 20px;
             margin-top: 5px; /* Subido: Más cerca del logo */
-            
-            /* PROPIEDADES CLAVE PARA EL EFECTO: */
-            width: 0; /* Empieza con ancho cero */
-            max-width: 100%; /* Asegura que no se desborde al final del tipeo */
-            white-space: nowrap; /* Mantiene el texto en una sola línea */
-            overflow: hidden; /* Oculta el texto que excede el ancho (todo inicialmente) */
-            border-right: 2px solid var(--color-slogan); /* Simula el cursor */
-            box-sizing: border-box;
-            opacity: 0; /* Inicialmente oculto */
-            
-            /* Animaciones (Se inicia solo cuando el contenedor padre tiene la clase 'show') */
+            opacity: 0;
+            transform: translateY(10px); 
+            animation: fadeInSlideUp 2s ease-out 2s forwards; 
             letter-spacing: 1.5px;
-            
-            /* No necesitamos transform ni animation aquí, se aplica en el .show */
         }
-
-        /* Activar el efecto al mostrar el overlay */
-        #final-screen-overlay.show #final-slogan {
-            opacity: 1; /* Hacemos visible el contenedor */
-            /* 47 caracteres en el eslogan: "Cerámicas de calidad superior, hechas en Venezuela" */
-            /* 4s de duración, empieza 2s después de que la pantalla aparece */
-            animation: 
-                typing 4s steps(47, end) 2s forwards, /* Escribe el texto en 4 segundos (47 pasos) */
-                blink-caret 0.75s step-end infinite 6s; /* Cursor parpadea (inicia después del tipeo, a los 6s) */
-        }
-
-        /* Keyframes para la animación del tipeo */
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% } /* El ancho crece hasta el 100% en los pasos definidos */
-        }
-
-        /* Keyframes para la animación del cursor parpadeante */
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: var(--color-slogan) }
-        }
-        
-        /* ---------------------------------------------------- */
-        /* FIN DE LA MODIFICACIÓN: EFECTO MÁQUINA DE ESCRIBIR */
-        /* ---------------------------------------------------- */
         
-        /* Animación para que aparezcan suavemente (Mantenida para el logo) */
+        /* Animación para que aparezcan suavemente */
         @keyframes fadeInSlideUp {
             from {
                 opacity: 0;
@@ -448,6 +408,37 @@
                 transform: translateY(0);
             }
         }
+
+        /* ---------------------------------------------------- */
+        /* 6. ESTILOS DE MÁQUINA DE ESCRIBIR (Typewriter Effect) */
+        /* ---------------------------------------------------- */
+
+        /* Oculta el texto inicialmente (será revelado por JS) */
+        #final-slogan {
+            /* Desactivamos las animaciones originales de aparecer */
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+
+            overflow: hidden; /* Oculta lo que no se ha escrito */
+            border-right: 0.15em solid var(--color-slogan); /* El cursor (barra) */
+            white-space: nowrap; /* Mantiene el texto en una sola línea */
+            width: 0; /* Empieza con ancho cero */
+            transition: width 0.1s linear; /* Transición para simular la escritura */
+        }
+
+        /* Animación del cursor parpadeante */
+        @keyframes blink-caret {
+            from, to { border-right-color: transparent }
+            50% { border-right-color: var(--color-slogan); }
+        }
+
+        /* Aplica el parpadeo solo cuando el efecto ha terminado */
+        #final-slogan.typing-done {
+            border-right-color: var(--color-slogan); /* Asegura que la barra esté visible para el parpadeo */
+            animation: blink-caret 0.75s step-end infinite;
+            width: auto; /* Permite que el ancho se ajuste al texto final */
+        }
         
         /* MEDIA QUERY PARA DISPOSITIVOS MÓVILES (ajusta el tamaño del logo y eslogan) */
         @media (max-width: 767px) {
@@ -456,16 +447,6 @@
             }
             #final-slogan {
                 font-size: 6vw; 
-                /* Para móviles, el ancho puede ser un poco más flexible */
-                /* Ajustar la animación de tipeo en móviles para que se vea bien */
-                animation-duration: 3s; /* Un poco más rápido */
-                animation-delay: 1.5s; /* Ajustar el inicio */
-            }
-            #final-screen-overlay.show #final-slogan {
-                /* Re-aplicamos las animaciones para móviles con el nuevo timing */
-                animation: 
-                    typing 3s steps(47, end) 1.5s forwards, /* Escribe el texto en 3 segundos (47 pasos) */
-                    blink-caret 0.75s step-end infinite 4.5s; /* Cursor parpadea (inicia después del tipeo, a los 4.5s) */
             }
             #final-screen-overlay.show #colores-disponibles-wrapper {
                 bottom: 20px;
@@ -508,6 +489,45 @@ const CATALOGO_COLORES = {
 
 const rutaLogos = './cliente/'; 
 const rutaVideos = './video/'; 
+
+// =================================================================
+// FUNCIÓN NUEVA: Efecto Máquina de Escribir (Typewriter)
+// =================================================================
+function typewriterEffect(elementId, text, speed) {
+    const element = document.getElementById(elementId);
+    let i = 0;
+    
+    // Primero, asegura que el elemento esté visible y resetéalo
+    element.textContent = '';
+    element.classList.remove('typing-done');
+    element.style.opacity = '1';
+    element.style.width = '0'; // Reiniciar el ancho para la animación
+    
+    let startTime;
+    const totalDuration = text.length * speed; // Duración total para escribir todo el eslogan
+
+    function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+
+        // Calcula cuántas letras deberían estar visibles
+        const charsToShow = Math.min(text.length, Math.floor(elapsed / speed));
+        
+        // Actualiza el texto
+        element.textContent = text.substring(0, charsToShow);
+        // Simula la escritura ajustando el ancho basado en el número de caracteres visibles
+        element.style.width = `${charsToShow / text.length * 100}%`;
+
+        if (charsToShow < text.length) {
+            requestAnimationFrame(step);
+        } else {
+            // Cuando termina, añade la clase para activar el cursor parpadeante
+            element.classList.add('typing-done');
+        }
+    }
+
+    requestAnimationFrame(step);
+}
 
 // =================================================================
 // FUNCIÓN CORREGIDA FINAL: aplicarZoomInicial()
@@ -579,12 +599,14 @@ function aplicarZoomInicial(esCambioDeColor = false) { 
             document.body.classList.remove('show-overlay-elements'); 
             document.getElementById('video-wrapper').style.display = 'none'; 
             document.body.classList.remove('modo-video-final');
-            
-            // *** CLAVE: Activamos la clase 'show', la cual inicia el efecto Typewriter en CSS ***
             document.getElementById('final-screen-overlay').classList.add('show');
-            
             videoPlayer.pause();
-            // Ya no es necesario videoPlayer.loop = false;
+            
+            // APLICAR EL EFECTO DE MÁQUINA DE ESCRIBIR AQUÍ:
+            const finalSloganElement = document.getElementById('final-slogan');
+            const sloganText = finalSloganElement.textContent;
+            typewriterEffect('final-slogan', sloganText, 100); 
+
         }, duracionVisualizacionOverlays);
 
     }, duracionDelay); 
